@@ -1,16 +1,13 @@
-import { chromium } from "playwright";
-const browser = await chromium.launch();
-const page = await browser.newPage();
-const calls = [];
-page.on("response", (r) => { const u = r.url(); const t = r.request().resourceType(); if (["fetch", "xhr"].includes(t)) calls.push(`${r.status()} ${u.slice(0, 200)}`); });
-await page.goto("https://www.roastmarket.de/kaffee/kaffeebohnen.html", { waitUntil: "networkidle", timeout: 60000 });
-console.log("PROBE RM calls " + calls.filter((c) => !/google|analytics|facebook|doubleclick|tiktok|hotjar/.test(c)).slice(0, 15).join(" || "));
-const items = await page.$$eval(".list-product", (els) => els.slice(0, 3).map((e) => e.innerText.replace(/\s+/g, " ").slice(0, 200) + " => " + [...e.querySelectorAll("a")].map((a) => a.href).slice(0, 2).join(",")));
-console.log("PROBE RM items " + items.length + " " + items.join(" || "));
-console.log("PROBE RM count " + (await page.$$eval(".list-product", (els) => els.length)));
-await page.goto("https://www.honest-rare.de/kaffeebohnen/", { waitUntil: "networkidle", timeout: 60000 });
-const hr = await page.$$eval("a.product-title, .ty-grid-list__item a[href]", (els) => els.slice(0, 8).map((a) => (a.innerText || a.title || "").trim().slice(0, 60) + " => " + a.href));
-console.log("PROBE HR " + hr.join(" || "));
-console.log("PROBE HR count " + (await page.$$eval(".ty-grid-list__item", (els) => els.length)));
-console.log("PROBE HR next " + (await page.$$eval("a.ty-pagination__next, a[rel=next]", (els) => els.map((a) => a.href)).catch(() => "")));
-await browser.close();
+const base = "https://www.roastmarket.de/api/catalog/vue_storefront_catalog/product/_search";
+for (const q of [{ query: { match_all: {} }, size: 2 }, { query: { query_string: { query: "Kaffeebohnen Äthiopien" } }, size: 2 }]) {
+  try {
+    const r = await fetch(base + "?request=" + encodeURIComponent(JSON.stringify(q)), { headers: { "user-agent": "Mozilla/5.0" }, signal: AbortSignal.timeout(25000) });
+    const t = await r.text();
+    console.log("PROBE RM " + r.status + " " + t.slice(0, 1800).replace(/\s+/g, " "));
+  } catch (e) { console.log("PROBE RM failed " + e.message); }
+}
+const r2 = await fetch("https://www.honest-rare.de/kaffeebohnen/", { headers: { "user-agent": "Mozilla/5.0" } });
+const html = await r2.text();
+const i = html.indexOf("ty-grid-list__item");
+console.log("PROBE HR " + html.slice(i - 100, i + 2200).replace(/\s+/g, " "));
+console.log("PROBE HR pages " + [...html.matchAll(/href="([^"]*page-\d+[^"]*)"/g)].map((m) => m[1]).slice(0, 4).join(" | "));
