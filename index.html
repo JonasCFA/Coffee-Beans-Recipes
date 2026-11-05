@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="recipe.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -48,7 +49,6 @@
         <footer class="site-footer"><span>Made for coffee people.</span><span>Saved on this browser.</span></footer>
       </main>
     </div>
-
     <dialog id="beanDialog" class="dialog"><form id="beanForm" class="dialog-card">
       <div class="dialog-heading"><div><p class="eyebrow">new find</p><h2>Add a coffee</h2></div><button type="button" class="icon-button" data-close aria-label="Close">×</button></div>
       <p class="form-hint">Search the roastery online, then keep the details you care about. German roasteries are fully supported.</p>
@@ -61,24 +61,25 @@
         <label class="wide">Tasting notes<input name="profile" maxlength="200" placeholder="peach, jasmine, honey — separated by commas" /></label>
         <label class="wide">Product / roastery page<input name="productUrl" type="url" placeholder="https://roastery.example/coffee (optional)" /></label>
         <label>Roast level<select name="roastLevel"><option>Light</option><option>Light-medium</option><option selected>Medium</option><option>Medium-dark</option><option>Dark</option></select></label>
-        <label>Brew method<select name="method"><option selected>Espresso</option><option>Pour over</option><option>V60</option><option>AeroPress</option><option>French press</option><option>Filter</option><option>Other</option></select></label>
+        <label>Brew method<select name="method"><option selected>Espresso</option><option>Pour over</option><option>V60</option><option>AeroPress</option><option>French press</option><option>Filter</option></select></label>
       </div>
-      <p class="recipe-preview-note">A suggested starting recipe will be created from roast level and tasting notes. You can adjust it after tasting.</p>
+      <p class="recipe-preview-note">A suggested starting recipe will be created from roast level, taste notes and brew method. Adjust it after tasting.</p>
       <div class="dialog-actions"><button type="button" class="button button-light" data-close>Cancel</button><button type="submit" class="button button-dark">Save coffee</button></div>
     </form></dialog>
-
     <dialog id="brewDialog" class="dialog"><form id="brewForm" class="dialog-card">
       <div class="dialog-heading"><div><p class="eyebrow">dial in your next cup</p><h2>Recipe & brew log</h2></div><button type="button" class="icon-button" data-close aria-label="Close">×</button></div>
       <p id="brewBeanName" class="form-hint"></p>
-      <div id="recipeSuggestion" class="recipe-suggestion"></div>
+      <div id="recipeSuggestion" class="recipe-suggestion" role="note"></div>
       <div class="form-grid">
         <label>Dose in (g)<input name="dose" type="number" min="1" max="100" step="0.1" required /></label>
         <label>Yield out (g)<input name="output" type="number" min="1" max="500" step="0.1" required /></label>
         <label>Grind setting<input name="grind" required maxlength="50" placeholder="e.g. 18 on Niche" /></label>
         <label>Water temperature<input name="water" maxlength="20" placeholder="e.g. 93°C" /></label>
-        <label>Brew method<input name="method" maxlength="50" placeholder="Espresso, V60…" /></label>
-        <label>Pre-infusion<input name="preInfusion" maxlength="30" placeholder="e.g. 5 seconds" /></label>
-        <label class="wide rating-field">Your rating <span class="rating-value"><output id="ratingOutput">0</output><small> / 10</small></span><input name="rating" id="ratingInput" class="rating-range" type="range" min="0" max="10" step="1" value="0" /><span class="range-hints"><span>Not rated</span><span>Exceptional</span></span></label>
+        <label>Brew method<input name="method" required maxlength="50" placeholder="Espresso, V60…" /></label>
+        <label>Pre-infusion / bloom<input name="preInfusion" maxlength="40" placeholder="e.g. 5 seconds" /></label>
+        <label>Pressure (bar)<input name="pressure" type="number" min="0" max="15" step="0.1" placeholder="e.g. 9" /></label>
+        <label>Pressure profile<input name="pressureProfile" maxlength="80" placeholder="e.g. 3 bar preinfusion → 9 bar" /></label>
+        <label class="wide rating-field">Cup rating <span class="rating-value"><output id="ratingOutput">Not rated</output><small> / 10</small></span><input name="rating" id="ratingInput" class="rating-range" type="range" min="0" max="10" step="0.5" value="7" /><span class="range-hint">0 = not for me · 10 = exceptional <label class="unrated-toggle"><input id="unratedCheckbox" type="checkbox" checked /> Leave this cup unrated</label></span></label>
         <label class="wide">Brew notes<textarea name="notes" rows="3" maxlength="500" placeholder="What did you taste? What will you change next time?"></textarea></label>
       </div>
       <div class="dialog-actions"><button type="button" class="button button-light" data-close>Cancel</button><button type="submit" class="button button-dark">Save latest recipe</button></div>

@@ -2,27 +2,31 @@
 
 A premium-feeling coffee journal for roasteries, tasting notes, personalized recipes and brew logs. It runs as a static website and works on GitHub Pages.
 
-## Recipe suggestions and dialing in
+## Smart recipe starting points
 
-When you add a coffee, the app creates a suggested starting recipe from roast level, tasting notes and the selected brew method. For espresso, it starts with a typical 18g dose and adjusts the suggested yield and temperature for lighter/brighter or darker/chocolate-forward coffees. Filter methods get their own starting dose, water amount, temperature and bloom/steep guidance. These are starting points, not guaranteed perfect recipes.
+When adding a coffee, Daily Pour suggests a starting recipe using the selected brew method, roast level and tasting notes. Espresso starts around 18g in, with a suggested yield, water temperature, pre-infusion and 9-bar pressure. Light/bright profiles start with a somewhat longer ratio and warmer water; dark/chocolate-forward coffees start with a shorter ratio and slightly cooler water. Filter methods receive separate dose, water, grind, temperature and bloom/steep suggestions.
 
-Grind settings depend on your grinder, so the app does not guess a numeric setting. Add your grinder's setting when you brew. Use **Adjust recipe / log brew** to change dose, yield, grind, temperature, method and pre-infusion based on the actual cup. Saving a brew updates that bean's latest recipe. When you select that bean later, its last saved recipe and grind are loaded automatically; recipes are stored per bean, so switching beans recalls each coffee's own settings. The brew history remains available too.
+These are practical starting points, not a claim that the app can predict a perfect cup. Grinder settings vary, and espresso pressure/pre-infusion depend on the machine. The numeric grind starts as a reminder to dial in on your own grinder.
+
+## Dial in and remember each bean
+
+Click **Adjust recipe / log brew** on a selected bean. The form loads that bean's latest saved recipe, including dose, yield, grind, water temperature, brew method, pre-infusion/bloom, pressure in bar and pressure profile. Change the settings to match the actual brew, add notes and optionally rate the cup. Saving logs the cup and replaces that bean's latest recipe. Selecting another bean and returning later loads its own saved settings; recipes are stored per bean, and brew history remains available.
 
 ## Rating scale
 
-Brew ratings are on a **0–10 scale** (10 is best). The app accepts 0 as a real rating and includes it in averages. A bean's displayed score is the average of its rated brews; before any brews are rated, a saved bean-level score is used or the coffee appears as not rated.
+Brew ratings use **0–10**, where 10 is best. The rating slider supports half points. Leave **Leave this cup unrated** checked to omit a rating, or uncheck it to enter a score including 0. The displayed bean rating is the average of its rated brews; if there are no rated brews, the optional bean-level score is used.
 
-Existing data from the earlier storage version is migrated automatically. Legacy 0–5 scores are converted to 0–10; a legacy zero, previously used to mean “not rated,” remains unrated. New brew scores use the full 0–10 scale.
+Older local data is migrated to the current storage format. Existing 0–5 scores from the first version are converted to 0–10; a legacy zero that meant “not rated” remains unrated.
 
 ## Other features
 
 - Save coffees with roastery, location, origin, roast date, roast level, tasting notes and product URL.
 - Free-text roastery names support German and international roasters.
-- Search, filter and sort the collection; favorite coffees; export a JSON backup.
+- Search, filter and sort; favorite coffees; export a JSON backup.
 - Automatically group tasting notes into broad taste families.
 - Save data in browser localStorage.
 
-## Roastery website lookup
+## Roastery lookup limitation
 
 The roastery search opens a web search and lets you save a product-page URL. GitHub Pages cannot reliably scrape arbitrary sites from the browser; automated import requires a backend/API. Verify information on the official roastery website before saving it.
 
