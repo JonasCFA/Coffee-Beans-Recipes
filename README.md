@@ -1,33 +1,52 @@
-# Daily Pour — A Coffee Journal
+# Daily Pour — Coffee Journal
 
-A calm, premium-feeling coffee journal that runs on GitHub Pages. German roasters are fully supported: roaster name and location are free text, not restricted to a directory.
+A premium-feeling coffee journal for roasteries, tasting notes, recipes and brew logs. It runs as a static website and works perfectly on GitHub Pages.
 
-## What it does
+## Features
 
-- Add coffees and roastery/location details, including German roasteries.
-- Search the web for a roastery using its name and location; the search opens in a separate tab.
-- Save the bean, roast date, flavor notes, roast level, and the roaster's product-page URL.
-- Click a bean to view its taste profile, suggested taste family, recipe and brew history.
-- Log brews including dose, output, grind setting, water temperature, method, pre-infusion, rating and notes. The latest brew is shown as the current recipe.
-- Search/filter/sort coffees, favorite, delete and export a JSON backup.
-- Keep data in browser localStorage; it stays on that browser/device.
+- Save coffee beans with roastery, country/location, origin, roast date, roast level, tasting notes and product URL.
+- Use a free-text roastery field so German roasteries and local coffee brands work without restrictions.
+- Click a coffee to view its recipe, taste group, recent brew history and favorite state.
+- Log brews with dose, yield, grind setting, water temperature, brew method, pre-infusion, rating and notes.
+- Search, filter and sort the collection by rating, roast date, recency and name.
+- Keep an automatically grouped taste profile for each coffee.
+- Download the full journal as a JSON backup.
+- Save everything in browser localStorage.
 
-## Roastery website data: important limitation
+## Roastery website search
 
-This version can search the web and store a roastery's official product URL, but it does not automatically scrape/import arbitrary website content. GitHub Pages is a static site: many roastery sites block browser requests from other domains (CORS), and scraping would be unreliable. The lookup opens a web search so you can verify the official site, then enter the product information you want to save.
+This site can open a search for a roastery and store the official product URL if you paste it. It does not automatically scrape arbitrary roastery websites from the browser because GitHub Pages is a static site and many roastery sites block cross-origin access.
 
-To auto-import verified details from a search result or product page, a small server/API integration is needed (for example, a backend that uses a search provider and fetches allowed pages). That backend should cite the source URL and let you confirm/edit extracted data before saving. Never put a private API key into the public frontend.
+This is the correct approach for a premium static app:
+
+- Enter roastery name and location.
+- Click Search roastery.
+- Verify the correct official site in the browser.
+- Paste the official product page URL in the form.
+- Save the coffee.
+
+If you want automatic extraction from a roastery website, a small backend/API is needed. That backend can fetch the page and normalize details (name, address, website, email, phone and about text), but the data should still be editable before saving.
 
 ## Run locally
 
-Open `index.html`, or serve the project folder:
+Open `index.html` directly in a browser, or serve the folder:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then visit http://localhost:8000.
+Then visit:
 
-## GitHub Pages
+- http://localhost:8000
 
-In **Settings → Pages**, select **Deploy from a branch**, choose `main` and `/(root)`, and save. The live URL appears on that settings page.
+## Publish on GitHub Pages
+
+In the repository:
+
+1. Open Settings > Pages
+2. Set Source to Deploy from a branch
+3. Select branch `main`
+4. Choose the `/root` folder
+5. Save
+
+GitHub will publish the page and show the live URL.
