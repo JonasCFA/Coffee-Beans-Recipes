@@ -58,6 +58,24 @@ function starterRecipe(bean) {
   const targetFlowTime = espressoTimeWindow(bean, dose, output);
   return { recipeVersion: RECIPE_VERSION, dose, output, grind: "Start at your current base-grinder setting", water: "", method, preInfusion: plan.preInfusion, preInfusionPressure: plan.preInfusionPressure, pressure: "", pressureProfile: "Pre-infusion pressure adjustable; main pressure fixed", targetFlowTime, flowTime: "", guidance: `${plan.why} Start with ${dose}g in → ${output}g out (1:${(output / dose).toFixed(1)}), pre-infusion ${plan.preInfusion} at ${plan.preInfusionPressure} bar, total shot ${targetFlowTime}s from pump start. Main pressure and temperature are fixed on your machine, so adjust the grinder, yield and pre-infusion (longer or higher-pressure pre-infusion if the shot channels or runs fast): shot too fast or sour/thin → grind one step finer or raise dose 0.5g; too slow or bitter/dry → one step coarser or stop the shot earlier. Change one thing at a time.` };
 }
+function adaptedRecipe(bean, others) {
+  const base = starterRecipe(bean);
+  if (FILTER_METHODS.some((item) => String(base.method).toLowerCase().includes(item))) return base;
+  const character = beanCharacter(bean);
+  let best = null;
+  others.forEach((other) => {
+    if (beanCharacter(other) !== character) return;
+    (other.brews || []).forEach((brew) => {
+      const score = Number(brew.rating);
+      if (brew.rating === null || brew.rating === "" || !Number.isFinite(score) || score < 7 || FILTER_METHODS.some((item) => String(brew.method || "").toLowerCase().includes(item))) return;
+      if (!best || score > best.score) best = { score, brew, name: other.name };
+    });
+  });
+  if (!best) return base;
+  const { brew } = best;
+  const dose = Number(brew.dose) || base.dose, output = Number(brew.output) || base.output;
+  return { ...base, dose, output, grind: brew.grind || base.grind, preInfusion: brew.preInfusion || base.preInfusion, preInfusionPressure: brew.preInfusionPressure || base.preInfusionPressure, targetFlowTime: espressoTimeWindow(bean, dose, output), guidance: `Adapted from your ${best.score.toFixed(1)}/10 shot of ${best.name} (similar profile). Adjust after the first cup.` };
+}
 function isRemovedSample(bean) { return REMOVED_SAMPLE_NAMES.has(String(bean.name || "").trim().toLowerCase()); }
 function normalizeBeans(items, oldFivePointScale = false) {
   if (!Array.isArray(items)) return [];
@@ -191,7 +209,7 @@ function openBrewDialog(id) {
 function attachEvents() {
   $("#addBeanButton").addEventListener("click", openBeanDialog); $("#introAddButton")?.addEventListener("click", openBeanDialog);
   $("#searchRoasteryButton").addEventListener("click", () => { const form = $("#beanForm"); const name = form.elements.roaster.value.trim(); const location = form.elements.roasterLocation.value.trim(); if (!name) { form.elements.roaster.focus(); showToast("Enter a roastery name first."); return; } window.open(`https://www.google.com/search?q=${encodeURIComponent(`${name} ${location} official roastery coffee`)}`, "_blank", "noopener,noreferrer"); });
-  $("#beanForm").addEventListener("submit", (event) => { event.preventDefault(); const values = new FormData(event.currentTarget); const bean = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), name: values.get("name").trim(), roaster: values.get("roaster").trim(), roasterLocation: values.get("roasterLocation").trim(), origin: values.get("origin").trim(), roastDate: values.get("roastDate"), roastLevel: values.get("roastLevel"), method: values.get("method"), profile: values.get("profile").split(",").map((note) => note.trim()).filter(Boolean), rating: null, productUrl: values.get("productUrl").trim(), recipe: {}, brews: [], favorite: false, addedAt: new Date().toISOString() }; bean.recipe = starterRecipe(bean); beans.unshift(bean); selectedBeanId = bean.id; saveBeans(); render(); beanDialog.close(); showToast("Coffee saved with a suggested starting recipe."); });
+  $("#beanForm").addEventListener("submit", (event) => { event.preventDefault(); const values = new FormData(event.currentTarget); const bean = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), name: values.get("name").trim(), roaster: values.get("roaster").trim(), roasterLocation: values.get("roasterLocation").trim(), origin: values.get("origin").trim(), roastDate: values.get("roastDate"), roastLevel: values.get("roastLevel"), method: values.get("method"), profile: values.get("profile").split(",").map((note) => note.trim()).filter(Boolean), rating: null, productUrl: values.get("productUrl").trim(), recipe: {}, brews: [], favorite: false, addedAt: new Date().toISOString() }; bean.recipe = adaptedRecipe(bean, beans); beans.unshift(bean); selectedBeanId = bean.id; saveBeans(); render(); beanDialog.close(); showToast("Coffee saved with a suggested starting recipe based on your past shots."); });
   $("#brewForm").addEventListener("submit", (event) => { event.preventDefault(); const bean = beans.find((item) => String(item.id) === String(activeBrewBeanId)); if (!bean) return; const values = new FormData(event.currentTarget); const unrated = $("#unratedCheckbox").checked; const brew = { date: new Date().toISOString(), dose: Number(values.get("dose")), output: Number(values.get("output")), grind: values.get("grind").trim(), method: values.get("method").trim(), drinkStyle: values.get("drinkStyle"), preInfusion: values.get("preInfusion").trim(), preInfusionPressure: values.get("preInfusionPressure").trim(), targetFlowTime: values.get("targetFlowTime").trim(), rating: unrated ? null : Number(values.get("rating")), notes: values.get("notes").trim() }; bean.recipe = { ...brew, guidance: "Your latest personally adjusted recipe. Use your tasting notes to guide the next adjustment." }; bean.method = brew.method; bean.brews ||= []; bean.brews.push(brew); selectedBeanId = bean.id; saveBeans(); render(); brewDialog.close(); showToast("Latest recipe saved for this bean."); });
   $("#ratingInput").addEventListener("input", updateRatingDisplay); $("#unratedCheckbox").addEventListener("change", updateRatingDisplay); $("#searchInput").addEventListener("input", render); $("#clusterFilter").addEventListener("change", render); $("#sortSelect").addEventListener("change", render);
   beanGrid.addEventListener("click", (event) => { const favorite = event.target.closest('[data-action="favorite"]'); if (favorite) { event.stopPropagation(); const bean = beans.find((item) => String(item.id) === String(favorite.dataset.id)); if (bean) { bean.favorite = !bean.favorite; saveBeans(); render(); } return; } const card = event.target.closest(".bean-card"); if (card) { selectedBeanId = card.dataset.id; render(); } });
