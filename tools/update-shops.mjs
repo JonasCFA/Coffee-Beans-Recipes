@@ -16,7 +16,16 @@ const SHOPS = [
   { name: "Coffee Circle", city: "Berlin", base: "https://www.coffeecircle.com" },
   { name: "Elbgold", city: "Hamburg", base: "https://www.elbgold.com" },
   { name: "Hoppenworth & Ploch", city: "Frankfurt", base: "https://www.hoppenworth-ploch.de" },
-  { name: "Roast Market", city: "Berlin", base: "https://roastmarket.de" }
+  { name: "Roast Market", city: "Berlin", base: "https://roastmarket.de" },
+  // Multi-roaster shops: several different roasteries in one place.
+  { name: "Honest & Rare", city: "Germany", base: "https://www.honest-rare.de", multi: true },
+  { name: "Kaffeekollektiv", city: "Germany", base: "https://www.kaffeekollektiv.de", multi: true },
+  { name: "Kaffeezentrale", city: "Germany", base: "https://www.kaffeezentrale.de", multi: true },
+  { name: "Coffee Friends", city: "Germany", base: "https://www.coffeefriends.de", multi: true },
+  { name: "Nordic Approach", city: "Europe", base: "https://nordicapproach.com", multi: true },
+  { name: "Kaffeetreff", city: "Germany", base: "https://www.kaffeetreff.de", multi: true },
+  { name: "Bean Brothers", city: "Germany", base: "https://www.beanbrothers.de", multi: true },
+  { name: "Roastery Box", city: "Germany", base: "https://www.roasteryshop.de", multi: true }
 ];
 
 // Keys are the slugified catalog titles from recommendations.js.
@@ -47,16 +56,43 @@ function isBeanProduct(product) {
   return (product.variants || []).some((variant) => Number(variant.grams) >= 200);
 }
 
-async function loadProducts(shop) {
+async function getJson(url) {
+  const response = await fetch(url, { headers: { "user-agent": "daily-pour-bean-finder/1.0", accept: "application/json" }, signal: AbortSignal.timeout(20000) });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}
+
+async function loadShopify(shop) {
   const products = [];
-  for (let page = 1; page <= 4; page++) {
-    const response = await fetch(`${shop.base}/products.json?limit=250&page=${page}`, { headers: { "user-agent": "daily-pour-bean-finder/1.0" }, signal: AbortSignal.timeout(20000) });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const batch = (await response.json()).products || [];
-    products.push(...batch);
+  for (let page = 1; page <= 6; page++) {
+    const batch = (await getJson(`${shop.base}/products.json?limit=250&page=${page}`)).products || [];
+    products.push(...batch.map((product) => ({ ...product, url: `${shop.base}/products/${product.handle}` })));
     if (batch.length < 250) break;
   }
   return products;
+}
+
+// WooCommerce public Store API, normalised to the Shopify shape used below.
+async function loadWoo(shop) {
+  const products = [];
+  for (let page = 1; page <= 6; page++) {
+    const batch = await getJson(`${shop.base}/wp-json/wc/store/v1/products?per_page=100&page=${page}`);
+    for (const item of batch) {
+      const categories = (item.categories || []).map((category) => category.name).join(" ");
+      const minor = Number(item.prices?.currency_minor_unit ?? 2);
+      products.push({ title: item.name, vendor: (item.brands || [])[0]?.name || "", product_type: /kaffee|coffee|espresso|bohne|röstung/i.test(categories) ? "Coffee" : categories, tags: (item.tags || []).map((tag) => tag.name), body_html: item.short_description || item.description || "", url: item.permalink, variants: [{ available: item.is_in_stock !== false, price: Number(item.prices?.price) / 10 ** minor, grams: Number(item.weight) * 1000 || 250 }] });
+    }
+    if (batch.length < 100) break;
+  }
+  return products;
+}
+
+async function loadProducts(shop) {
+  try { return await loadShopify(shop); }
+  catch (shopifyError) {
+    try { return await loadWoo(shop); }
+    catch { throw shopifyError; }
+  }
 }
 
 const text = (product) => [product.title, product.product_type, (product.tags || []).join(" ")].join(" ").toLowerCase();
@@ -89,7 +125,7 @@ for (const shop of SHOPS) {
       const bags = product.variants.filter((variant) => variant.available && Number(variant.grams) >= 200);
       const price = Math.min(...(bags.length ? bags : product.variants.filter((variant) => variant.available)).map((variant) => Number(variant.price)));
       for (const [id, rule] of Object.entries(RULES)) {
-        if (matches(product, rule)) result.matches[id].push({ store: shop.name, city: shop.city, favorite: Boolean(shop.favorite), title: product.title, url: `${shop.base}/products/${product.handle}`, price: Number.isFinite(price) ? price : null });
+        if (matches(product, rule)) result.matches[id].push({ store: shop.name, city: shop.city, favorite: Boolean(shop.favorite), title: product.title, roaster: shop.multi ? String(product.vendor || "") : "", url: product.url, price: Number.isFinite(price) ? price : null });
       }
     }
     console.log(`${shop.name}: ${products.length} in-stock products`);
