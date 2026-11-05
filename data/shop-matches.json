@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T13:15:03.772Z",
+ "updated": "2026-11-05T13:23:14.603Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -54,40 +54,12 @@
    "products": 45
   },
   "Roast Market": {
-   "ok": false,
-   "error": "HTTP 404"
+   "ok": true,
+   "products": 3599
   },
   "Honest & Rare": {
-   "ok": false,
-   "error": "HTTP 404"
-  },
-  "Kaffeekollektiv": {
-   "ok": false,
-   "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
-  },
-  "Kaffeezentrale": {
-   "ok": false,
-   "error": "HTTP 404"
-  },
-  "Coffee Friends": {
-   "ok": false,
-   "error": "HTTP 404"
-  },
-  "Nordic Approach": {
-   "ok": false,
-   "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
-  },
-  "Kaffeetreff": {
-   "ok": false,
-   "error": "Unexpected token '<', \"<!doctype \"... is not valid JSON"
-  },
-  "Bean Brothers": {
-   "ok": false,
-   "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
-  },
-  "Roastery Box": {
-   "ok": false,
-   "error": "fetch failed"
+   "ok": true,
+   "products": 0
   }
  },
  "matches": {
@@ -203,6 +175,24 @@
     "roaster": "",
     "url": "https://www.elbgold.com/products/kiawamururu",
     "price": 14.9
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "roastmarket ORIGINS KENYA Vorteilspaket 1kg",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/roastmarket-origins-kenya-vorteilspaket-1kg.html",
+    "price": 35.99
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "roastmarket ORIGINS KENYA",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/roastmarket-origins-kenya.html",
+    "price": 9.99
    }
   ],
   "colombia-washed-huila-narino": [
@@ -277,6 +267,24 @@
     "roaster": "",
     "url": "https://publiccoffeeroasters.com/produkt/filterkaffee-huila/",
     "price": 10.3
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Alrighty Kolumbien Espresso 250g",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/alrighty-kolumbien-espresso-250g.html",
+    "price": 11.99
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Vee’s Organic Kolumbien 250g",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/vee-s-organic-kolumbien-250g.html",
+    "price": 9.99
    }
   ],
   "colombia-pink-bourbon": [],
@@ -343,6 +351,24 @@
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
     "price": 15.91
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Caffè Toraldo Miscela Rosso 1kg",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/caffe-toraldo-miscela-rosso-1kg.html",
+    "price": 27.99
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Supremo Tesouro Brazil 1kg",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/supremo-tesouro-brazil-1kg.html",
+    "price": 34.99
    }
   ],
   "guatemala-huehuetenango-antigua": [
@@ -408,6 +434,24 @@
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
     "price": 15.91
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Wildkaffee Guatemala San Lorenzo",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/wildkaffee-guatemala-san-lorenzo.html",
+    "price": 15.49
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Black Hat Coffee Fortuna Espresso 250g",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/black-hat-coffee-fortuna-espresso-250g.html",
+    "price": 14.99
    }
   ],
   "costa-rica-honey-process": [],
@@ -421,6 +465,15 @@
     "roaster": "",
     "url": "https://www.thebarn.de/products/gatare",
     "price": 16
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Black Hat Coffee Prime Time Filter 250g",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/black-hat-coffee-prime-time-filter-250g.html",
+    "price": 13.99
    }
   ],
   "sumatra-wet-hulled": [
@@ -432,6 +485,24 @@
     "roaster": "",
     "url": "https://www.thebarn.de/products/karana",
     "price": 16.4
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Vee's Organic Sumatra 250g",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/vee-s-organic-sumatra-250g.html",
+    "price": 10.99
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Vee's Organic Sumatra",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/vee-s-organic-sumatra.html",
+    "price": 10.99
    }
   ],
   "el-salvador-pacamara": [
@@ -508,6 +579,24 @@
     "roaster": "",
     "url": "https://www.thebarn.de/products/caballero-black-edition",
     "price": 14.9
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Mount Hagen Peru Kaffee Bio",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/mount-hagen-peru-kaffee-bio.html",
+    "price": 7.99
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Alrighty Honduras Espresso 250g",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/alrighty-honduras-crema-250g.html",
+    "price": 10.49
    }
   ],
   "italian-style-espresso-blend": [
@@ -564,6 +653,24 @@
     "roaster": "",
     "url": "https://publiccoffeeroasters.com/produkt/espresso-blend-black-pearl/",
     "price": 10.2
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Hoppenworth & Ploch Bio Café Crème",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/hoppenworth-ploch-bio-cafe-creme.html",
+    "price": 36.99
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Gorilla Café Creme Vorteilspaket 8kg",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/gorilla-cafe-creme-vorteilspaket-8kg.html",
+    "price": 178.99
    }
   ],
   "tanzania-peaberry": []
