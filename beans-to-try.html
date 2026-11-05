@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f3efe8" />
+    <meta name="description" content="Coffee bean styles to try next, based on the coffees you logged and rated, with shops to find them." />
+    <title>Beans to try | Daily Pour</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=20261107" />
+    <link rel="stylesheet" href="polish.css?v=20261107" />
+    <link rel="stylesheet" href="taste-profile.css?v=20261107" />
+    <link rel="stylesheet" href="taste-polish.css?v=20261107" />
+  </head>
+  <body>
+    <div class="app-shell taste-shell">
+      <header class="topbar">
+        <a class="brand" href="./index.html" aria-label="Daily Pour home"><span class="brand-mark">dp</span><span class="brand-copy">daily pour<small>coffee journal</small></span></a>
+        <nav class="main-nav" aria-label="Main navigation"><a href="./index.html#library" class="nav-link">My collection</a><a href="taste-profile.html" class="nav-link">Taste maps</a><a href="beans-to-try.html" class="nav-link active" aria-current="page">Beans to try</a></nav>
+        <a class="button button-dark" href="./index.html#library">← Back to collection</a>
+      </header>
+      <main>
+        <section class="recommend-section page-intro" aria-labelledby="picks-heading"><div class="section-heading"><div><p class="eyebrow">PERSONAL PICKS</p><h2 id="picks-heading">Beans to try next</h2></div><p id="recommendCount" class="section-note"></p></div><div id="allPicks" aria-live="polite"></div></section>
+        <footer class="site-footer"><span>Daily Pour · A little journal for curious coffee people.</span><a href="taste-profile.html">← Back to taste maps</a></footer>
+      </main>
+    </div>
+    <script src="recommendations.js"></script>
+  </body>
+</html>

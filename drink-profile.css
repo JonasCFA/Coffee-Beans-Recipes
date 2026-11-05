@@ -1,0 +1,12 @@
+/* "How might you like it?" cards in the collection detail panel. */
+.drink-profile-explainer { margin: 0 0 12px; color: var(--muted); font-size: .72rem; line-height: 1.6; }
+.drink-profile-grid { display: grid; gap: 8px; }
+.drink-profile-card { padding: 10px 12px; border: 1px solid #eeece5; border-radius: 10px; background: #f8f7f3; }
+.drink-profile-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.drink-profile-top span { color: var(--ink); font-size: .74rem; font-weight: 700; }
+.drink-profile-top strong { color: var(--olive); font-size: .9rem; letter-spacing: -.02em; }
+.drink-profile-top small { margin-left: 1px; color: var(--muted); font-size: .62rem; font-weight: 500; }
+.drink-profile-meter { height: 4px; margin: 8px 0 7px; overflow: hidden; border-radius: 999px; background: #e6e5dc; }
+.drink-profile-meter i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7d9179, var(--olive)); }
+.drink-profile-card p { margin: 0; color: var(--muted); font-size: .64rem; line-height: 1.4; }
+.drink-profile-card p::first-letter { text-transform: uppercase; }

@@ -1,8 +1,9 @@
 (function () {
   const STORAGE_KEY = "daily-pour-coffee-journal-v4";
   const root = document.getElementById("recommendList");
+  const allRoot = document.getElementById("allPicks");
   const countNote = document.getElementById("recommendCount");
-  if (!root) return;
+  if (!root && !allRoot) return;
 
   const CATEGORIES = ["fruit", "floral", "chocolate", "nut", "sweet", "earthy"];
   const KEYWORDS = {
@@ -32,6 +33,19 @@
     { title: "Peru or Honduras washed", country: "peru", roast: 2, cats: { nut: .7, chocolate: .6, sweet: .5 }, notes: ["almond", "cocoa", "caramel"], drink: "Easygoing everyday coffee", search: "Peru Honduras washed" },
     { title: "Italian-style espresso blend", country: "blend", roast: 3, cats: { chocolate: .8, nut: .6, earthy: .4, sweet: .3 }, notes: ["dark chocolate", "roasted nuts", "spice"], drink: "Built for espresso and milk", search: "Italian espresso blend medium dark" },
     { title: "Tanzania peaberry", country: "tanzania", roast: 1, cats: { fruit: .7, floral: .3, sweet: .4 }, notes: ["blackberry", "citrus", "floral"], drink: "Lively and juicy; black or filter", search: "Tanzania peaberry" }
+  ];
+
+  CATALOG.forEach((item) => { item.id = item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); });
+  const STORES = [
+    { name: "Coffee Circle", site: "coffeecircle.com" },
+    { name: "Bonanza Coffee", site: "bonanzacoffee.de" },
+    { name: "The Barn", site: "thebarn.de" },
+    { name: "Roast Market", site: "roastmarket.de" }
+  ];
+  const searchUrl = (query) => `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+  const storeLinks = (item) => [
+    ...STORES.map((store) => ({ label: store.name, href: searchUrl(`${item.search} coffee beans site:${store.site}`) })),
+    { label: "Compare shops", href: `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(`${item.search} specialty coffee beans 250g`)}` }
   ];
 
   function esc(value = "") {
@@ -108,10 +122,10 @@
     });
 
     results.sort((a, b) => b.score - a.score);
-    return { rated, results: results.slice(0, 4) };
+    return { rated, results };
   }
 
-  function card({ item, score, isNew, best, bestShared, clash }) {
+  function card({ item, score, isNew, best, bestShared, clash }, detailed = false) {
     const percent = Math.round(Math.max(40, Math.min(98, score * 100)));
     const why = best
       ? `Shares the ${joinList(bestShared)} character of <strong>${esc(best.bean.name)}</strong>, which you rated ${best.rating.toFixed(1)}/10.`
@@ -120,19 +134,34 @@
     const origin = isNew ? "New origin for you" : "An origin you already know";
     const query = encodeURIComponent(`${item.search} specialty coffee beans`);
     const tags = item.notes.map((note) => `<span class="tag">${esc(note)}</span>`).join("");
-    return `<article class="recommend-card"><div class="recommend-top"><div><h3>${esc(item.title)}</h3><p class="recommend-origin">${esc(origin)} · ${esc(ROASTS[item.roast])} roast</p></div><span class="match-badge">${percent}% match</span></div><div class="recommend-meta">${tags}</div><p class="recommend-why">${why}</p>${headsUp}<div class="recommend-foot"><span>${esc(item.drink)}</span><a href="https://www.google.com/search?q=${query}" target="_blank" rel="noopener noreferrer">Find roasteries ↗</a></div></article>`;
+    const stores = detailed
+      ? `<div class="store-links"><span class="store-label">Shop for it</span>${storeLinks(item).map((link) => `<a class="store-link" href="${esc(link.href)}" target="_blank" rel="noopener noreferrer">${esc(link.label)} ↗</a>`).join("")}</div>`
+      : "";
+    const foot = detailed
+      ? `<div class="recommend-foot"><span>${esc(item.drink)}</span></div>`
+      : `<div class="recommend-foot"><span>${esc(item.drink)}</span><a href="beans-to-try.html#${esc(item.id)}">Beans &amp; shops →</a></div>`;
+    const heading = detailed ? `<h3>${esc(item.title)}</h3>` : `<h3><a class="recommend-title-link" href="beans-to-try.html#${esc(item.id)}">${esc(item.title)}</a></h3>`;
+    return `<article class="recommend-card" id="${detailed ? esc(item.id) : ""}"><div class="recommend-top"><div>${heading}<p class="recommend-origin">${esc(origin)} · ${esc(ROASTS[item.roast])} roast</p></div><span class="match-badge">${percent}% match</span></div><div class="recommend-meta">${tags}</div><p class="recommend-why">${why}</p>${headsUp}${stores}${foot}</article>`;
   }
 
   function render() {
     const beans = loadBeans();
     const { rated, results } = recommend(beans);
-    if (!rated.length) {
-      if (countNote) countNote.textContent = "Rate a few cups to unlock suggestions";
-      root.innerHTML = `<div class="empty-map-state">${beans.length ? "Log and rate at least one cup of a saved coffee and your personal recommendations will appear here." : "Save a coffee and rate a cup, and your personal recommendations will appear here."}<br /><a href="./index.html#library">Go to My collection →</a></div>`;
-      return;
+    const empty = `<div class="empty-map-state">${beans.length ? "Log and rate at least one cup of a saved coffee and your personal recommendations will appear here." : "Save a coffee and rate a cup, and your personal recommendations will appear here."}<br /><a href="./index.html#library">Go to My collection →</a></div>`;
+    const basis = rated.length ? `Based on ${rated.length} rated ${rated.length === 1 ? "coffee" : "coffees"}` : "Rate a few cups to unlock suggestions";
+    if (countNote) countNote.textContent = basis;
+    if (root) {
+      root.innerHTML = rated.length
+        ? `<div class="recommend-grid">${results.slice(0, 4).map((entry) => card(entry)).join("")}</div><p class="recommend-note"><a href="beans-to-try.html">See all suggestions and where to buy them →</a></p>`
+        : empty;
     }
-    if (countNote) countNote.textContent = `Based on ${rated.length} rated ${rated.length === 1 ? "coffee" : "coffees"}`;
-    root.innerHTML = `<div class="recommend-grid">${results.map(card).join("")}</div><p class="recommend-note">These are bean styles to look for, not specific products. Matches weigh the tasting notes and roast level of coffees you rated, and favour origins you have not tried yet. Rate more cups to sharpen them.</p>`;
+    if (allRoot) {
+      allRoot.innerHTML = rated.length
+        ? `<div class="recommend-grid">${results.map((entry) => card(entry, true)).join("")}</div><p class="recommend-note">These are bean styles to look for, not specific products. Shop buttons open a search limited to that shop, so availability and prices are theirs to confirm. Matches weigh the tasting notes and roast level of coffees you rated, and favour origins you have not tried yet.</p>`
+        : empty;
+      const target = location.hash && document.getElementById(location.hash.slice(1));
+      if (target) { target.classList.add("is-highlighted"); target.scrollIntoView({ block: "start" }); }
+    }
   }
 
   window.addEventListener("storage", (event) => { if (event.key === STORAGE_KEY) render(); });
