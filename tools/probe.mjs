@@ -1,12 +1,16 @@
-const urls = ["https://www.honest-rare.de/kaffeebohnen/", "https://www.roastmarket.de/kaffee/kaffeebohnen.html"];
-for (const url of urls) {
-  const r = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 daily-pour" }, signal: AbortSignal.timeout(25000) });
-  const html = await r.text();
-  console.log(`PROBE ${url} len=${html.length}`);
-  const idx = [...html.matchAll(/class="[^"]*product[^"]*"/g)].map((m) => m.index);
-  console.log("PROBE classes " + [...new Set([...html.matchAll(/class="([^"]*product[^"]*)"/g)].map((m) => m[1]))].slice(0, 25).join(" || "));
-  for (const i of idx.slice(2, 4)) console.log("PROBE SNIP " + html.slice(Math.max(0, i - 200), i + 1200).replace(/\s+/g, " "));
-  const ld = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]);
-  ld.forEach((x) => console.log("PROBE LDTYPES " + [...x.matchAll(/"@type":\s*"([^"]+)"/g)].map((m) => m[1]).slice(0, 8).join(",") + " len=" + x.length));
-  console.log("PROBE pagination " + [...html.matchAll(/href="([^"]*(?:p=|page=|seite)[^"]*)"/g)].map((m) => m[1]).slice(0, 4).join(" | "));
-}
+import { chromium } from "playwright";
+const browser = await chromium.launch();
+const page = await browser.newPage();
+const calls = [];
+page.on("response", (r) => { const u = r.url(); const t = r.request().resourceType(); if (["fetch", "xhr"].includes(t)) calls.push(`${r.status()} ${u.slice(0, 200)}`); });
+await page.goto("https://www.roastmarket.de/kaffee/kaffeebohnen.html", { waitUntil: "networkidle", timeout: 60000 });
+console.log("PROBE RM calls " + calls.filter((c) => !/google|analytics|facebook|doubleclick|tiktok|hotjar/.test(c)).slice(0, 15).join(" || "));
+const items = await page.$$eval(".list-product", (els) => els.slice(0, 3).map((e) => e.innerText.replace(/\s+/g, " ").slice(0, 200) + " => " + [...e.querySelectorAll("a")].map((a) => a.href).slice(0, 2).join(",")));
+console.log("PROBE RM items " + items.length + " " + items.join(" || "));
+console.log("PROBE RM count " + (await page.$$eval(".list-product", (els) => els.length)));
+await page.goto("https://www.honest-rare.de/kaffeebohnen/", { waitUntil: "networkidle", timeout: 60000 });
+const hr = await page.$$eval("a.product-title, .ty-grid-list__item a[href]", (els) => els.slice(0, 8).map((a) => (a.innerText || a.title || "").trim().slice(0, 60) + " => " + a.href));
+console.log("PROBE HR " + hr.join(" || "));
+console.log("PROBE HR count " + (await page.$$eval(".ty-grid-list__item", (els) => els.length)));
+console.log("PROBE HR next " + (await page.$$eval("a.ty-pagination__next, a[rel=next]", (els) => els.map((a) => a.href)).catch(() => "")));
+await browser.close();
