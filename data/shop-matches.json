@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T13:11:52.452Z",
+ "updated": "2026-11-05T13:12:59.061Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": false,
@@ -75,14 +75,6 @@
     "title": "KAYON MOUNTAIN",
     "url": "https://www.thebarn.de/products/summer-coffee",
     "price": 16.9
-   },
-   {
-    "store": "Five Elephant",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "Cold Brew - ETHIOPIA Queen Of Sheba",
-    "url": "https://fiveelephant.com/products/cold-brew",
-    "price": 34.37
    }
   ],
   "ethiopia-washed-yirgacheffe-gedeb": [
@@ -184,7 +176,7 @@
     "favorite": false,
     "title": "COLOMBIA Manos Juntas –  Holiday Espresso",
     "url": "https://fiveelephant.com/products/colombia-manos-juntas-holiday-espresso",
-    "price": 6.5
+    "price": 17.66
    },
    {
     "store": "Five Elephant",
@@ -195,16 +187,7 @@
     "price": 23.83
    }
   ],
-  "colombia-pink-bourbon": [
-   {
-    "store": "Five Elephant",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "COLOMBIA La Palma – Espresso",
-    "url": "https://fiveelephant.com/products/colombia-la-palma-espresso",
-    "price": 20.47
-   }
-  ],
+  "colombia-pink-bourbon": [],
   "brazil-natural-cerrado-mogiana": [
    {
     "store": "Bunca",
@@ -273,14 +256,6 @@
     "price": 12.9
    },
    {
-    "store": "Bonanza Coffee",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "Gogogu RE-USE & REFILL JAR",
-    "url": "https://bonanzacoffee.de/products/gogogu-re-use-refill-jar",
-    "price": 31.9
-   },
-   {
     "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
@@ -292,9 +267,9 @@
     "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
-    "title": "CHRISTMAS COFFEE",
-    "url": "https://www.thebarn.de/products/christmas-coffee",
-    "price": 16.9
+    "title": "ANDRES RAMIREZ",
+    "url": "https://www.thebarn.de/products/andres-ramirez",
+    "price": 15.9
    },
    {
     "store": "Five Elephant",
@@ -329,26 +304,8 @@
     "price": 15.91
    }
   ],
-  "costa-rica-honey-process": [
-   {
-    "store": "The Barn",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "SANTA TERESA",
-    "url": "https://www.thebarn.de/products/santa-teresa",
-    "price": 15
-   }
-  ],
-  "panama-geisha": [
-   {
-    "store": "The Barn",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "LOS LAJONES GESHA",
-    "url": "https://www.thebarn.de/products/los-lajones-gesha",
-    "price": 42
-   }
-  ],
+  "costa-rica-honey-process": [],
+  "panama-geisha": [],
   "rwanda-burundi-washed": [
    {
     "store": "The Barn",
@@ -357,14 +314,6 @@
     "title": "GATARE",
     "url": "https://www.thebarn.de/products/gatare",
     "price": 16
-   },
-   {
-    "store": "Elbgold",
-    "city": "Hamburg",
-    "favorite": false,
-    "title": "RURONZI ANAEROBIC",
-    "url": "https://www.elbgold.com/products/ruronzi-anaerobic",
-    "price": 20.9
    }
   ],
   "sumatra-wet-hulled": [
@@ -435,64 +384,72 @@
     "title": "CABALLERO BLACK EDITION",
     "url": "https://www.thebarn.de/products/caballero-black-edition",
     "price": 14.9
-   },
-   {
-    "store": "Elbgold",
-    "city": "Hamburg",
-    "favorite": false,
-    "title": "EL PUENTE",
-    "url": "https://www.elbgold.com/products/el-puente",
-    "price": 10.9
    }
   ],
   "italian-style-espresso-blend": [
    {
-    "store": "Bonanza Coffee",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "Almibar",
-    "url": "https://bonanzacoffee.de/products/almibar",
-    "price": 17.9
+    "store": "Bunca",
+    "city": "",
+    "favorite": true,
+    "title": "SHADOW BLEND",
+    "url": "https://bunca.coffee/products/shadow-blend-kapseln",
+    "price": 13.9
    },
    {
-    "store": "Bonanza Coffee",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "Bonanza Blend",
-    "url": "https://bonanzacoffee.de/products/bonanza-blend",
-    "price": 14.9
+    "store": "Bunca",
+    "city": "",
+    "favorite": true,
+    "title": "ADLER BLEND",
+    "url": "https://bunca.coffee/products/adler-blend",
+    "price": 19.9
    },
    {
     "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
-    "title": "AUTUMN COFFEE",
-    "url": "https://www.thebarn.de/products/autumn-coffee",
+    "title": "SUNDROP PEABERRY",
+    "url": "https://www.thebarn.de/products/sundrop-peaberry",
     "price": 15.9
    },
    {
-    "store": "Five Elephant",
+    "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
-    "title": "Meraki. House Blend - Espresso Coffee",
-    "url": "https://fiveelephant.com/products/meraki-house-blend-espresso-coffee",
-    "price": 11.68
+    "title": "LOS PIRINEOS BOURBON",
+    "url": "https://www.thebarn.de/products/los-pirineos-bourbon-elite",
+    "price": 16.4
    },
    {
     "store": "Five Elephant",
     "city": "Berlin",
     "favorite": false,
-    "title": "House – Espresso Coffee",
-    "url": "https://fiveelephant.com/products/house-espresso-coffee",
-    "price": 11.68
+    "title": "COLOMBIA Manos Juntas –  Holiday Espresso",
+    "url": "https://fiveelephant.com/products/colombia-manos-juntas-holiday-espresso",
+    "price": 17.66
    },
    {
-    "store": "Hoppenworth & Ploch",
-    "city": "Frankfurt",
+    "store": "Five Elephant",
+    "city": "Berlin",
     "favorite": false,
-    "title": "Winterglow - Guatemala / Brasilien",
-    "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.91
+    "title": "COLOMBIA Finca El Mesón – Espresso",
+    "url": "https://fiveelephant.com/products/colombia-finca-meson-espresso",
+    "price": 22.43
+   },
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "LA MARAVILLA",
+    "url": "https://www.elbgold.com/products/la-maravilla",
+    "price": 12.9
+   },
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "GAME CHANGER",
+    "url": "https://www.elbgold.com/products/game-changer",
+    "price": 40.9
    },
    {
     "store": "Hoppenworth & Ploch",
