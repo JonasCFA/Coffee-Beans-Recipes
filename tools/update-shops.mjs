@@ -40,7 +40,7 @@ const RULES = {
   "tanzania-peaberry": { country: /tanzania/, process: /peaberry/ }
 };
 
-const NON_COFFEE = /gift|geschenk|abo\b|subscription|gutschein|voucher|grinder|m[uü]hle|tasse|mug|dripper|machine|maschine|tamper|kettle|waage|scale|shirt|tote|bag clip|reiniger|cleaner|kapsel|capsule|cascara|drip bag|dripbag|sample|probier|bundle|\bbox\b|set\b|calendar|advent|hot chocolate|tree|decaf|entkoffeiniert|ground|gemahlen|instant|\bjar\b|refill|cold brew|vorteilspaket|\d+ ?kg/;
+const NON_COFFEE = /gift|geschenk|abo\b|subscription|gutschein|voucher|grinder|m[uü]hle|tasse|mug|dripper|machine|maschine|tamper|kettle|waage|scale|shirt|tote|bag clip|reiniger|cleaner|kapsel|capsule|cascara|drip bag|dripbag|sample|probier|bundle|\bbox\b|set\b|calendar|advent|hot chocolate|tree|decaf|entkoffeiniert|ground|gemahlen|instant|\bjar\b|refill|cold brew|vorteilspaket|aromatisiert|likör|\d+ ?kg/;
 const BEAN_TYPES = /^(coffee|kaffee|filter coffee|espresso coffee|single estates|blends|röstkaffee)$/i;
 
 // Beans only: a bean-like product type, or (for shops without types) a bag of at least 200 g.
@@ -106,14 +106,17 @@ async function loadHonestRare(shop) {
     if (!response.ok) { if (page === 1) throw new Error(`HTTP ${response.status}`); break; }
     const html = await response.text();
     let added = 0;
-    for (const match of html.matchAll(/<a[^>]+href="([^"]+)"[^>]*class="[^"]*product-title[^"]*"[^>]*>([\s\S]*?)<\/a>/g)) {
-      const url = match[1];
-      const title = match[2].replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+    const cards = html.split(/name="product_form_\d+"/).slice(1);
+    for (const card of cards) {
+      const link = card.match(/\[product_id\]"[^>]*\/>\s*<a href="([^"]+)" title="([^"]*)"/);
+      if (!link) continue;
+      const url = link[1];
+      const title = link[2].replace(/&amp;/g, "&").replace(/&quot;/g, '"').trim();
       if (!title || seen.has(url)) continue;
       seen.add(url); added++;
-      const after = html.slice(match.index, match.index + 2500);
-      const price = after.match(/ty-price-num">\s*([\d.,]+)/);
-      products.push({ title, vendor: "", product_type: "Coffee", tags: [], body_html: "", url, variants: [{ available: true, price: price ? Number(price[1].replace(/\./g, "").replace(",", ".")) : NaN, grams: 250 }] });
+      const price = card.match(/ty-price-num">\s*([\d.,]+)/);
+      const soldOut = /ausverkauft|nicht verf[uü]gbar|out-of-stock/i.test(card);
+      products.push({ title, vendor: "", product_type: "Coffee", tags: [], body_html: "", url, variants: [{ available: !soldOut, price: price ? Number(price[1].replace(/\./g, "").replace(",", ".")) : NaN, grams: 250 }] });
     }
     if (!added) {
       const i = html.indexOf("product_form");
