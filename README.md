@@ -1,35 +1,42 @@
 # Daily Pour — Coffee Journal
 
-A premium-feeling coffee journal for roasteries, tasting notes, recipes and brew logs. It runs as a static website on GitHub Pages.
+A calm coffee journal for recording beans, roaster tasting notes, recipes and brew results. The static site runs on GitHub Pages.
 
-## Collection and sample data
+## Shared online storage: recommended setup
 
-**My collection is now directly below the header** at the top of the homepage. Saved coffees and brew history live in this browser. The four demo entries—Monsoon Reserve, Velvet Cherry, Yirgacheffe Sunrise (including the requested Yirgaffe spelling), and Maya Estate—are removed from stored collections and sample data.
+Right now the journal uses browser `localStorage`: your friends will not see your collection or ratings from their devices. To share data reliably, connect the app to a hosted database. A straightforward option for this static site is **Supabase** (Postgres database + Auth + Row Level Security).
 
-## Espresso flow-time estimate
+Choose a sharing model first:
 
-Starter espresso recipes include dose, yield, ratio, grind guidance, water, pre-infusion, pressure and a suggested target flow-time window. The estimate starts with a practical 18g in / 40g out baseline and adjusts slightly for dose, brew ratio, roast level and roaster tasting notes. For example, a brighter/light coffee is suggested a little longer, while a darker/roasty coffee is suggested a little shorter.
+1. **One private shared journal for your group (recommended):** invite friends to sign in, store rows under a shared `collection_id`, and use database policies so only members can read/write the collection.
+2. **Public read-only collection:** anyone with the link can see beans and ratings; only you can edit. Make read-only access explicit and never store private notes in that collection.
 
-The target is a **dial-in starting window**, not a promise of perfect taste or a professional extraction calculation. Timing convention in the app is pump start through target yield, including pre-infusion; use the same convention for the actual time. Grinder, basket, machine, pre-infusion behavior, coffee age and water all matter. Log the actual shot time and cup rating, then change one variable at a time. If sour/thin, try a finer grind or slightly longer yield; if harsh/bitter, try a coarser grind or shorter yield. Taste is the final test.
+Implementation outline:
 
-## Per-bean recipe memory
+1. Create a Supabase project and enable email authentication.
+2. Create tables for `collections`, `collection_members`, `beans`, and `brews` (each bean and brew belongs to a collection; each brew references one bean).
+3. Enable Row Level Security on every table. Add policies that check the signed-in user is a member of the relevant collection. For a public share view, expose a separate read-only view or Edge Function and share a random, revocable token—do not make the entire database anonymously writable.
+4. Add Supabase's browser client to the site using the project URL and **anon/publishable key**. These are intended for browser use only when RLS is correctly configured. Never put a `service_role` or other secret key in JavaScript, HTML, or a public GitHub repository.
+5. Replace the `loadBeans` / `saveBeans` localStorage functions with authenticated Supabase reads and writes. Keep local cache only as an offline convenience, and add loading/error states.
+6. Import existing browser data with the JSON backup/export, then check the beans and brew histories before sharing.
+7. Test access with two accounts: members can see the shared collection; signed-out users and non-members cannot read or change private data.
 
-Select a bean and use **Adjust recipe / log brew**. The latest dose, yield, grind, temperature, method, drink style, pre-infusion, pressure, target time and actual shot time are remembered for that bean. Switching beans recalls each bean's own recipe; previous brews remain in the history.
+Supabase is only one possible provider. Firebase or a small API plus a database can also work, but browser authentication and authorization rules are essential. A random share URL alone should not be treated as secure unless access is checked server-side and the token can be revoked.
 
-## Taste map
+## Existing app features
 
-Open `taste-profile.html` for maps of espresso black, espresso with dairy milk and espresso with oat milk. Saved coffees are plotted from the tasting notes and roast level entered on the homepage. Drink-style scores are estimates until you log rated cups in that style. The product URL is a reference link; GitHub Pages does not fetch or verify website content.
-
-## Ratings and data
-
-Cup ratings use **0–10**, where 10 is best. A brew can be left unrated or explicitly scored 0. Data is stored in this browser's localStorage, not synced between devices. Use **Export journal** for a JSON backup.
+- My collection appears directly under the header. Search, filter and sort saved coffees.
+- Click a bean for taste notes, recipe, brew history and drink-style predictions.
+- Suggested recipe uses roast, tasting notes and brew method. Espresso target flow time is a starting range, not a guarantee of ideal flavor.
+- Save each bean's latest dose, yield, grind, temperature, pressure, pre-infusion and flow times, plus rated brew history.
+- Ratings use 0–10. German and international roasteries are supported through free-text names and locations.
+- Taste maps at `taste-profile.html` show black espresso, dairy milk and oat milk estimates from saved notes.
+- Data is currently local to the browser. Use **Export journal** for a JSON backup.
 
 ## Run locally
-
-Open `index.html` or `taste-profile.html` directly, or serve the project folder:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then visit `http://localhost:8000` and `http://localhost:8000/taste-profile.html`.
+Then visit http://localhost:8000.
