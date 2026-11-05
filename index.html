@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coffee Beans Recipes</title>
+    <meta
+      name="description"
+      content="Coffee beans library with taste profiles, recipes, bean clusters and brewing ratings."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <div class="brand-mark">CB</div>
+          <div>
+            <p class="eyebrow">Coffee system</p>
+            <h1>Coffee Beans Library</h1>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <a href="#library">Library</a>
+          <a href="#clusters">Clusters</a>
+          <a href="#favorites">Favorites</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero card">
+          <div class="hero-copy">
+            <p class="eyebrow accent">Roast notes · recipe memory · brew tracking</p>
+            <h2>Keep every bean, recipe and roast profile in one place.</h2>
+            <p>
+              Save each coffee, track its tasting profile, compare your last grind size,
+              and keep the recipe that actually worked best.
+            </p>
+            <div class="hero-actions">
+              <button class="primary-btn">Add new bean</button>
+              <button class="secondary-btn">View clusters</button>
+            </div>
+          </div>
+
+          <div class="hero-stats">
+            <article>
+              <span>Beans</span>
+              <strong id="beanCount">0</strong>
+            </article>
+            <article>
+              <span>Avg rating</span>
+              <strong id="avgRating">0.0</strong>
+            </article>
+            <article>
+              <span>Clusters</span>
+              <strong id="clusterCount">0</strong>
+            </article>
+          </div>
+        </section>
+
+        <section id="library" class="library-section">
+          <div class="toolbar card">
+            <label class="search-box">
+              <span>Search bean</span>
+              <input id="searchInput" type="text" placeholder="Find a roaster or bean" />
+            </label>
+
+            <label>
+              <span>Filter cluster</span>
+              <select id="clusterFilter">
+                <option value="all">All clusters</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Sort by</span>
+              <select id="sortSelect">
+                <option value="rating">Best rating</option>
+                <option value="date">Newest roast</option>
+                <option value="name">Bean name</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="library-grid">
+            <div id="beanGrid" class="bean-grid" aria-live="polite"></div>
+
+            <aside id="detailPanel" class="detail-panel card" aria-live="polite">
+              <div class="blank-state">
+                <div class="empty-icon">☕</div>
+                <h3>Select a coffee</h3>
+                <p>Choose any bean to see its taste profile, recipe and grinder setup.</p>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="clusters" class="clusters-section">
+          <div class="section-header">
+            <p class="eyebrow">Automatic grouping</p>
+            <h3>Bean clusters</h3>
+          </div>
+
+          <div id="clusterGrid" class="cluster-grid"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
