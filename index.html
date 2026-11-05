@@ -16,7 +16,7 @@
     <div class="app-shell">
       <header class="topbar">
         <a class="brand" href="#top" aria-label="Daily Pour home"><span class="brand-mark">dp</span><span class="brand-copy">daily pour<small>coffee journal</small></span></a>
-        <nav class="main-nav" aria-label="Main navigation"><a href="#library" class="nav-link active">My collection</a><a href="#tasteProfile" class="nav-link">My taste profile</a></nav>
+        <nav class="main-nav" aria-label="Main navigation"><a href="#library" class="nav-link active">My collection</a><a href="taste-profile.html" class="nav-link">Taste maps</a><a href="#tasteProfile" class="nav-link">Taste overview</a></nav>
         <button id="addBeanButton" class="button button-dark">＋ Add coffee</button>
       </header>
       <main id="top">
@@ -30,16 +30,7 @@
           </div>
           <div class="hero-visual" aria-hidden="true"><div class="sun"></div><div class="ring ring-large"></div><div class="ring ring-small"></div><div class="bean-mark">✦</div><div class="hero-card"><span>roasted</span><strong>with intention</strong><small>taste notes · brew log · roastery memory</small></div></div>
         </section>
-        <section class="stats-row" aria-label="Coffee summary">
-          <article class="stat"><span class="stat-icon">◌</span><div><strong id="beanCount">0</strong><small>coffees saved</small></div></article>
-          <article class="stat"><span class="stat-icon">★</span><div><strong id="avgRating">—</strong><small>avg rating / 10</small></div></article>
-          <article class="stat"><span class="stat-icon">⌘</span><div><strong id="clusterCount">0</strong><small>taste groups</small></div></article>
-          <article class="stat"><span class="stat-icon">♨</span><div><strong id="brewCount">0</strong><small>cups logged</small></div></article>
-        </section>
-        <section id="tasteProfile" class="taste-profile-section">
-          <div class="section-heading"><div><p class="eyebrow">your palate, at a glance</p><h2>My taste profile</h2></div><p class="section-note">Built from the tasting notes on your saved coffees. Add beans to see your personal flavour landscape grow.</p></div>
-          <div id="tasteOverview" class="taste-overview" aria-live="polite"></div>
-        </section>
+
         <section id="library" class="library-section">
           <div class="section-heading"><div><p class="eyebrow">your saved beans live here</p><h2>My collection <span id="visibleCount" class="count-bubble">0</span></h2></div><button id="exportButton" class="button button-light">Export journal ↓</button></div>
           <div class="toolbar">
@@ -49,7 +40,19 @@
           </div>
           <div class="content-grid"><div id="beanGrid" class="bean-grid" aria-live="polite"></div><aside id="detailPanel" class="detail-panel" aria-live="polite"></aside></div>
         </section>
-        <section id="clusters" class="clusters-section"><div class="section-heading"><div><p class="eyebrow">taste notes</p><h2>Find your kind of coffee</h2></div><p class="section-note">Taste groups are suggestions based on your notes, not hard rules.</p></div><div id="clusterGrid" class="cluster-grid"></div></section>
+
+        <section class="stats-row" aria-label="Coffee summary">
+          <article class="stat"><span class="stat-icon">◌</span><div><strong id="beanCount">0</strong><small>coffees saved</small></div></article>
+          <article class="stat"><span class="stat-icon">★</span><div><strong id="avgRating">—</strong><small>avg rating / 10</small></div></article>
+          <article class="stat"><span class="stat-icon">⌘</span><div><strong id="clusterCount">0</strong><small>taste groups</small></div></article>
+          <article class="stat"><span class="stat-icon">♨</span><div><strong id="brewCount">0</strong><small>cups logged</small></div></article>
+        </section>
+
+        <section id="tasteProfile" class="taste-profile-section">
+          <div class="section-heading"><div><p class="eyebrow">your palate, at a glance</p><h2>My taste profile</h2></div><p class="section-note">Built from the tasting notes on your saved coffees.</p></div>
+          <div id="tasteOverview" class="taste-overview" aria-live="polite"></div>
+        </section>
+        <section id="clusters" class="clusters-section"><div class="section-heading"><div><p class="eyebrow">taste notes</p><h2>Find your kind of coffee</h2></div><p class="section-note">Taste groups are suggestions based on your notes.</p></div><div id="clusterGrid" class="cluster-grid"></div></section>
         <footer class="site-footer"><span>Made for coffee people.</span><span>Your beans and notes are saved in this browser.</span></footer>
       </main>
     </div>
@@ -61,14 +64,13 @@
       <p class="lookup-note">GitHub Pages cannot reliably scrape arbitrary sites from the browser. Search to verify its official site, then save the details you want to keep.</p>
       <div class="form-grid">
         <label class="wide">Coffee / lot name<input name="name" required maxlength="100" placeholder="e.g. Hambela — Natural" /></label>
-        <label>Origin<input name="origin" maxlength="100" placeholder="e.g. Guji, Ethiopia" /></label>
-        <label>Roast date<input name="roastDate" type="date" /></label>
+        <label>Origin<input name="origin" maxlength="100" placeholder="e.g. Guji, Ethiopia" /></label><label>Roast date<input name="roastDate" type="date" /></label>
         <label class="wide">Roaster's tasting notes<input name="profile" maxlength="200" placeholder="peach, jasmine, honey — separated by commas" /></label>
         <label class="wide">Product / roastery page<input name="productUrl" type="url" placeholder="https://roastery.example/coffee (optional)" /></label>
         <label>Roast level<select name="roastLevel"><option>Light</option><option>Light-medium</option><option selected>Medium</option><option>Medium-dark</option><option>Dark</option></select></label>
-        <label>Starting brew method<select name="method"><option selected>Espresso</option><option>Pour over</option><option>V60</option><option>AeroPress</option><option>French press</option><option>Filter</option></select></label>
+        <label>Starting brew method<select name="method"><option selected>Espresso</option><option>Pour over</option><option>V60</option><option>AeroPress</option><option>French press</option><option>Clever dripper</option></select></label>
       </div>
-      <p class="recipe-preview-note">A suggested starting recipe is made from the roast, taste notes and brew method. Drink-style compatibility starts as an estimate and improves when you log your own ratings.</p>
+      <p class="recipe-preview-note">A suggested starting recipe is made from roast, tasting notes and method. Shot-time guidance is a range to test—not a promise of perfect flavor.</p>
       <div class="dialog-actions"><button type="button" class="button button-light" data-close>Cancel</button><button type="submit" class="button button-dark">Save coffee</button></div>
     </form></dialog>
 
@@ -76,16 +78,13 @@
       <div class="dialog-heading"><div><p class="eyebrow">dial in your next cup</p><h2>Recipe & brew log</h2></div><button type="button" class="icon-button" data-close aria-label="Close">×</button></div>
       <p id="brewBeanName" class="form-hint"></p><div id="recipeSuggestion" class="recipe-suggestion" role="note"></div>
       <div class="form-grid">
-        <label>Dose in (g)<input name="dose" type="number" min="1" max="100" step="0.1" required /></label>
-        <label>Yield out (g)<input name="output" type="number" min="1" max="500" step="0.1" required /></label>
-        <label>Grind setting<input name="grind" required maxlength="50" placeholder="e.g. 18 on Niche" /></label>
-        <label>Water temperature<input name="water" maxlength="20" placeholder="e.g. 93°C" /></label>
-        <label>Brew method<input name="method" required maxlength="50" placeholder="Espresso, V60…" /></label>
-        <label>Drink style<select name="drinkStyle"><option value="black">Espresso · black</option><option value="milk">Espresso · dairy milk</option><option value="oat">Espresso · oat milk</option></select></label>
-        <label>Pre-infusion / bloom<input name="preInfusion" maxlength="40" placeholder="e.g. 5 seconds" /></label>
-        <label>Pressure (bar)<input name="pressure" type="number" min="0" max="15" step="0.1" placeholder="e.g. 9" /></label>
+        <label>Dose in (g)<input name="dose" type="number" min="1" max="100" step="0.1" required /></label><label>Yield out (g)<input name="output" type="number" min="1" max="500" step="0.1" required /></label>
+        <label>Grind setting<input name="grind" required maxlength="50" placeholder="e.g. 18 on Niche" /></label><label>Water temperature<input name="water" maxlength="20" placeholder="e.g. 93°C" /></label>
+        <label>Brew method<input name="method" required maxlength="50" placeholder="Espresso, V60…" /></label><label>Drink style<select name="drinkStyle"><option value="black">Espresso · black</option><option value="milk">Espresso · dairy milk</option><option value="oat">Espresso · oat milk</option></select></label>
+        <label>Pre-infusion / bloom<input name="preInfusion" maxlength="40" placeholder="e.g. 5 seconds" /></label><label>Pressure (bar)<input name="pressure" type="number" min="0" max="15" step="0.1" placeholder="e.g. 9" /></label>
+        <label>Target flow time (s)<input name="targetFlowTime" maxlength="30" placeholder="e.g. 27–32" /><small class="field-help">Suggested time window; machine timing conventions vary.</small></label><label>Actual shot time (s)<input name="flowTime" type="number" min="0" max="180" step="0.1" placeholder="e.g. 30" /><small class="field-help">Record from pump start to target yield.</small></label>
         <label class="wide">Pressure profile<input name="pressureProfile" maxlength="80" placeholder="e.g. 3 bar pre-infusion → 9 bar" /></label>
-        <label class="wide rating-field">Cup rating <span class="rating-value"><output id="ratingOutput">Not rated</output><small> / 10</small></span><input name="rating" id="ratingInput" class="rating-range" type="range" min="0" max="10" step="0.5" value="7" /><span class="range-hint"><span>0 · Not for me</span><span>10 · Love it</span></span><span class="unrated-toggle"><input id="unratedCheckbox" type="checkbox" checked /> Leave this cup unrated</span></label>
+        <label class="wide rating-field">Cup rating <span class="rating-value"><output id="ratingOutput">Not rated</output><small> / 10</small></span><input name="rating" id="ratingInput" class="rating-range" type="range" min="0" max="10" step="0.5" value="7" /><span class="range-hint"><span>0 · Not for me</span><label class="unrated-toggle"><input id="unratedCheckbox" type="checkbox" checked /> Leave this cup unrated</label><span>10 · Excellent</span></span></label>
         <label class="wide">Brew notes<textarea name="notes" rows="3" maxlength="500" placeholder="What did you taste? What will you change next time?"></textarea></label>
       </div>
       <div class="dialog-actions"><button type="button" class="button button-light" data-close>Cancel</button><button type="submit" class="button button-dark">Save latest recipe</button></div>

@@ -1,31 +1,28 @@
 # Daily Pour — Coffee Journal
 
-A premium-feeling coffee journal for roasteries, tasting notes, personalized recipes and brew logs. It runs as a static website and works on GitHub Pages.
+A premium-feeling coffee journal for roasteries, tasting notes, personalized recipes and brew logs. It runs as a static website on GitHub Pages.
 
-## Taste map subsite
+## Collection and sample data
 
-Open `taste-profile.html` (on GitHub Pages: `/taste-profile.html`) for three taste maps: espresso black, espresso with dairy milk and espresso with oat milk. Every coffee saved in **My collection** is automatically plotted on each map. Click a numbered dot or coffee name to highlight that bean across the maps and its prediction card.
+The collection is at the top of the homepage, directly below the hero. Saved coffees and brew history live in this browser. The starter example coffees Monsoon Reserve, Velvet Cherry, Yirgacheffe Sunrise and Maya Estate are removed from the current collection and no longer seeded. To keep them in a different browser or old backup, restore them manually from your own backup if needed.
 
-The plot axes provide a visual guide: left is brighter/fruity/floral; right is more chocolate/nut-oriented; top is lighter/delicate; bottom is fuller-bodied/darker. Each bean also gets a separate 0–10 drink-style estimate and a short explanation. If you have rated brews for a style, the app shows your personal average instead of the estimate.
+## Espresso shot-time guidance
 
-### Where do taste notes and sources come from?
+Espresso starter recipes include a suggested target flow-time window as well as dose, yield, ratio, grind guidance, water, pre-infusion and pressure. The estimate uses the entered roast level and roaster tasting notes: bright/light profiles start with a somewhat longer ratio and time window; darker/chocolate-forward profiles start shorter. The baseline uses 18g in, with example windows of 28–34s (bright), 24–30s (dark) and 26–32s (balanced). These are practical starting estimates, not a scientifically guaranteed “perfect” extraction. The timer should be measured from pump activation to target yield, but machine timers treat pre-infusion differently. Grinder, basket, machine, roast age, dose, pressure behavior and taste all matter.
 
-When adding a coffee, enter the flavor notes from its roastery's official product page and paste that product URL. The taste subsite displays those saved notes and links to the URL as the reference. It does **not** download or verify website content: arbitrary roastery websites generally cannot be fetched reliably by a static GitHub Pages app. Estimates are transparent heuristics based on entered notes and roast level, not official sensory analysis or a guarantee. For example, the oat-milk note warns about possible bitter/roasty clashes if those notes are present; your actual espresso recipe, oat milk and palate matter.
+Record the actual shot time after brewing. Keep the target and actual time visible per bean, and adjust one variable at a time: if the shot tastes sour/thin, try a finer grind or slightly longer yield; if bitter/dry, try a coarser grind or slightly shorter yield. Do not rely on time alone—taste is the judge. Filter recipes show a broader total brew/drawdown window rather than espresso shot time.
 
-The three charts are generated as inline SVG from saved data, so no remote image service is needed. The saved coffees are read from the same browser localStorage as the homepage. Add them on the homepage first; new entries will appear on the subsite after refresh. Data is not synced between devices.
+## Taste map
 
-## Smart recipe builder
-
-The app suggests a starting recipe using brew method, roast level and tasting notes. Espresso starts around 18g in, with a suggested yield, temperature, pre-infusion and 9-bar reference pressure; filter methods get their own starting points. Adjust and log real outcomes; the latest recipe and pressure settings are remembered separately for each bean.
-
-Cup ratings use 0–10, where 10 is best. You can leave a brew unrated or explicitly enter zero. Older 0–5 scores are migrated to 0–10.
+Open `taste-profile.html` for maps of espresso black, espresso with dairy milk and espresso with oat milk. Saved coffees are plotted from the tasting notes and roast level entered on the homepage. Estimates are heuristic guesses and update to your personal rated brews when available. The product URL is a reference link; GitHub Pages does not fetch or verify arbitrary roastery websites.
 
 ## Other features
 
-- Save coffees with roastery, location, origin, roast date, roast level, tasting notes, method and product URL.
-- Free-text roastery names support German and international roasters.
-- Search, filter, sort, favorite, log brew history and export a JSON backup.
-- Local browser storage.
+- Save coffees with roastery, location, origin, roast date, roast level, taste notes, method and product URL. German and international roasteries are supported.
+- Log dose, yield, actual and target shot time, grind, water temperature, pressure, pressure profile, pre-infusion, drink style, rating (0–10) and notes.
+- Latest recipe is saved separately per bean; older brews remain in history.
+- Search, filter, sort, favorite and export a JSON backup.
+- Automatically group saved tasting notes and show a taste overview.
 
 ## Run locally
 
