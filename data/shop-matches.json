@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-05T13:14:04.883Z",
+ "updated": "2026-11-05T13:15:03.772Z",
  "shops": {
   "DAK Coffee Roasters": {
-   "ok": false,
-   "error": "HTTP 404"
+   "ok": true,
+   "products": 31
   },
   "Nativo": {
    "ok": true,
@@ -30,8 +30,8 @@
    "products": 111
   },
   "Public Coffee Roasters": {
-   "ok": false,
-   "error": "HTTP 404"
+   "ok": true,
+   "products": 50
   },
   "Man Versus Machine": {
    "ok": false,
@@ -56,15 +56,57 @@
   "Roast Market": {
    "ok": false,
    "error": "HTTP 404"
+  },
+  "Honest & Rare": {
+   "ok": false,
+   "error": "HTTP 404"
+  },
+  "Kaffeekollektiv": {
+   "ok": false,
+   "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+  },
+  "Kaffeezentrale": {
+   "ok": false,
+   "error": "HTTP 404"
+  },
+  "Coffee Friends": {
+   "ok": false,
+   "error": "HTTP 404"
+  },
+  "Nordic Approach": {
+   "ok": false,
+   "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+  },
+  "Kaffeetreff": {
+   "ok": false,
+   "error": "Unexpected token '<', \"<!doctype \"... is not valid JSON"
+  },
+  "Bean Brothers": {
+   "ok": false,
+   "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+  },
+  "Roastery Box": {
+   "ok": false,
+   "error": "fetch failed"
   }
  },
  "matches": {
   "ethiopia-natural-guji-yirgacheffe": [
    {
+    "store": "DAK Coffee Roasters",
+    "city": "Amsterdam",
+    "favorite": true,
+    "title": "Blackberry Dust",
+    "roaster": "",
+    "url": "https://www.dakcoffeeroasters.com/product/blackberry-dust/",
+    "price": 17.9
+   },
+   {
     "store": "Bonanza Coffee",
     "city": "Berlin",
     "favorite": false,
     "title": "Gogogu",
+    "roaster": "",
     "url": "https://bonanzacoffee.de/products/gogogu",
     "price": 17.9
    },
@@ -73,16 +115,27 @@
     "city": "Berlin",
     "favorite": false,
     "title": "KAYON MOUNTAIN",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/summer-coffee",
     "price": 16.9
    }
   ],
   "ethiopia-washed-yirgacheffe-gedeb": [
    {
+    "store": "DAK Coffee Roasters",
+    "city": "Amsterdam",
+    "favorite": true,
+    "title": "Peachy Daze",
+    "roaster": "",
+    "url": "https://www.dakcoffeeroasters.com/product/peachy-daze/",
+    "price": 24
+   },
+   {
     "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
     "title": "BISHAN WATE",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/bishan-wate",
     "price": 18.4
    },
@@ -91,6 +144,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "ETHIOPIA Tadese Teko – Holiday Filter",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/ethiopia-tadese-teko-holiday-filter",
     "price": 17.66
    },
@@ -99,6 +153,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "ETHIOPIA Kello Lalesa – Filter",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/ethiopia-kelloo-lalesa",
     "price": 19.16
    }
@@ -109,6 +164,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "AB Kithungururu",
+    "roaster": "",
     "url": "https://bonanzacoffee.de/products/ab-kithungururu",
     "price": 18.9
    },
@@ -117,6 +173,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "GATOMBOYA AA",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/gatomboya-aa",
     "price": 15.4
    },
@@ -125,6 +182,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "KENYA Gondo AB – Espresso",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/kenya-gondo-ab-espresso",
     "price": 15.89
    },
@@ -133,6 +191,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "KENYA Karinga AA – Filter",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/kenya-karinga-aa-filter-1",
     "price": 6.91
    },
@@ -141,16 +200,36 @@
     "city": "Hamburg",
     "favorite": false,
     "title": "KIAWAMURURU",
+    "roaster": "",
     "url": "https://www.elbgold.com/products/kiawamururu",
     "price": 14.9
    }
   ],
   "colombia-washed-huila-narino": [
    {
+    "store": "DAK Coffee Roasters",
+    "city": "Amsterdam",
+    "favorite": true,
+    "title": "Sticky Pudding",
+    "roaster": "",
+    "url": "https://www.dakcoffeeroasters.com/product/sticky-pudding/",
+    "price": 27.95
+   },
+   {
+    "store": "DAK Coffee Roasters",
+    "city": "Amsterdam",
+    "favorite": true,
+    "title": "Cream Donut",
+    "roaster": "",
+    "url": "https://www.dakcoffeeroasters.com/product/cream-donut/",
+    "price": 21.95
+   },
+   {
     "store": "Bonanza Coffee",
     "city": "Berlin",
     "favorite": false,
     "title": "Santa Monica",
+    "roaster": "",
     "url": "https://bonanzacoffee.de/products/santa-monica",
     "price": 24.9
    },
@@ -159,6 +238,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "Jaguarundi",
+    "roaster": "",
     "url": "https://bonanzacoffee.de/products/jaguarundi",
     "price": 19.5
    },
@@ -167,6 +247,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "GUAVA BANANA",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/guava-banana",
     "price": 21.9
    },
@@ -175,6 +256,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "COLOMBIA Manos Juntas –  Holiday Espresso",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/colombia-manos-juntas-holiday-espresso",
     "price": 17.66
    },
@@ -183,8 +265,18 @@
     "city": "Berlin",
     "favorite": false,
     "title": "COLOMBIA Chiroso Imperial – Filter",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/colombia-chiroso-imperial-filter",
     "price": 23.83
+   },
+   {
+    "store": "Public Coffee Roasters",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Filterkaffee Huila",
+    "roaster": "",
+    "url": "https://publiccoffeeroasters.com/produkt/filterkaffee-huila/",
+    "price": 10.3
    }
   ],
   "colombia-pink-bourbon": [],
@@ -194,6 +286,7 @@
     "city": "",
     "favorite": true,
     "title": "BREAKFAST CLUB",
+    "roaster": "",
     "url": "https://bunca.coffee/products/breakfast-club",
     "price": 12.9
    },
@@ -202,6 +295,7 @@
     "city": "",
     "favorite": true,
     "title": "VELVET BERRY",
+    "roaster": "",
     "url": "https://bunca.coffee/products/velvet-berry",
     "price": 12.9
    },
@@ -210,6 +304,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "Das Almas",
+    "roaster": "",
     "url": "https://bonanzacoffee.de/products/das-almas",
     "price": 17.9
    },
@@ -218,6 +313,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "Bonanza Blend",
+    "roaster": "",
     "url": "https://bonanzacoffee.de/products/bonanza-blend",
     "price": 14.9
    },
@@ -226,6 +322,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "SUNDROP PEABERRY",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/sundrop-peaberry",
     "price": 15.9
    },
@@ -234,6 +331,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "SUNDROP",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/sundrop",
     "price": 16.4
    },
@@ -242,6 +340,7 @@
     "city": "Frankfurt",
     "favorite": false,
     "title": "Winterglow - Guatemala / Brasilien",
+    "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
     "price": 15.91
    }
@@ -252,6 +351,7 @@
     "city": "",
     "favorite": true,
     "title": "VELVET BERRY",
+    "roaster": "",
     "url": "https://bunca.coffee/products/velvet-berry",
     "price": 12.9
    },
@@ -260,6 +360,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "LA COLINA WASHED",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/la-colina",
     "price": 15.4
    },
@@ -268,6 +369,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "ANDRES RAMIREZ",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/andres-ramirez",
     "price": 15.9
    },
@@ -276,6 +378,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "GUATEMALA Buena Vista – Espresso",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/guatemala-buena-vista-espresso",
     "price": 19.53
    },
@@ -284,6 +387,7 @@
     "city": "Hamburg",
     "favorite": false,
     "title": "LA MARAVILLA",
+    "roaster": "",
     "url": "https://www.elbgold.com/products/la-maravilla",
     "price": 12.9
    },
@@ -292,6 +396,7 @@
     "city": "Hamburg",
     "favorite": false,
     "title": "DON MAURICIO",
+    "roaster": "",
     "url": "https://www.elbgold.com/products/don-mauricio",
     "price": 12.9
    },
@@ -300,6 +405,7 @@
     "city": "Frankfurt",
     "favorite": false,
     "title": "Winterglow - Guatemala / Brasilien",
+    "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
     "price": 15.91
    }
@@ -312,6 +418,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "GATARE",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/gatare",
     "price": 16
    }
@@ -322,6 +429,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "KARANA",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/karana",
     "price": 16.4
    }
@@ -332,6 +440,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "LOS PIRINEOS ANAEROBIC",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/los-pirineos-anaerobic",
     "price": 18.9
    },
@@ -340,16 +449,27 @@
     "city": "Berlin",
     "favorite": false,
     "title": "EL SALVADOR Quebracho Pacamara Natural – Filter",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/el-salvador-quebracho-pacamara-natural-filter",
     "price": 15.79
    }
   ],
   "peru-or-honduras-washed": [
    {
+    "store": "DAK Coffee Roasters",
+    "city": "Amsterdam",
+    "favorite": true,
+    "title": "Hazel Nuts",
+    "roaster": "",
+    "url": "https://www.dakcoffeeroasters.com/product/hazel-nuts/",
+    "price": 16
+   },
+   {
     "store": "Nativo",
     "city": "Frankfurt",
     "favorite": true,
     "title": "Buena Vista",
+    "roaster": "",
     "url": "https://www.nativokaffee.de/products/buena-vista",
     "price": 13.5
    },
@@ -358,6 +478,7 @@
     "city": "Frankfurt",
     "favorite": true,
     "title": "Santa Ana",
+    "roaster": "",
     "url": "https://www.nativokaffee.de/products/santa-ana",
     "price": 15
    },
@@ -366,6 +487,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "Sergio Julcarima",
+    "roaster": "",
     "url": "https://bonanzacoffee.de/products/sergio-julcarima",
     "price": 18.5
    },
@@ -374,6 +496,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "Bonanza Blend",
+    "roaster": "",
     "url": "https://bonanzacoffee.de/products/bonanza-blend",
     "price": 14.9
    },
@@ -382,6 +505,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "CABALLERO BLACK EDITION",
+    "roaster": "",
     "url": "https://www.thebarn.de/products/caballero-black-edition",
     "price": 14.9
    }
@@ -392,6 +516,7 @@
     "city": "",
     "favorite": true,
     "title": "SHADOW BLEND",
+    "roaster": "",
     "url": "https://bunca.coffee/products/shadow-blend-kapseln",
     "price": 13.9
    },
@@ -400,6 +525,7 @@
     "city": "",
     "favorite": true,
     "title": "ADLER BLEND",
+    "roaster": "",
     "url": "https://bunca.coffee/products/adler-blend",
     "price": 19.9
    },
@@ -408,6 +534,7 @@
     "city": "Berlin",
     "favorite": false,
     "title": "Meraki. House Blend - Espresso Coffee",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/meraki-house-blend-espresso-coffee",
     "price": 11.68
    },
@@ -416,8 +543,27 @@
     "city": "Berlin",
     "favorite": false,
     "title": "House – Espresso Coffee",
+    "roaster": "",
     "url": "https://fiveelephant.com/products/house-espresso-coffee",
     "price": 11.68
+   },
+   {
+    "store": "Public Coffee Roasters",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Espresso Blend Moonlight",
+    "roaster": "",
+    "url": "https://publiccoffeeroasters.com/produkt/espresso-blend-moonlight/",
+    "price": 10.2
+   },
+   {
+    "store": "Public Coffee Roasters",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Espresso Blend Black Pearl",
+    "roaster": "",
+    "url": "https://publiccoffeeroasters.com/produkt/espresso-blend-black-pearl/",
+    "price": 10.2
    }
   ],
   "tanzania-peaberry": []
