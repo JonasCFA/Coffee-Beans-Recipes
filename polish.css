@@ -1,4 +1,4 @@
-/* Daily Pour — focused, airy collection and coffee-detail polish. */
+/* Daily Pour visual refinement: warm, quiet, and easy to scan. */
 :root {
   --paper: #f7f6f2;
   --card: #fffefa;
@@ -11,13 +11,11 @@
   --rust: #b96c4b;
   --shadow: 0 14px 36px rgba(35, 40, 32, .055);
 }
-
 body { background: var(--paper); line-height: 1.55; }
 .app-shell { max-width: 1320px; padding-left: clamp(18px, 4vw, 56px); padding-right: clamp(18px, 4vw, 56px); }
-.topbar { position: sticky; top: 0; z-index: 20; min-height: 74px; gap: 20px; background: rgba(247,246,242,.94); backdrop-filter: blur(14px); border-bottom-color: #e8e7df; }
+.topbar { position: sticky; top: 0; z-index: 20; min-height: 74px; gap: 20px; background: rgba(247,246,242,.94); backdrop-filter: blur(14px); border-bottom-color: var(--line); }
 .brand-mark { width: 38px; height: 38px; border-radius: 50%; font-family: "Cormorant Garamond", serif; font-size: 19px; }
 .brand-copy { font-size: 1rem; }
-.brand-copy small { letter-spacing: .16em; }
 .main-nav { gap: clamp(14px, 2.4vw, 30px); }
 .nav-link { font-size: .79rem; }
 .button { min-height: 41px; border-radius: 999px; padding: 10px 17px; font-size: .76rem; }
@@ -37,7 +35,7 @@ body { background: var(--paper); line-height: 1.55; }
 .select-wrap select { font-size: .73rem; }
 .content-grid { grid-template-columns: minmax(0, 1.18fr) minmax(330px, .82fr); gap: 15px; }
 .bean-grid { gap: 11px; align-content: start; }
-.bean-card { padding: 16px; min-height: 158px; border-radius: 12px; background: var(--card); border-color: #e8e7df; box-shadow: 0 3px 12px rgba(39,43,35,.02); }
+.bean-card { padding: 16px; min-height: 158px; border-radius: 12px; background: var(--card); border-color: var(--line); box-shadow: 0 3px 12px rgba(39,43,35,.02); }
 .bean-card:hover { border-color: #b9c5b5; box-shadow: var(--shadow); }
 .bean-card.is-selected { border-color: #748a73; box-shadow: inset 0 0 0 1px #748a73; }
 .bean-card h3 { margin-top: 11px; font-size: 1.08rem; }
@@ -45,7 +43,7 @@ body { background: var(--paper); line-height: 1.55; }
 .origin-label { font-size: .6rem; letter-spacing: .09em; }
 .tag { padding: 4px 8px; background: #f1f2ed; font-size: .6rem; font-weight: 600; }
 .bean-bottomline { font-size: .65rem; }
-.detail-panel { border-radius: 13px; padding: 20px; background: var(--card); border-color: #e8e7df; box-shadow: 0 3px 12px rgba(39,43,35,.02); }
+.detail-panel { border-radius: 13px; padding: 20px; background: var(--card); border-color: var(--line); box-shadow: 0 3px 12px rgba(39,43,35,.02); }
 .detail-title h3 { font-family: "Cormorant Garamond", serif; font-size: 1.9rem; font-weight: 600; line-height: 1.05; }
 .detail-section { margin-top: 15px; padding-top: 14px; }
 .detail-section h4 { letter-spacing: .12em; }
@@ -76,31 +74,7 @@ body { background: var(--paper); line-height: 1.55; }
 .form-grid input, .form-grid select, .form-grid textarea, .lookup-row input { border-radius: 8px; background: #fff; }
 .site-footer { margin-top: 43px; padding-top: 15px; }
 .empty-results { border-radius: 12px; }
-
-@media (min-width: 1100px) {
-  .collection-first .content-grid { grid-template-columns: minmax(0, 1.25fr) minmax(350px, .75fr); }
-}
-@media (max-width: 900px) {
-  .app-shell { padding-left: 24px; padding-right: 24px; }
-  .content-grid { grid-template-columns: 1fr; }
-  .detail-panel { position: static; }
-}
-@media (max-width: 700px) {
-  .app-shell { padding-left: 15px; padding-right: 15px; }
-  .topbar { min-height: 66px; }
-  .main-nav { display: none; }
-  .collection-first { margin-top: 22px; }
-  .collection-first .section-heading { align-items: flex-start; }
-  .toolbar { flex-wrap: wrap; }
-  .search-field { flex-basis: 100%; }
-  .select-wrap { min-width: 0; flex: 1; }
-  .select-wrap select { min-width: 0; }
-  .hero { margin-top: 32px; }
-  .hero-visual { min-height: 170px; }
-  .stats-row { padding: 12px 7px; gap: 13px 4px; }
-  .stat { padding: 0 5px; gap: 7px; }
-  .stat-icon { width: 28px; height: 28px; }
-  .stat small { font-size: .46rem; }
-  .recipe-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
+@media (min-width: 1100px) { .collection-first .content-grid { grid-template-columns: minmax(0, 1.25fr) minmax(350px, .75fr); } }
+@media (max-width: 900px) { .app-shell { padding-left: 24px; padding-right: 24px; } .content-grid { grid-template-columns: 1fr; } .detail-panel { position: static; } }
+@media (max-width: 700px) { .app-shell { padding-left: 15px; padding-right: 15px; } .topbar { min-height: 66px; } .main-nav { display: none; } .collection-first { margin-top: 22px; } .collection-first .section-heading { align-items: flex-start; } .toolbar { flex-wrap: wrap; } .search-field { flex-basis: 100%; } .select-wrap { min-width: 0; flex: 1; } .select-wrap select { min-width: 0; } .hero { margin-top: 32px; } .hero-visual { min-height: 170px; } .stats-row { padding: 12px 7px; gap: 13px 4px; } .stat { padding: 0 5px; gap: 7px; } .stat-icon { width: 28px; height: 28px; } .stat small { font-size: .46rem; } .recipe-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
