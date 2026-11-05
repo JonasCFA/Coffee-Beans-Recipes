@@ -9,24 +9,28 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20261105" />
-    <link rel="stylesheet" href="taste-profile.css?v=20261105" />
+    <link rel="stylesheet" href="styles.css?v=20261106" />
+    <link rel="stylesheet" href="polish.css?v=20261106" />
+    <link rel="stylesheet" href="taste-profile.css?v=20261106" />
+    <link rel="stylesheet" href="taste-polish.css?v=20261106" />
   </head>
   <body>
     <div class="app-shell taste-shell">
       <header class="topbar">
         <a class="brand" href="./index.html" aria-label="Daily Pour home"><span class="brand-mark">dp</span><span class="brand-copy">daily pour<small>coffee journal</small></span></a>
-        <nav class="main-nav" aria-label="Main navigation"><a href="./index.html#library" class="nav-link">My collection</a><a href="taste-profile.html" class="nav-link active" aria-current="page">Taste maps</a></nav>
+        <nav class="main-nav" aria-label="Main navigation"><a href="./index.html#library" class="nav-link">My collection</a><a href="taste-profile.html" class="nav-link active" aria-current="page">Taste maps</a><a href="#recommendations" class="nav-link">Beans to try</a></nav>
         <a class="button button-dark" href="./index.html#library">← Back to collection</a>
       </header>
       <main>
         <section class="taste-hero"><p class="eyebrow"><span class="eyebrow-dot"></span> YOUR COFFEE, THREE WAYS</p><h1>Where might this<br /><em>bean take you?</em></h1><p>Compare saved coffees across espresso, dairy milk and oat milk. Maps use the roaster tasting notes you entered—not a guarantee of how your cup will taste.</p><div class="source-note"><span>↗</span><span><strong>Using roaster tasting notes</strong><br />Add the official flavor notes and product URL when saving a coffee. Estimates use those clues; source links let you check the roastery's description.</span></div></section>
         <section class="map-section" aria-labelledby="map-heading"><div class="section-heading map-section-heading"><div><p class="eyebrow">THREE SERVING STYLES</p><h2 id="map-heading">Your taste maps</h2></div><p id="mapCount" class="section-note"></p></div><div id="profileMaps" class="profile-maps" aria-live="polite"></div><p class="map-footnote">Map positions are estimates from flavor notes and roast. Espresso recipe, extraction, milk brand, temperature and personal taste can change the result. Predictions are not professional cupping scores.</p></section>
+        <section id="recommendations" class="recommend-section" aria-labelledby="recommend-heading"><div class="section-heading"><div><p class="eyebrow">PERSONAL PICKS</p><h2 id="recommend-heading">Beans to try next</h2></div><p id="recommendCount" class="section-note"></p></div><div id="recommendList" aria-live="polite"></div></section>
         <section class="bean-predictions-section"><div class="section-heading"><div><p class="eyebrow">THE BEANS BEHIND THE DOTS</p><h2>Predictions & notes</h2></div><p class="section-note">Rated brews for a drink style replace the initial estimate with your personal average.</p></div><div id="predictionList" class="prediction-list"></div></section>
         <footer class="site-footer"><span>Daily Pour · A little journal for curious coffee people.</span><a href="./index.html#library">Add or update coffees →</a></footer>
       </main>
     </div>
     <script src="remove-samples.js"></script>
     <script src="taste-profile.js"></script>
+    <script src="recommendations.js"></script>
   </body>
 </html>

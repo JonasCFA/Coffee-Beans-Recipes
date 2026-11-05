@@ -1,0 +1,35 @@
+/* Aligns the taste maps page with the homepage look and styles the recommendations. */
+.taste-hero { margin: 30px 0 38px; padding: clamp(26px, 4.5vw, 48px); border-radius: 16px; background: linear-gradient(115deg, #edf0e9 0%, #f1efe9 74%, #eee5dc 100%); }
+.taste-hero h1 { font-size: clamp(2.5rem, 4.8vw, 4rem); line-height: 1; letter-spacing: -.045em; }
+.taste-hero > p:not(.eyebrow) { max-width: 480px; margin: 16px 0 0; font-size: .9rem; line-height: 1.7; }
+.taste-hero:after { right: 6%; top: -110px; width: 240px; height: 240px; }
+.source-note { margin-top: 20px; padding: 11px 14px; border: 1px solid #e8e7df; font-size: .7rem; }
+.source-note strong { font-size: .74rem; }
+.map-section, .bean-predictions-section, .recommend-section { margin-top: 42px; }
+.profile-map-card, .prediction-card { background: var(--card); border-radius: 13px; box-shadow: 0 3px 12px rgba(39, 43, 35, .03); }
+.profile-map-top h3 { font-size: 1.5rem; }
+.taste-plot .axis-label { font-size: 12px; }
+.taste-plot .axis-title { font-size: 10px; }
+.taste-plot .point-index { font-size: 10px; }
+.plot-empty { font-size: 13px; }
+
+.recommend-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.recommend-card { display: flex; flex-direction: column; gap: 10px; padding: 18px; border: 1px solid var(--line); border-radius: 13px; background: var(--card); box-shadow: 0 3px 12px rgba(39, 43, 35, .03); }
+.recommend-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.recommend-card h3 { margin: 0; font: 600 1.45rem/1.1 "Cormorant Garamond", serif; letter-spacing: -.03em; }
+.recommend-origin { margin: 4px 0 0; color: var(--muted); font-size: .7rem; }
+.match-badge { flex: none; padding: 5px 10px; border-radius: 999px; background: var(--olive-soft); color: var(--olive); font-size: .66rem; font-weight: 700; white-space: nowrap; }
+.recommend-why { margin: 0; color: #4d4f46; font-size: .76rem; line-height: 1.6; }
+.recommend-heads-up { margin: 0; padding: 9px 11px; border-radius: 9px; background: #f6efe6; color: #7a5b3d; font-size: .68rem; line-height: 1.55; }
+.recommend-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.recommend-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: .66rem; }
+.recommend-foot a { color: var(--olive); font-weight: 700; text-decoration: none; white-space: nowrap; }
+.recommend-foot a:hover { text-decoration: underline; }
+.recommend-note { max-width: 860px; margin: 14px 0 0; color: var(--muted); font-size: .68rem; line-height: 1.65; }
+
+@media (max-width: 900px) { .recommend-grid { grid-template-columns: 1fr; } }
+@media (max-width: 700px) {
+  .taste-hero { margin-top: 20px; padding: 28px 22px; }
+  .taste-hero h1 { font-size: 2.6rem; }
+  .source-note { width: auto; }
+}
