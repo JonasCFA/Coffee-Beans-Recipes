@@ -139,6 +139,22 @@ function plotSVG(style) {
     const p = position(bean, style);
     return { bean, index, x: left + (p.x / 100) * (right - left), y: bottom - (p.y / 100) * (bottom - top), color: pointColor(index) };
   });
+  // Beans with similar notes land on the same spot; push overlapping dots apart so every bean stays visible.
+  for (let pass = 0; pass < 60; pass++) {
+    let moved = false;
+    for (let a = 0; a < coords.length; a++) for (let b = a + 1; b < coords.length; b++) {
+      let dx = coords[b].x - coords[a].x, dy = coords[b].y - coords[a].y;
+      let dist = Math.hypot(dx, dy);
+      if (dist >= 20) continue;
+      if (dist < 0.01) { const angle = (b - a) * 2.4; dx = Math.cos(angle); dy = Math.sin(angle); dist = 1; }
+      const push = (20 - dist) / 2 + 0.5;
+      coords[a].x -= dx / dist * push; coords[a].y -= dy / dist * push;
+      coords[b].x += dx / dist * push; coords[b].y += dy / dist * push;
+      moved = true;
+    }
+    coords.forEach((c) => { c.x = Math.max(left + 10, Math.min(right - 10, c.x)); c.y = Math.max(top + 10, Math.min(bottom - 10, c.y)); });
+    if (!moved) break;
+  }
   const points = coords.map(({ bean, index, x, y, color }) => `<g class="plot-bean-point" data-bean-id="${esc(bean.id)}" tabindex="0" role="button" aria-label="Highlight ${esc(bean.name)}"><circle class="point-halo" cx="${x}" cy="${y}" r="10"/><circle class="point" cx="${x}" cy="${y}" r="7" fill="${color}"/><text class="point-index" x="${x}" y="${y}">${index + 1}</text><title>${esc(bean.name)} · ${esc(bean.roaster)}</title></g>`).join("");
   return `<svg class="taste-plot" viewBox="0 0 480 292" role="img" aria-label="${esc(info.label)} coffee taste map. Horizontal axis ranges from bright and fruity to chocolate and nutty. Vertical axis ranges from delicate to full-bodied."><rect class="plot-bg" x="${left}" y="${top}" width="${right - left}" height="${bottom - top}" rx="12"/><line class="grid-line" x1="${left + (right-left)/3}" y1="${top}" x2="${left + (right-left)/3}" y2="${bottom}"/><line class="grid-line" x1="${left + 2*(right-left)/3}" y1="${top}" x2="${left + 2*(right-left)/3}" y2="${bottom}"/><line class="grid-line" x1="${left}" y1="${top + (bottom-top)/3}" x2="${right}" y2="${top + (bottom-top)/3}"/><line class="grid-line" x1="${left}" y1="${top + 2*(bottom-top)/3}" x2="${right}" y2="${top + 2*(bottom-top)/3}"/><text class="axis-label" x="${left}" y="267">Delicate</text><text class="axis-label" x="${right}" y="267" text-anchor="end">Full-bodied</text><text class="axis-title" x="${(left+right)/2}" y="282" text-anchor="middle">BODY / ROAST IMPRESSION</text><text class="axis-label" x="${left}" y="17">Bright · fruit · floral</text><text class="axis-label" x="${right}" y="17" text-anchor="end">Chocolate · nut</text>${points || '<text class="plot-empty" x="240" y="145">Add coffees to place your beans here</text>'}</svg>`;
 }
