@@ -36,16 +36,24 @@
   ];
 
   CATALOG.forEach((item) => { item.id = item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); });
+  // German specialty roasteries; roast = roast indices (0 light … 4 dark) they are known for.
   const STORES = [
-    { name: "Coffee Circle", site: "coffeecircle.com" },
-    { name: "Bonanza Coffee", site: "bonanzacoffee.de" },
-    { name: "The Barn", site: "thebarn.de" },
-    { name: "Roast Market", site: "roastmarket.de" }
+    { name: "Bonanza Coffee", site: "bonanzacoffee.de", city: "Berlin", roast: [0, 1] },
+    { name: "The Barn", site: "thebarn.de", city: "Berlin", roast: [0, 1] },
+    { name: "Five Elephant", site: "fiveelephant.com", city: "Berlin", roast: [0, 1, 2] },
+    { name: "Public Coffee Roasters", site: "publiccoffeeroasters.com", city: "Berlin", roast: [0, 1] },
+    { name: "Röststätte", site: "roeststaette.de", city: "Berlin", roast: [1, 2, 3] },
+    { name: "Coffee Circle", site: "coffeecircle.com", city: "Berlin", roast: [1, 2, 3] },
+    { name: "Elbgold", site: "elbgold.com", city: "Hamburg", roast: [1, 2, 3] },
+    { name: "Hoppenworth & Ploch", site: "hoppenworth-ploch.de", city: "Frankfurt", roast: [2, 3, 4] },
+    { name: "Roast Market", site: "roastmarket.de", city: "Berlin", roast: [0, 1, 2, 3] }
   ];
   const searchUrl = (query) => `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+  const storesFor = (item) => STORES.filter((store) => store.roast.includes(item.roast)).slice(0, 4);
   const storeLinks = (item) => [
-    ...STORES.map((store) => ({ label: store.name, href: searchUrl(`${item.search} coffee beans site:${store.site}`) })),
-    { label: "Compare shops", href: `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(`${item.search} specialty coffee beans 250g`)}` }
+    ...storesFor(item).map((store) => ({ label: `${store.name} · ${store.city}`, href: `https://www.${store.site}/`, title: `Open the ${store.name} homepage` })),
+    ...storesFor(item).slice(0, 2).map((store) => ({ label: `Find it at ${store.name}`, href: searchUrl(`${item.search} Kaffee Bohnen site:${store.site}`), title: `Search ${store.name} for this bean` })),
+    { label: "Compare German shops", href: `https://www.google.de/search?tbm=shop&q=${encodeURIComponent(`${item.search} Specialty Kaffee Bohnen 250g`)}`, title: "Compare prices in shops" }
   ];
 
   function esc(value = "") {
@@ -135,7 +143,7 @@
     const query = encodeURIComponent(`${item.search} specialty coffee beans`);
     const tags = item.notes.map((note) => `<span class="tag">${esc(note)}</span>`).join("");
     const stores = detailed
-      ? `<div class="store-links"><span class="store-label">Shop for it</span>${storeLinks(item).map((link) => `<a class="store-link" href="${esc(link.href)}" target="_blank" rel="noopener noreferrer">${esc(link.label)} ↗</a>`).join("")}</div>`
+      ? `<div class="store-links"><span class="store-label">Where to buy (Germany)</span>${storeLinks(item).map((link) => `<a class="store-link" href="${esc(link.href)}" title="${esc(link.title)}" target="_blank" rel="noopener noreferrer">${esc(link.label)} ↗</a>`).join("")}</div>`
       : "";
     const foot = detailed
       ? `<div class="recommend-foot"><span>${esc(item.drink)}</span></div>`
@@ -157,7 +165,7 @@
     }
     if (allRoot) {
       allRoot.innerHTML = rated.length
-        ? `<div class="recommend-grid">${results.map((entry) => card(entry, true)).join("")}</div><p class="recommend-note">These are bean styles to look for, not specific products. Shop buttons open a search limited to that shop, so availability and prices are theirs to confirm. Matches weigh the tasting notes and roast level of coffees you rated, and favour origins you have not tried yet.</p>`
+        ? `<div class="recommend-grid">${results.map((entry) => card(entry, true)).join("")}</div><p class="recommend-note">These are bean styles to look for, not specific products. Roastery links open the German roasteries\u2019 homepages; “Find it” links search that shop, so availability and prices are theirs to confirm. Matches weigh the tasting notes and roast level of coffees you rated, and favour origins you have not tried yet.</p>`
         : empty;
       const target = location.hash && document.getElementById(location.hash.slice(1));
       if (target) { target.classList.add("is-highlighted"); target.scrollIntoView({ block: "start" }); }

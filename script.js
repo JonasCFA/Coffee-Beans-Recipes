@@ -9,6 +9,14 @@ const TASTE_GROUPS = [
   { name: "Nutty & sweet", words: ["nut", "hazelnut", "almond", "honey", "sweet", "nuss", "haselnuss", "honig"] },
   { name: "Deep & earthy", words: ["earth", "cedar", "spice", "tobacco", "erdig", "holz", "würzig"] }
 ];
+const FILTER_METHODS = ["pour over", "v60", "aeropress", "aero press", "filter", "french press", "clever"];
+const RECIPE_VERSION = 2;
+// Meraki espresso: pressure and group head temperature are fixed, so only dose, yield, pre-infusion and the base grinder are tunable.
+const ESPRESSO_PLANS = {
+  bright: { output: 45, base: 31, preInfusion: "8–10s", why: "Light, fruity or floral coffees are dense and acidic. A longer 1:2.5 ratio and a longer pre-infusion soak the puck evenly and add sweetness to balance the acidity." },
+  balanced: { output: 40, base: 28, preInfusion: "5–7s", why: "A balanced, sweet profile does well at a classic 1:2.2 ratio with a short pre-infusion." },
+  dark: { output: 36, base: 26, preInfusion: "3–5s", why: "Chocolate, nutty or darker profiles extract easily. A shorter 1:2 ratio and little pre-infusion keep bitterness down and body up." }
+};
 let beans = loadBeans();
 let selectedBeanId = beans[0]?.id ?? null;
 let activeBrewBeanId = null;
@@ -19,25 +27,36 @@ const detailPanel = $("#detailPanel");
 const beanDialog = $("#beanDialog");
 const brewDialog = $("#brewDialog");
 
-function starterRecipe(bean) {
+function beanCharacter(bean) {
   const notes = (bean.profile || []).join(" ").toLowerCase();
   const roast = (bean.roastLevel || "Medium").toLowerCase();
+  const bright = roast.includes("light") || /citrus|floral|berry|fruit|grape|lemon|peach|jasmine|bergamot|zitrus|blüte|beere|blueberry/.test(notes);
+  const dark = roast.includes("dark") || /dark chocolate|smoky|tobacco|roasty|bitter|rauchig|bitterkeit/.test(notes);
+  const cocoa = /chocolate|cocoa|cacao|caramel|toffee|nut|almond|chocolade|kakao|karamell|nuss|mandel/.test(notes);
+  if (bright && !dark) return "bright";
+  if (dark || (cocoa && !roast.includes("light"))) return "dark";
+  return "balanced";
+}
+function espressoTimeWindow(bean, dose, output) {
+  const plan = ESPRESSO_PLANS[beanCharacter(bean)];
+  const d = Number(dose) > 0 ? Number(dose) : 18;
+  const ratio = Number(output) > 0 ? Number(output) / d : plan.output / 18;
+  const midpoint = Math.max(20, Math.min(42, plan.base + (ratio - plan.output / 18) * 4 + (d - 18) * 0.35));
+  return `${Math.max(18, Math.round(midpoint - 3))}–${Math.min(45, Math.round(midpoint + 3))}`;
+}
+function starterRecipe(bean) {
   const method = bean.method || "Espresso";
   const lowerMethod = method.toLowerCase();
-  const bright = roast.includes("light") || /citrus|floral|berry|fruit|grape|lemon|peach|zitrus|blüte|beere/.test(notes);
-  const dark = roast.includes("dark") || /dark chocolate|cocoa|caramel|toffee|chocolade|kakao|karamell/.test(notes);
-  const isFilter = ["pour over", "v60", "aeropress", "aero press", "filter", "french press", "clever"].some((item) => lowerMethod.includes(item));
-  if (isFilter) {
+  const character = beanCharacter(bean);
+  if (FILTER_METHODS.some((item) => lowerMethod.includes(item))) {
     const frenchPress = lowerMethod.includes("french");
-    const dose = frenchPress ? 20 : 15;
-    return { dose, output: frenchPress ? 320 : 250, grind: frenchPress ? "Coarse; tune to your grinder" : "Medium-fine; tune to your grinder", water: bright ? "94°C" : dark ? "90°C" : "92°C", method, preInfusion: frenchPress ? "Steep 4 min" : "Bloom 30s", pressure: "", pressureProfile: "Not applicable for this brew method", targetFlowTime: frenchPress ? "Total brew 2:30–3:30" : "Total brew 2:30–3:30", flowTime: "", guidance: "Filter brew-time guidance is a starting range; dripper, grind, pour pattern and dose change drawdown. Adjust to taste." };
+    return { recipeVersion: RECIPE_VERSION, dose: frenchPress ? 20 : 15, output: frenchPress ? 320 : 250, grind: frenchPress ? "Coarse; tune to your grinder" : "Medium-fine; tune to your grinder", water: character === "bright" ? "94°C" : character === "dark" ? "90°C" : "92°C", method, preInfusion: frenchPress ? "Steep 4 min" : "Bloom 30s", pressure: "", pressureProfile: "Not applicable for this brew method", targetFlowTime: frenchPress ? "240" : "150–210", flowTime: "", guidance: "Filter brew-time guidance is a starting range; dripper, grind, pour pattern and dose change drawdown. Adjust to taste." };
   }
+  const plan = ESPRESSO_PLANS[character];
   const dose = 18;
-  // Use a conservative espresso baseline: bright/light profiles get a longer ratio and slightly longer shot window;
-  // darker/chocolate-forward profiles get a shorter ratio. Grind is equipment-specific and intentionally not guessed.
-  const output = bright ? 42 : dark ? 36 : 40;
-  const targetFlowTime = bright ? "28–34" : dark ? "24–30" : "26–32";
-  return { dose, output, grind: "Dial in for your grinder", water: bright ? "94°C" : dark ? "92°C" : "93°C", method, preInfusion: bright ? "8s" : "5s", pressure: 9, pressureProfile: bright ? "Gentle 3 bar pre-infusion → 9 bar; machine dependent" : "About 9 bar; machine dependent", targetFlowTime, flowTime: "", guidance: `${dose}g in → ${output}g out (${(output / dose).toFixed(1)} ratio); aim for ${targetFlowTime}s as an initial window. Start timing at pump activation and stop at target yield. Taste is the judge: sour/thin, try finer or a longer yield; bitter/dry, try coarser or a shorter yield. Shot timers and pre-infusion conventions vary by machine.` };
+  const output = plan.output;
+  const targetFlowTime = espressoTimeWindow(bean, dose, output);
+  return { recipeVersion: RECIPE_VERSION, dose, output, grind: "Start at your current base-grinder setting", water: "", method, preInfusion: plan.preInfusion, pressure: "", pressureProfile: "Fixed by the Meraki (not adjustable)", targetFlowTime, flowTime: "", guidance: `${plan.why} Start with ${dose}g in → ${output}g out (1:${(output / dose).toFixed(1)}), pre-infusion ${plan.preInfusion}, total shot ${targetFlowTime}s from pump start. Pressure and temperature are fixed on your machine, so adjust the grinder and the yield: shot too fast or sour/thin → grind one step finer or raise dose 0.5g; too slow or bitter/dry → one step coarser or stop the shot earlier. Change one thing at a time.` };
 }
 function isRemovedSample(bean) { return REMOVED_SAMPLE_NAMES.has(String(bean.name || "").trim().toLowerCase()); }
 function normalizeBeans(items, oldFivePointScale = false) {
@@ -50,7 +69,9 @@ function normalizeBeans(items, oldFivePointScale = false) {
       normalized.brews = normalized.brews.map((brew) => { const score = Number(brew.rating); return { ...brew, rating: Number.isFinite(score) && score > 0 ? score * 2 : null }; });
     }
     const suggestion = starterRecipe(normalized);
-    normalized.recipe = normalized.recipe && Object.keys(normalized.recipe).length ? { ...suggestion, ...normalized.recipe } : suggestion;
+    const saved = normalized.recipe && Object.keys(normalized.recipe).length ? normalized.recipe : null;
+    // Untouched older starter recipes are replaced by the profile-based Meraki recipe; recipes the user adjusted are kept.
+    normalized.recipe = saved && (saved.recipeVersion === RECIPE_VERSION || normalized.brews.length) ? { ...suggestion, ...saved } : suggestion;
     normalized.brews = normalized.brews.map((brew) => ({ ...brew, drinkStyle: DRINK_STYLES.includes(brew.drinkStyle) ? brew.drinkStyle : "black" }));
     return normalized;
   });
@@ -144,14 +165,14 @@ function renderDrinkProfiles(bean) {
 function renderDetail() {
   const bean = beans.find((item) => String(item.id) === String(selectedBeanId));
   if (!bean) { detailPanel.innerHTML = '<div class="detail-empty"><div><div class="empty-cup">☕</div><strong>Select a coffee from My collection</strong><p>Your taste profile, recipe, and brew history will appear here.</p><button class="button button-dark" id="introAddButton">＋ Add a coffee</button></div></div>'; return; }
-  const rating = getRating(bean); const recipe = bean.recipe || starterRecipe(bean); const ratio = recipe.dose && recipe.output ? `1:${(Number(recipe.output) / Number(recipe.dose)).toFixed(1)}` : "—"; const productUrl = safeUrl(bean.productUrl || ""); const recent = [...(bean.brews || [])].reverse().slice(0, 3);
+  const rating = getRating(bean); const recipe = bean.recipe || starterRecipe(bean); const isFilter = FILTER_METHODS.some((item) => String(recipe.method || "").toLowerCase().includes(item)); const ratio = recipe.dose && recipe.output ? `1:${(Number(recipe.output) / Number(recipe.dose)).toFixed(1)}` : "—"; const productUrl = safeUrl(bean.productUrl || ""); const recent = [...(bean.brews || [])].reverse().slice(0, 3);
   const metric = (label, value) => `<div class="recipe-metric"><small>${label}</small><strong>${escapeHTML(value || "—")}</strong></div>`;
   detailPanel.innerHTML = `<div class="detail-title"><div><h3>${escapeHTML(bean.name)}</h3><p>${escapeHTML(bean.roaster)}${bean.roasterLocation ? ` · ${escapeHTML(bean.roasterLocation)}` : ""}</p></div><div class="detail-actions"><button class="icon-button" data-action="favorite" data-id="${escapeHTML(bean.id)}" aria-label="Toggle favorite">${bean.favorite ? "♥" : "♡"}</button><button class="icon-button" data-action="delete" data-id="${escapeHTML(bean.id)}" aria-label="Delete coffee">×</button></div></div>
     <div class="detail-rating">${showRating(rating)} <span style="color:var(--muted);font-weight:500">· ${escapeHTML(bean.roastLevel || "Roast level not set")}</span></div>
     <div class="detail-section"><h4>Roaster's taste notes</h4><div class="profile-tags">${getTasteNotes(bean).map((tag) => `<span class="tag">${escapeHTML(tag)}</span>`).join("") || '<span class="tag">No tasting notes saved yet</span>'}</div><p class="taste-copy">${escapeHTML(getCluster(bean))} · ${escapeHTML(bean.origin || "Origin not set")}</p></div>
     <div class="detail-section"><h4>How might you like it?</h4><p class="drink-profile-explainer">Starting estimates from tasting notes. Rated brews for each style replace the estimate with your personal average.</p><div class="drink-profile-grid">${renderDrinkProfiles(bean)}</div></div>
-    <div class="detail-section"><h4>Your recipe${bean.brews?.length ? " · latest version" : " · suggested start"}</h4><div class="recipe-metrics">${metric("In", `${recipe.dose || "—"}g`)}${metric("Out", `${recipe.output || "—"}g`)}${metric("Ratio", ratio)}${metric("Target time", recipe.targetFlowTime ? `${recipe.targetFlowTime}s` : "—")}${metric("Grind", recipe.grind)}${metric("Pre-infusion", recipe.preInfusion)}${metric("Water", recipe.water)}${metric("Pressure", recipe.pressure ? `${recipe.pressure} bar` : "Not applicable")}${metric("Method", recipe.method)}</div>${!bean.brews?.length && recipe.guidance ? `<p class="taste-copy">${escapeHTML(recipe.guidance)}</p>` : ""}</div>
-    ${recent.length ? `<div class="detail-section"><h4>Recent cups</h4><div class="brew-history">${recent.map((brew) => `<article class="brew-entry"><div class="brew-entry-top"><span>${formatDate(brew.date)} · ${escapeHTML(drinkLabel(brew.drinkStyle))}</span><span>${showRating(brew.rating ?? null)}</span></div><p>${escapeHTML(`${brew.dose}g in → ${brew.output}g out · ${brew.flowTime ? `shot ${brew.flowTime}s` : `target ${brew.targetFlowTime || "—"}s`} · grind ${brew.grind || "—"}${brew.notes ? ` · ${brew.notes}` : ""}`)}</p></article>`).join("")}</div></div>` : ""}
+    <div class="detail-section"><h4>Your recipe${bean.brews?.length ? " · latest version" : " · suggested start"}</h4><div class="recipe-metrics">${metric("In", `${recipe.dose || "—"}g`)}${metric("Out", `${recipe.output || "—"}g`)}${metric("Ratio", ratio)}${metric("Flow time", recipe.targetFlowTime ? `${recipe.targetFlowTime}s` : "—")}${metric("Pre-infusion", recipe.preInfusion)}${metric("Pressure", isFilter ? "Not applicable" : "Fixed by machine")}${metric("Grind", recipe.grind)}${isFilter ? metric("Water", recipe.water) : ""}${metric("Method", recipe.method)}</div>${!bean.brews?.length && recipe.guidance ? `<p class="taste-copy">${escapeHTML(recipe.guidance)}</p>` : ""}</div>
+    ${recent.length ? `<div class="detail-section"><h4>Recent cups</h4><div class="brew-history">${recent.map((brew) => `<article class="brew-entry"><div class="brew-entry-top"><span>${formatDate(brew.date)} · ${escapeHTML(drinkLabel(brew.drinkStyle))}</span><span>${showRating(brew.rating ?? null)}</span></div><p>${escapeHTML(`${brew.dose}g in → ${brew.output}g out · ${brew.actualFlowTime ? `shot ${brew.actualFlowTime}s` : `target ${brew.targetFlowTime || "—"}s`} · grind ${brew.grind || "—"}${brew.notes ? ` · ${brew.notes}` : ""}`)}</p></article>`).join("")}</div></div>` : ""}
     <div class="detail-footer"><button class="button button-dark" data-action="brew" data-id="${escapeHTML(bean.id)}">✎ Adjust recipe / log brew</button>${productUrl ? `<a class="text-link" href="${escapeHTML(productUrl)}" target="_blank" rel="noopener noreferrer">Visit roastery page ↗</a>` : `<a class="text-link" href="https://www.google.com/search?q=${encodeURIComponent(`${bean.roaster} ${bean.name} coffee`)}" target="_blank" rel="noopener noreferrer">Search this coffee ↗</a>`}</div>`;
 }
 function renderClusters() {
@@ -164,14 +185,14 @@ function updateRatingDisplay() { const checkbox = $("#unratedCheckbox"); const i
 function openBrewDialog(id) {
   const bean = beans.find((item) => String(item.id) === String(id)); if (!bean) return;
   activeBrewBeanId = bean.id; const form = $("#brewForm"); form.reset(); const recipe = bean.recipe && Object.keys(bean.recipe).length ? bean.recipe : starterRecipe(bean);
-  form.elements.dose.value = recipe.dose || 18; form.elements.output.value = recipe.output || 40; form.elements.grind.value = recipe.grind || ""; form.elements.water.value = recipe.water || ""; form.elements.method.value = recipe.method || bean.method || "Espresso"; form.elements.drinkStyle.value = "black"; form.elements.preInfusion.value = recipe.preInfusion || ""; form.elements.pressure.value = recipe.pressure ?? ""; form.elements.pressureProfile.value = recipe.pressureProfile || ""; form.elements.targetFlowTime.value = recipe.targetFlowTime || starterRecipe(bean).targetFlowTime || ""; form.elements.flowTime.value = "";
+  form.elements.dose.value = recipe.dose || 18; form.elements.output.value = recipe.output || 40; form.elements.grind.value = recipe.grind || ""; form.elements.method.value = recipe.method || bean.method || "Espresso"; form.elements.drinkStyle.value = "black"; form.elements.preInfusion.value = recipe.preInfusion || ""; form.elements.targetFlowTime.value = recipe.targetFlowTime || starterRecipe(bean).targetFlowTime || "";
   $("#unratedCheckbox").checked = true; $("#brewBeanName").textContent = `Starting with ${bean.name} from ${bean.roaster}. Edit settings to match what you taste.`; $("#recipeSuggestion").textContent = recipe.guidance || "Your last saved recipe is loaded. Adjust it; saving makes it this bean's latest version."; updateRatingDisplay(); brewDialog.showModal();
 }
 function attachEvents() {
   $("#addBeanButton").addEventListener("click", openBeanDialog); $("#introAddButton")?.addEventListener("click", openBeanDialog);
   $("#searchRoasteryButton").addEventListener("click", () => { const form = $("#beanForm"); const name = form.elements.roaster.value.trim(); const location = form.elements.roasterLocation.value.trim(); if (!name) { form.elements.roaster.focus(); showToast("Enter a roastery name first."); return; } window.open(`https://www.google.com/search?q=${encodeURIComponent(`${name} ${location} official roastery coffee`)}`, "_blank", "noopener,noreferrer"); });
   $("#beanForm").addEventListener("submit", (event) => { event.preventDefault(); const values = new FormData(event.currentTarget); const bean = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), name: values.get("name").trim(), roaster: values.get("roaster").trim(), roasterLocation: values.get("roasterLocation").trim(), origin: values.get("origin").trim(), roastDate: values.get("roastDate"), roastLevel: values.get("roastLevel"), method: values.get("method"), profile: values.get("profile").split(",").map((note) => note.trim()).filter(Boolean), rating: null, productUrl: values.get("productUrl").trim(), recipe: {}, brews: [], favorite: false, addedAt: new Date().toISOString() }; bean.recipe = starterRecipe(bean); beans.unshift(bean); selectedBeanId = bean.id; saveBeans(); render(); beanDialog.close(); showToast("Coffee saved with a suggested starting recipe."); });
-  $("#brewForm").addEventListener("submit", (event) => { event.preventDefault(); const bean = beans.find((item) => String(item.id) === String(activeBrewBeanId)); if (!bean) return; const values = new FormData(event.currentTarget); const unrated = $("#unratedCheckbox").checked; const brew = { date: new Date().toISOString(), dose: Number(values.get("dose")), output: Number(values.get("output")), grind: values.get("grind").trim(), water: values.get("water").trim(), method: values.get("method").trim(), drinkStyle: values.get("drinkStyle"), preInfusion: values.get("preInfusion").trim(), pressure: values.get("pressure") === "" ? "" : Number(values.get("pressure")), pressureProfile: values.get("pressureProfile").trim(), targetFlowTime: values.get("targetFlowTime").trim(), flowTime: values.get("flowTime") === "" ? "" : Number(values.get("flowTime")), rating: unrated ? null : Number(values.get("rating")), notes: values.get("notes").trim() }; bean.recipe = { ...brew, guidance: "Your latest personally adjusted recipe. Use your tasting notes to guide the next adjustment." }; bean.method = brew.method; bean.brews ||= []; bean.brews.push(brew); selectedBeanId = bean.id; saveBeans(); render(); brewDialog.close(); showToast("Latest recipe saved for this bean."); });
+  $("#brewForm").addEventListener("submit", (event) => { event.preventDefault(); const bean = beans.find((item) => String(item.id) === String(activeBrewBeanId)); if (!bean) return; const values = new FormData(event.currentTarget); const unrated = $("#unratedCheckbox").checked; const brew = { date: new Date().toISOString(), dose: Number(values.get("dose")), output: Number(values.get("output")), grind: values.get("grind").trim(), method: values.get("method").trim(), drinkStyle: values.get("drinkStyle"), preInfusion: values.get("preInfusion").trim(), targetFlowTime: values.get("targetFlowTime").trim(), rating: unrated ? null : Number(values.get("rating")), notes: values.get("notes").trim() }; bean.recipe = { ...brew, guidance: "Your latest personally adjusted recipe. Use your tasting notes to guide the next adjustment." }; bean.method = brew.method; bean.brews ||= []; bean.brews.push(brew); selectedBeanId = bean.id; saveBeans(); render(); brewDialog.close(); showToast("Latest recipe saved for this bean."); });
   $("#ratingInput").addEventListener("input", updateRatingDisplay); $("#unratedCheckbox").addEventListener("change", updateRatingDisplay); $("#searchInput").addEventListener("input", render); $("#clusterFilter").addEventListener("change", render); $("#sortSelect").addEventListener("change", render);
   beanGrid.addEventListener("click", (event) => { const favorite = event.target.closest('[data-action="favorite"]'); if (favorite) { event.stopPropagation(); const bean = beans.find((item) => String(item.id) === String(favorite.dataset.id)); if (bean) { bean.favorite = !bean.favorite; saveBeans(); render(); } return; } const card = event.target.closest(".bean-card"); if (card) { selectedBeanId = card.dataset.id; render(); } });
   beanGrid.addEventListener("keydown", (event) => { if ((event.key === "Enter" || event.key === " ") && event.target.matches(".bean-card")) { event.preventDefault(); selectedBeanId = event.target.dataset.id; render(); } });

@@ -1,44 +1,5 @@
-/* Recipe shot-time helpers. Adds a data-informed, adjustable espresso target and records actual shot time per bean. */
+/* Recipe shot-time helpers. Updates the espresso flow-time target live and records actual shot time per bean. */
 (function () {
-  const baseStarterRecipe = starterRecipe;
-  const flowNotes = {
-    bright: ["citrus", "lemon", "lime", "berry", "grape", "apple", "peach", "floral", "jasmine", "bergamot", "zitrus", "beere", "blüte"],
-    cocoa: ["chocolate", "cocoa", "cacao", "caramel", "toffee", "nut", "hazelnut", "almond", "chocolade", "kakao", "karamell", "nuss", "haselnuss", "mandel"],
-    roasty: ["bitter", "roasty", "smoky", "tobacco", "rauchig", "bitterkeit"]
-  };
-
-  function estimateEspressoWindow(bean, dose, output) {
-    const noteText = (bean.profile || []).join(" ").toLowerCase();
-    const roast = (bean.roastLevel || "medium").toLowerCase();
-    const has = (words) => words.some((word) => noteText.includes(word));
-    const ratio = Number(dose) > 0 ? Number(output) / Number(dose) : 2.2;
-
-    // A practical dialing-in estimate, not a sensory guarantee. Start from a medium-roast
-    // 1:2.2 espresso at 18g in, then gently adjust for ratio, roast and official flavor notes.
-    let midpoint = 29 + (ratio - 2.2) * 4;
-    if (roast.includes("light") || roast.includes("hell") || has(flowNotes.bright)) midpoint += 2;
-    if (roast.includes("dark") || roast.includes("dunkel") || has(flowNotes.roasty)) midpoint -= 2;
-    if (has(flowNotes.cocoa) && !has(flowNotes.bright)) midpoint -= 1;
-    if (Number(dose) > 0 && Math.abs(Number(dose) - 18) >= 1) midpoint += (Number(dose) - 18) * 0.35;
-    midpoint = Math.max(20, Math.min(42, midpoint));
-
-    const low = Math.max(18, Math.round(midpoint - 2));
-    const high = Math.min(45, Math.round(midpoint + 2));
-    return `${low}–${high}`;
-  }
-
-  starterRecipe = function (bean) {
-    const recipe = baseStarterRecipe(bean);
-    const method = String(recipe.method || bean.method || "Espresso").toLowerCase();
-    if (!/(pour over|v60|aeropress|aero press|filter|french press|clever)/.test(method)) {
-      recipe.targetFlowTime = estimateEspressoWindow(bean, recipe.dose || 18, recipe.output || 40);
-      recipe.guidance = `${recipe.guidance || "Suggested starting point."} Target shot time ${recipe.targetFlowTime}s from pump start to target yield, including pre-infusion. Treat this as a dial-in window; grinder, basket, machine and coffee age change flow.`;
-    } else {
-      recipe.targetFlowTime = recipe.targetFlowTime || (method.includes("french") ? "240" : method.includes("aero") ? "90–150" : "150–210");
-    }
-    return recipe;
-  };
-
   // Keep the four requested demo coffees out of the user's collection, including older local saves.
   const removedNames = new Set(["monsoon reserve", "velvet cherry", "yirgacheffe sunrise", "yirgaffe sunrise", "maya estate"]);
   function removeRequestedSamples() {
@@ -90,10 +51,10 @@
     const target = form.elements.targetFlowTime;
     if (target) target.value = latest.targetFlowTime || starterRecipe(bean).targetFlowTime || "";
     if (form.elements.actualFlowTime) form.elements.actualFlowTime.value = "";
-    updateFlowGuidance(bean);
+    updateFlowGuidance(bean, true);
   };
 
-  function updateFlowGuidance(bean) {
+  function updateFlowGuidance(bean, keepTarget = false) {
     const form = document.querySelector("#brewForm");
     const note = document.querySelector("#recipeSuggestion");
     if (!form || !bean || !note) return;
@@ -104,9 +65,10 @@
       note.textContent = "Filter brew time depends on your recipe and pouring technique. Use the displayed time as a starting range, not a fixed espresso shot target.";
       return;
     }
-    const window = estimateEspressoWindow(bean, dose, output);
+    const window = espressoTimeWindow(bean, dose, output);
+    if (keepTarget) return;
     form.elements.targetFlowTime.value = window;
-    note.textContent = `Suggested target: ${dose}g in → ${output}g out (${(output / dose).toFixed(1)} ratio) in about ${window}s, timed from pump start including pre-infusion. Estimate uses roast, tasting notes and ratio; adjust to your grinder and taste. A sour/thin shot often benefits from a finer grind or slightly longer yield; a harsh/bitter shot may need a coarser grind or shorter yield. Change one thing at a time.`;
+    note.textContent = `${dose}g in → ${output}g out (1:${(output / dose).toFixed(1)}) in about ${window}s, timed from pump start including pre-infusion. Pressure and temperature are fixed on your Meraki: if the shot runs fast or tastes sour, go one grinder step finer or add 0.5g dose; if slow or bitter, go one step coarser or stop earlier. Change one thing at a time.`;
   }
 
   const brewForm = document.querySelector("#brewForm");
@@ -141,7 +103,6 @@
     const recipe = bean.recipe || {};
     const actual = recipe.actualFlowTime ?? [...(bean.brews || [])].reverse().find((brew) => brew.actualFlowTime !== null && brew.actualFlowTime !== undefined)?.actualFlowTime;
     const items = [
-      ["Target flow time", recipe.targetFlowTime ? `${recipe.targetFlowTime}s` : "—"],
       ["Last shot time", actual !== null && actual !== undefined && actual !== "" ? `${actual}s` : "Not logged"]
     ];
     for (const [label, value] of items) {
