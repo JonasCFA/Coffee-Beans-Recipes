@@ -1,18 +1,18 @@
 # Daily Pour — Coffee Journal
 
-A premium-feeling coffee journal for roasteries, tasting notes, recipes and brew logs. It runs as a static website and works on GitHub Pages.
+A premium-feeling coffee journal for roasteries, tasting notes, personalized recipes and brew logs. It runs as a static website and works on GitHub Pages.
 
 ## Recipe suggestions and dialing in
 
-When you add a coffee, the app creates a **suggested starting recipe** using its roast level, tasting notes and selected brew method. For espresso, the starting point is typically 18g in, with a shorter yield for darker/chocolate-forward coffees, a longer yield for lighter/brighter coffees, and a temperature adjusted accordingly. Filter methods get a separate starting dose, water amount, grind guidance and bloom/steep suggestion.
+When you add a coffee, the app creates a suggested starting recipe from roast level, tasting notes and the selected brew method. For espresso, it starts with a typical 18g dose and adjusts the suggested yield and temperature for lighter/brighter or darker/chocolate-forward coffees. Filter methods get their own starting dose, water amount, temperature and bloom/steep guidance. These are starting points, not guaranteed perfect recipes.
 
-These are general starting points—not a guaranteed perfect recipe. Grind numbers are grinder-specific, so the app does not invent a setting for an unknown grinder. It suggests that you dial in for your grinder, then lets you enter the setting that works for you.
+Grind settings depend on your grinder, so the app does not guess a numeric setting. Add your grinder's setting when you brew. Use **Adjust recipe / log brew** to change dose, yield, grind, temperature, method and pre-infusion based on the actual cup. Saving a brew updates that bean's latest recipe. When you select that bean later, its last saved recipe and grind are loaded automatically; recipes are stored per bean, so switching beans recalls each coffee's own settings. The brew history remains available too.
 
-Use **Adjust recipe / log brew** on a selected bean to edit dose, yield, grind, temperature, brew method and pre-infusion. Save the outcome and it becomes that bean's latest recipe. Each brew is also kept in its history, so switching beans brings back each bean's own last saved settings.
+## Rating scale
 
-## Rating
+Brew ratings are on a **0–10 scale** (10 is best). The app accepts 0 as a real rating and includes it in averages. A bean's displayed score is the average of its rated brews; before any brews are rated, a saved bean-level score is used or the coffee appears as not rated.
 
-Brew ratings use a 0–10 scale (10 is best). The bean's displayed rating is the average of its rated brews; if it has no rated brews, it is shown as not rated unless there is a migrated legacy rating.
+Existing data from the earlier storage version is migrated automatically. Legacy 0–5 scores are converted to 0–10; a legacy zero, previously used to mean “not rated,” remains unrated. New brew scores use the full 0–10 scale.
 
 ## Other features
 
@@ -22,13 +22,9 @@ Brew ratings use a 0–10 scale (10 is best). The bean's displayed rating is the
 - Automatically group tasting notes into broad taste families.
 - Save data in browser localStorage.
 
-## Existing data
-
-On first load after this update, saved data from the earlier app version is migrated to the new storage key. Its previous 0–5 ratings are converted to the new 0–10 scale. The starter recipe is added to older beans that do not yet have a saved recipe.
-
 ## Roastery website lookup
 
-The roastery search opens a web search and lets you save a product-page URL. GitHub Pages cannot reliably scrape arbitrary sites from the browser; automated import requires a backend/API. Verify information on the roaster's official site before saving.
+The roastery search opens a web search and lets you save a product-page URL. GitHub Pages cannot reliably scrape arbitrary sites from the browser; automated import requires a backend/API. Verify information on the official roastery website before saving it.
 
 ## Run locally
 

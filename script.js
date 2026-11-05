@@ -1,11 +1,12 @@
 const STORAGE_KEY = "daily-pour-coffee-journal-v2";
 const LEGACY_STORAGE_KEY = "daily-pour-coffee-journal-v1";
 const seedBeans = [
-  { id: "sample-1", name: "Yirgacheffe Sunrise", roaster: "Cedar & Co.", roasterLocation: "", origin: "Ethiopia", roastDate: "2026-10-22", roastLevel: "Light", profile: ["floral", "citrus", "tea-like", "bergamot"], rating: 9.8, productUrl: "", recipe: { dose: 18, output: 43, grind: "Dial in for your grinder", water: "94°C", method: "Espresso", preInfusion: "8s" }, brews: [], favorite: false, addedAt: "2026-10-22T10:00:00.000Z" },
-  { id: "sample-2", name: "Maya Estate", roaster: "Horizon Roasters", roasterLocation: "", origin: "Colombia", roastDate: "2026-10-18", roastLevel: "Medium", profile: ["caramel", "red apple", "brown sugar", "orange"], rating: 9.4, productUrl: "", recipe: { dose: 18, output: 40, grind: "Dial in for your grinder", water: "93°C", method: "Pour over", preInfusion: "Bloom 30s" }, brews: [], favorite: false, addedAt: "2026-10-18T10:00:00.000Z" },
-  { id: "sample-3", name: "Monsoon Reserve", roaster: "Wild Bean House", roasterLocation: "", origin: "India", roastDate: "2026-10-12", roastLevel: "Medium-dark", profile: ["dark chocolate", "cocoa", "cedar", "brown sugar"], rating: 9, productUrl: "", recipe: { dose: 18, output: 36, grind: "Dial in for your grinder", water: "92°C", method: "Espresso", preInfusion: "5s" }, brews: [], favorite: false, addedAt: "2026-10-12T10:00:00.000Z" },
-  { id: "sample-4", name: "Velvet Cherry", roaster: "North Roast", roasterLocation: "", origin: "Brazil", roastDate: "2026-10-27", roastLevel: "Medium", profile: ["chocolate", "cherry", "toffee", "jam"], rating: 9.6, productUrl: "", recipe: { dose: 18, output: 38, grind: "Dial in for your grinder", water: "92°C", method: "Espresso", preInfusion: "6s" }, brews: [], favorite: false, addedAt: "2026-10-27T10:00:00.000Z" }
+  { id: "sample-1", name: "Yirgacheffe Sunrise", roaster: "Cedar & Co.", roasterLocation: "", origin: "Ethiopia", roastDate: "2026-10-22", roastLevel: "Light", method: "Espresso", profile: ["floral", "citrus", "tea-like", "bergamot"], rating: 8.8, productUrl: "", recipe: {}, brews: [], favorite: false, addedAt: "2026-10-22T10:00:00.000Z" },
+  { id: "sample-2", name: "Maya Estate", roaster: "Horizon Roasters", roasterLocation: "", origin: "Colombia", roastDate: "2026-10-18", roastLevel: "Medium", method: "Pour over", profile: ["caramel", "red apple", "brown sugar", "orange"], rating: 8.2, productUrl: "", recipe: {}, brews: [], favorite: false, addedAt: "2026-10-18T10:00:00.000Z" },
+  { id: "sample-3", name: "Monsoon Reserve", roaster: "Wild Bean House", roasterLocation: "", origin: "India", roastDate: "2026-10-12", roastLevel: "Medium-dark", method: "Espresso", profile: ["dark chocolate", "cocoa", "cedar", "brown sugar"], rating: 7.6, productUrl: "", recipe: {}, brews: [], favorite: false, addedAt: "2026-10-12T10:00:00.000Z" },
+  { id: "sample-4", name: "Velvet Cherry", roaster: "North Roast", roasterLocation: "", origin: "Brazil", roastDate: "2026-10-27", roastLevel: "Medium", method: "Espresso", profile: ["chocolate", "cherry", "toffee", "jam"], rating: 8.5, productUrl: "", recipe: {}, brews: [], favorite: false, addedAt: "2026-10-27T10:00:00.000Z" }
 ];
+
 let beans = loadBeans();
 let selectedBeanId = beans[0]?.id ?? null;
 let activeBrewBeanId = null;
@@ -20,21 +21,25 @@ function starterRecipe(bean) {
   const notes = (bean.profile || []).join(" ").toLowerCase();
   const roast = (bean.roastLevel || "Medium").toLowerCase();
   const method = bean.method || "Espresso";
-  if (["pour over", "v60", "aeropress", "filter", "french press", "clever"].some((item) => method.toLowerCase().includes(item))) {
-    const light = roast.includes("light") || /citrus|floral|berry|fruit|zitrus|blüte|beere/.test(notes);
-    const dark = roast.includes("dark") || /chocolate|cocoa|caramel|chocolade|kakao|karamell/.test(notes);
+  const methodLower = method.toLowerCase();
+  const light = roast.includes("light") || /citrus|floral|berry|fruit|grape|lemon|peach|zitrus|blüte|beere/.test(notes);
+  const dark = roast.includes("dark") || /chocolate|cocoa|caramel|toffee|chocolade|kakao|karamell/.test(notes);
+
+  if (["pour over", "v60", "aeropress", "filter", "french press", "clever"].some((item) => methodLower.includes(item))) {
+    const frenchPress = methodLower.includes("french");
+    const dose = frenchPress ? 20 : 15;
+    const output = frenchPress ? 320 : 250;
     return {
-      dose: method.toLowerCase().includes("french") ? 20 : 15,
-      output: method.toLowerCase().includes("french") ? 320 : 250,
-      grind: "Medium-fine; adjust to taste",
+      dose,
+      output,
+      grind: "Medium-fine; adjust to your grinder",
       water: light ? "94°C" : dark ? "90°C" : "92°C",
       method,
-      preInfusion: method.toLowerCase().includes("french") ? "Steep 4 min" : "Bloom 30s",
-      guidance: "Starting point only — brew method, grinder and your palate all affect the result."
+      preInfusion: frenchPress ? "Steep 4 min" : "Bloom 30s",
+      guidance: "Suggested starting point based on brew method, roast and tasting notes. Adjust to your grinder and taste; this is not a guaranteed perfect recipe."
     };
   }
-  const light = roast.includes("light") || /citrus|floral|berry|grape|lemon|peach|bright|zitrus|blüte|beere/.test(notes);
-  const dark = roast.includes("dark") || /dark chocolate|cocoa|chocolate|caramel|toffee|chocolade|kakao|karamell/.test(notes);
+
   const dose = 18;
   const output = light ? 43 : dark ? 36 : 40;
   return {
@@ -42,40 +47,49 @@ function starterRecipe(bean) {
     output,
     grind: "Dial in for your grinder",
     water: light ? "94°C" : dark ? "92°C" : "93°C",
-    method: method || "Espresso",
+    method,
     preInfusion: light ? "8s" : "5s",
     guidance: `Suggested espresso starting point: ${dose}g in → ${output}g out (1:${(output / dose).toFixed(1)}). Adjust grind and taste; grinder scales are not universal.`
   };
 }
 
+function normalizeBeans(items, legacy = false) {
+  if (!Array.isArray(items)) return structuredClone(seedBeans);
+  return items.map((bean) => {
+    const normalized = {
+      ...bean,
+      profile: Array.isArray(bean.profile) ? bean.profile : [],
+      brews: Array.isArray(bean.brews) ? bean.brews : []
+    };
+    if (legacy) {
+      const oldRating = Number(normalized.rating);
+      normalized.rating = Number.isFinite(oldRating) && oldRating > 0 ? oldRating * 2 : null;
+      normalized.brews = normalized.brews.map((brew) => {
+        const oldBrewRating = Number(brew.rating);
+        return { ...brew, rating: Number.isFinite(oldBrewRating) && oldBrewRating > 0 ? oldBrewRating * 2 : null };
+      });
+    }
+    if (!normalized.recipe || !Object.keys(normalized.recipe).length) normalized.recipe = starterRecipe(normalized);
+    if (!normalized.method) normalized.method = normalized.recipe.method || "Espresso";
+    return normalized;
+  });
+}
+
 function loadBeans() {
   try {
     const current = localStorage.getItem(STORAGE_KEY);
-    if (current) return normalizeBeans(JSON.parse(current), false);
+    if (current) return normalizeBeans(JSON.parse(current));
     const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
     if (legacy) {
       const migrated = normalizeBeans(JSON.parse(legacy), true);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
       return migrated;
     }
-    return structuredClone(seedBeans);
+    return normalizeBeans(seedBeans);
   } catch (error) {
     console.warn("Could not load saved coffee data", error);
-    return structuredClone(seedBeans);
+    return normalizeBeans(seedBeans);
   }
-}
-
-function normalizeBeans(items, legacy) {
-  if (!Array.isArray(items)) return structuredClone(seedBeans);
-  return items.map((bean) => {
-    const normalized = { ...bean, profile: Array.isArray(bean.profile) ? bean.profile : [], brews: Array.isArray(bean.brews) ? bean.brews : [] };
-    if (legacy) {
-      normalized.rating = Number(normalized.rating || 0) * 2;
-      normalized.brews = normalized.brews.map((brew) => ({ ...brew, rating: Number(brew.rating || 0) * 2 }));
-    }
-    if (!normalized.recipe || !Object.keys(normalized.recipe).length) normalized.recipe = starterRecipe(normalized);
-    return normalized;
-  });
 }
 
 function saveBeans() {
@@ -100,10 +114,15 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove("visible"), 2600);
 }
 
+// null means unrated; zero is a valid, explicit rating on the 0–10 scale.
 function getRating(bean) {
-  const ratedBrews = (bean.brews || []).map((brew) => Number(brew.rating)).filter((rating) => Number.isFinite(rating) && rating > 0);
+  const ratedBrews = (bean.brews || [])
+    .map((brew) => brew.rating)
+    .filter((rating) => rating !== null && rating !== undefined && rating !== "" && Number.isFinite(Number(rating)))
+    .map(Number);
   if (ratedBrews.length) return ratedBrews.reduce((sum, rating) => sum + rating, 0) / ratedBrews.length;
-  return Number(bean.rating) || 0;
+  const beanRating = bean.rating;
+  return beanRating !== null && beanRating !== undefined && beanRating !== "" && Number.isFinite(Number(beanRating)) ? Number(beanRating) : null;
 }
 
 function getCluster(bean) {
@@ -139,7 +158,7 @@ function safeUrl(url) {
 }
 
 function renderStats() {
-  const ratings = beans.map(getRating).filter((rating) => rating > 0);
+  const ratings = beans.map(getRating).filter((rating) => rating !== null);
   $("#beanCount").textContent = beans.length;
   $("#avgRating").textContent = ratings.length ? (ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length).toFixed(1) : "—";
   $("#clusterCount").textContent = new Set(beans.map(getCluster)).size;
@@ -158,7 +177,7 @@ function filteredBeans() {
     if (sort === "name") return a.name.localeCompare(b.name);
     if (sort === "roast") return (b.roastDate || "").localeCompare(a.roastDate || "");
     if (sort === "recent") return (b.addedAt || "").localeCompare(a.addedAt || "");
-    return getRating(b) - getRating(a) || a.name.localeCompare(b.name);
+    return (getRating(b) ?? -1) - (getRating(a) ?? -1) || a.name.localeCompare(b.name);
   });
   return result;
 }
@@ -185,7 +204,7 @@ function renderBeans() {
       <div class="bean-topline"><span class="origin-label">${escapeHTML(bean.origin || "Origin unknown")}${bean.roastDate ? ` · ${formatDate(bean.roastDate)}` : ""}</span><button class="favorite-button ${bean.favorite ? "is-favorite" : ""}" data-action="favorite" data-id="${escapeHTML(bean.id)}" aria-label="${bean.favorite ? "Remove from" : "Add to"} favorites">${bean.favorite ? "♥" : "♡"}</button></div>
       <h3>${escapeHTML(bean.name)}</h3><div class="bean-roaster">${escapeHTML(bean.roaster)}${bean.roasterLocation ? ` · ${escapeHTML(bean.roasterLocation)}` : ""}</div>
       <div class="profile-tags">${tags || '<span class="tag">Add tasting notes</span>'}</div>
-      <div class="bean-bottomline"><span class="cluster-label">${escapeHTML(getCluster(bean))}</span><span class="rating-label">${rating ? `${rating.toFixed(1)} / 10` : "Not rated"}</span></div>
+      <div class="bean-bottomline"><span class="cluster-label">${escapeHTML(getCluster(bean))}</span><span class="rating-label">${rating === null ? "Not rated" : `${rating.toFixed(1)} / 10`}</span></div>
     </article>`;
   }).join("");
 }
@@ -197,16 +216,17 @@ function renderDetail() {
     return;
   }
   const rating = getRating(bean);
-  const recipe = bean.recipe || {};
+  const recipe = bean.recipe || starterRecipe(bean);
   const ratio = recipe.dose && recipe.output ? `1:${(Number(recipe.output) / Number(recipe.dose)).toFixed(1)}` : "—";
   const productUrl = safeUrl(bean.productUrl || "");
   const recentBrews = [...(bean.brews || [])].reverse().slice(0, 3);
   detailPanel.innerHTML = `
     <div class="detail-title"><div><h3>${escapeHTML(bean.name)}</h3><p>${escapeHTML(bean.roaster)}${bean.roasterLocation ? ` · ${escapeHTML(bean.roasterLocation)}` : ""}</p></div><div class="detail-actions"><button class="icon-button" data-action="favorite" data-id="${escapeHTML(bean.id)}" aria-label="Toggle favorite">${bean.favorite ? "♥" : "♡"}</button><button class="icon-button" data-action="delete" data-id="${escapeHTML(bean.id)}" aria-label="Delete coffee">⌫</button></div></div>
-    <div class="detail-rating">${rating ? `${rating.toFixed(1)} / 10` : "Not rated yet"} <span style="color:var(--muted);font-weight:500">· ${escapeHTML(bean.roastLevel || "Roast level not set")}</span></div>
+    <div class="detail-rating">${rating === null ? "Not rated yet" : `${rating.toFixed(1)} / 10`} <span style="color:var(--muted);font-weight:500">· ${escapeHTML(bean.roastLevel || "Roast level not set")}</span></div>
     <div class="detail-section"><h4>How it should taste</h4><div class="profile-tags">${(bean.profile || []).map((tag) => `<span class="tag">${escapeHTML(tag)}</span>`).join("") || '<span class="tag">No tasting notes yet</span>'}</div><p class="taste-copy">${escapeHTML(getCluster(bean))} is a suggested taste group based on your notes.</p></div>
-    <div class="detail-section"><h4>Your recipe${bean.brews?.length ? " · latest version" : " · suggested start"}</h4><div class="recipe-metrics"><div class="recipe-metric"><small>In</small><strong>${escapeHTML(recipe.dose || "—")}g</strong></div><div class="recipe-metric"><small>Out · ${ratio}</small><strong>${escapeHTML(recipe.output || "—")}g</strong></div><div class="recipe-metric"><small>Grind</small><strong>${escapeHTML(recipe.grind || "—")}</strong></div><div class="recipe-metric"><small>Pre-infusion</small><strong>${escapeHTML(recipe.preInfusion || "—")}</strong></div><div class="recipe-metric"><small>Water</small><strong>${escapeHTML(recipe.water || "—")}</strong></div><div class="recipe-metric"><small>Method</small><strong>${escapeHTML(recipe.method || "—")}</strong></div></div>${recipe.guidance ? `<p class="taste-copy recipe-guidance">${escapeHTML(recipe.guidance)}</p>` : ""}</div>
-    ${recentBrews.length ? `<div class="detail-section"><h4>Recent cups</h4><div class="brew-history">${recentBrews.map((brew) => `<article class="brew-entry"><div class="brew-entry-top"><span>${formatDate(brew.date)}</span><span>${Number(brew.rating) > 0 ? `${Number(brew.rating).toFixed(1)} / 10` : "Unrated"} · grind ${escapeHTML(brew.grind || "—")}</span></div><p>${escapeHTML(brew.notes || `${brew.dose}g in → ${brew.output}g out · ${brew.method || "method not set"}`)}</p></article>`).join("")}</div></div>` : ""}
+    <div class="detail-section"><h4>Your recipe${bean.brews?.length ? " · latest version" : " · suggested start"}</h4><div class="recipe-metrics"><div class="recipe-metric"><small>In</small><strong>${escapeHTML(recipe.dose || "—")}g</strong></div><div class="recipe-metric"><small>Out · ${ratio}</small><strong>${escapeHTML(recipe.output || "—")}g</strong></div><div class="recipe-metric"><small>Grind</small><strong>${escapeHTML(recipe.grind || "—")}</strong></div><div class="recipe-metric"><small>Pre-infusion</small><strong>${escapeHTML(recipe.preInfusion || "—")}</strong></div><div class="recipe-metric"><small>Water</small><strong>${escapeHTML(recipe.water || "—")}</strong></div><div class="recipe-metric"><small>Method</small><strong>${escapeHTML(recipe.method || "—")}</strong></div></div>
+    ${!bean.brews?.length && recipe.guidance ? `<p class="taste-copy">${escapeHTML(recipe.guidance)}</p>` : ""}</div>
+    ${recentBrews.length ? `<div class="detail-section"><h4>Recent cups</h4><div class="brew-history">${recentBrews.map((brew) => `<article class="brew-entry"><div class="brew-entry-top"><span>${formatDate(brew.date)}</span><span>${brew.rating === null || brew.rating === undefined ? "Unrated" : `${Number(brew.rating).toFixed(1)} / 10`} · grind ${escapeHTML(brew.grind || "—")}</span></div><p>${escapeHTML(brew.notes || `${brew.dose}g in → ${brew.output}g out · ${brew.method || "method not set"}`)}</p></article>`).join("")}</div></div>` : ""}
     <div class="detail-footer"><button class="button button-dark small-button" data-action="brew" data-id="${escapeHTML(bean.id)}">✎ Adjust recipe / log brew</button>${productUrl ? `<a class="text-link" href="${escapeHTML(productUrl)}" target="_blank" rel="noopener noreferrer">Visit roastery page ↗</a>` : `<a class="text-link" href="https://www.google.com/search?q=${encodeURIComponent(`${bean.roaster} ${bean.roasterLocation || ""} ${bean.name} coffee`)}" target="_blank" rel="noopener noreferrer">Search roastery ↗</a>`}</div>`;
 }
 
@@ -219,15 +239,29 @@ function renderClusters() {
   }
   $("#clusterGrid").innerHTML = groups.size ? [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([name, members]) => {
     const notes = [...new Set(members.flatMap((bean) => bean.profile || []))].slice(0, 4);
-    const ratings = members.map(getRating).filter((rating) => rating > 0);
+    const ratings = members.map(getRating).filter((rating) => rating !== null);
     const average = ratings.length ? (ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length).toFixed(1) : "—";
     return `<article class="cluster-card"><p class="eyebrow">taste family</p><h3>${escapeHTML(name)}</h3><p>${notes.map(escapeHTML).join(" · ") || "Add tasting notes to describe this group."}</p><footer><span>${members.length} ${members.length === 1 ? "coffee" : "coffees"} · avg ${average}${average !== "—" ? " / 10" : ""}</span><button data-action="filter-cluster" data-cluster="${escapeHTML(name)}">Explore →</button></footer></article>`;
   }).join("") : '<div class="empty-results">Add coffees with tasting notes to see their groups.</div>';
 }
 
-function render() { renderFilter(); renderStats(); renderBeans(); renderDetail(); renderClusters(); }
-function openBeanDialog() { $("#beanForm").reset(); beanDialog.showModal(); }
-function setRating(value) { $("#ratingInput").value = String(value); $("#ratingOutput").value = String(value); }
+function render() {
+  renderFilter();
+  renderStats();
+  renderBeans();
+  renderDetail();
+  renderClusters();
+}
+
+function openBeanDialog() {
+  $("#beanForm").reset();
+  beanDialog.showModal();
+}
+
+function setRating(value) {
+  $("#ratingInput").value = String(value);
+  $("#ratingOutput").value = String(value);
+}
 
 function openBrewDialog(id) {
   const bean = beans.find((item) => item.id === id);
@@ -240,11 +274,11 @@ function openBrewDialog(id) {
   form.elements.output.value = recipe.output || 40;
   form.elements.grind.value = recipe.grind || "";
   form.elements.water.value = recipe.water || "";
-  form.elements.method.value = recipe.method || "Espresso";
+  form.elements.method.value = recipe.method || bean.method || "Espresso";
   form.elements.preInfusion.value = recipe.preInfusion || "";
   form.elements.rating.value = "0";
-  $("#brewBeanName").textContent = `Starting with ${bean.name} from ${bean.roaster}. Edit any setting after tasting.`;
-  $("#recipeSuggestion").textContent = recipe.guidance || "Your last saved recipe is loaded. Adjust the settings to match this brew; saving makes it the latest version for this bean.";
+  $("#brewBeanName").textContent = `Starting with ${bean.name} from ${bean.roaster}. Edit the recipe after tasting.`;
+  $("#recipeSuggestion").textContent = recipe.guidance || "Your last saved recipe is loaded. Adjust it to match this brew; saving makes it the latest version for this bean.";
   setRating(0);
   brewDialog.showModal();
 }
@@ -252,58 +286,137 @@ function openBrewDialog(id) {
 function attachEvents() {
   $("#addBeanButton").addEventListener("click", openBeanDialog);
   $("#introAddButton").addEventListener("click", openBeanDialog);
+
   $("#searchRoasteryButton").addEventListener("click", () => {
     const form = $("#beanForm");
     const name = form.elements.roaster.value.trim();
     const location = form.elements.roasterLocation.value.trim();
-    if (!name) { form.elements.roaster.focus(); showToast("Enter a roastery name first."); return; }
+    if (!name) {
+      form.elements.roaster.focus();
+      showToast("Enter a roastery name first.");
+      return;
+    }
     window.open(`https://www.google.com/search?q=${encodeURIComponent(`${name} ${location} official roastery coffee`)}`, "_blank", "noopener,noreferrer");
   });
+
   $("#beanForm").addEventListener("submit", (event) => {
     event.preventDefault();
     const values = new FormData(event.currentTarget);
     const bean = {
       id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-      name: values.get("name").trim(), roaster: values.get("roaster").trim(), roasterLocation: values.get("roasterLocation").trim(),
-      origin: values.get("origin").trim(), roastDate: values.get("roastDate"), roastLevel: values.get("roastLevel"), method: values.get("method"),
-      profile: values.get("profile").split(",").map((note) => note.trim()).filter(Boolean), rating: 0, productUrl: values.get("productUrl").trim(),
-      recipe: {}, brews: [], favorite: false, addedAt: new Date().toISOString()
+      name: values.get("name").trim(),
+      roaster: values.get("roaster").trim(),
+      roasterLocation: values.get("roasterLocation").trim(),
+      origin: values.get("origin").trim(),
+      roastDate: values.get("roastDate"),
+      roastLevel: values.get("roastLevel"),
+      method: values.get("method"),
+      profile: values.get("profile").split(",").map((note) => note.trim()).filter(Boolean),
+      rating: null,
+      productUrl: values.get("productUrl").trim(),
+      recipe: {},
+      brews: [],
+      favorite: false,
+      addedAt: new Date().toISOString()
     };
     bean.recipe = starterRecipe(bean);
-    beans.unshift(bean); selectedBeanId = bean.id; saveBeans(); render(); beanDialog.close();
-    showToast("Coffee saved with a suggested starter recipe.");
+    beans.unshift(bean);
+    selectedBeanId = bean.id;
+    saveBeans();
+    render();
+    beanDialog.close();
+    showToast("Coffee saved with a suggested starting recipe.");
   });
+
   $("#brewForm").addEventListener("submit", (event) => {
     event.preventDefault();
     const bean = beans.find((item) => item.id === activeBrewBeanId);
     if (!bean) return;
     const values = new FormData(event.currentTarget);
-    const brew = { date: new Date().toISOString(), dose: Number(values.get("dose")), output: Number(values.get("output")), grind: values.get("grind").trim(), water: values.get("water").trim(), method: values.get("method").trim(), preInfusion: values.get("preInfusion").trim(), rating: Number(values.get("rating")), notes: values.get("notes").trim() };
-    const priorGuidance = bean.recipe?.guidance;
-    bean.recipe = { ...brew, guidance: priorGuidance || "Your latest personally adjusted recipe. Use it next time you brew this bean." };
-    bean.brews ||= []; bean.brews.push(brew); selectedBeanId = bean.id; saveBeans(); render(); brewDialog.close();
+    const brew = {
+      date: new Date().toISOString(),
+      dose: Number(values.get("dose")),
+      output: Number(values.get("output")),
+      grind: values.get("grind").trim(),
+      water: values.get("water").trim(),
+      method: values.get("method").trim(),
+      preInfusion: values.get("preInfusion").trim(),
+      rating: Number(values.get("rating")),
+      notes: values.get("notes").trim()
+    };
+    bean.recipe = { ...brew, guidance: "Your latest personally adjusted recipe. Use it next time you brew this bean." };
+    bean.method = brew.method;
+    bean.brews ||= [];
+    bean.brews.push(brew);
+    selectedBeanId = bean.id;
+    saveBeans();
+    render();
+    brewDialog.close();
     showToast("Latest recipe saved for this bean.");
   });
+
   $("#ratingInput").addEventListener("input", (event) => setRating(event.target.value));
   $("#searchInput").addEventListener("input", render);
   $("#clusterFilter").addEventListener("change", render);
   $("#sortSelect").addEventListener("change", render);
+
   beanGrid.addEventListener("click", (event) => {
     const favorite = event.target.closest('[data-action="favorite"]');
-    if (favorite) { event.stopPropagation(); const bean = beans.find((item) => item.id === favorite.dataset.id); if (bean) { bean.favorite = !bean.favorite; saveBeans(); render(); } return; }
-    const card = event.target.closest(".bean-card"); if (card) { selectedBeanId = card.dataset.id; render(); }
+    if (favorite) {
+      event.stopPropagation();
+      const bean = beans.find((item) => item.id === favorite.dataset.id);
+      if (bean) { bean.favorite = !bean.favorite; saveBeans(); render(); }
+      return;
+    }
+    const card = event.target.closest(".bean-card");
+    if (card) { selectedBeanId = card.dataset.id; render(); }
   });
-  beanGrid.addEventListener("keydown", (event) => { if ((event.key === "Enter" || event.key === " ") && event.target.matches(".bean-card")) { event.preventDefault(); selectedBeanId = event.target.dataset.id; render(); } });
+
+  beanGrid.addEventListener("keydown", (event) => {
+    if ((event.key === "Enter" || event.key === " ") && event.target.matches(".bean-card")) {
+      event.preventDefault();
+      selectedBeanId = event.target.dataset.id;
+      render();
+    }
+  });
+
   detailPanel.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-action]"); if (!button) return;
+    const button = event.target.closest("[data-action]");
+    if (!button) return;
     const bean = beans.find((item) => item.id === button.dataset.id);
     if (button.dataset.action === "brew") openBrewDialog(button.dataset.id);
     if (button.dataset.action === "favorite" && bean) { bean.favorite = !bean.favorite; saveBeans(); render(); }
-    if (button.dataset.action === "delete" && bean && confirm(`Delete ${bean.name} and all of its brew history?`)) { beans = beans.filter((item) => item.id !== bean.id); selectedBeanId = beans[0]?.id ?? null; saveBeans(); render(); showToast("Coffee removed from your journal."); }
+    if (button.dataset.action === "delete" && bean && confirm(`Delete ${bean.name} and all of its brew history?`)) {
+      beans = beans.filter((item) => item.id !== bean.id);
+      selectedBeanId = beans[0]?.id ?? null;
+      saveBeans();
+      render();
+      showToast("Coffee removed from your journal.");
+    }
   });
-  $("#clusterGrid").addEventListener("click", (event) => { const button = event.target.closest('[data-action="filter-cluster"]'); if (button) { $("#clusterFilter").value = button.dataset.cluster; render(); $("#library").scrollIntoView({ behavior: "smooth" }); } });
-  $("#exportButton").addEventListener("click", () => { const file = new Blob([JSON.stringify(beans, null, 2)], { type: "application/json" }); const link = document.createElement("a"); link.href = URL.createObjectURL(file); link.download = "daily-pour-backup.json"; link.click(); URL.revokeObjectURL(link.href); showToast("Backup downloaded."); });
-  document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", () => button.closest("dialog").close()));
+
+  $("#clusterGrid").addEventListener("click", (event) => {
+    const button = event.target.closest('[data-action="filter-cluster"]');
+    if (button) {
+      $("#clusterFilter").value = button.dataset.cluster;
+      render();
+      $("#library").scrollIntoView({ behavior: "smooth" });
+    }
+  });
+
+  $("#exportButton").addEventListener("click", () => {
+    const file = new Blob([JSON.stringify(beans, null, 2)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(file);
+    link.download = "daily-pour-backup.json";
+    link.click();
+    URL.revokeObjectURL(link.href);
+    showToast("Backup downloaded.");
+  });
+
+  document.querySelectorAll("[data-close]").forEach((button) => {
+    button.addEventListener("click", () => button.closest("dialog").close());
+  });
 }
 
 attachEvents();
