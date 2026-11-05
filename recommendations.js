@@ -36,34 +36,9 @@
   ];
 
   CATALOG.forEach((item) => { item.id = item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); });
-  // German specialty roasteries; roast = roast indices (0 light … 4 dark) they are known for.
-  const STORES = [
-    { name: "Bonanza Coffee", site: "bonanzacoffee.de", city: "Berlin", roast: [0, 1] },
-    { name: "The Barn", site: "thebarn.de", city: "Berlin", roast: [0, 1] },
-    { name: "Five Elephant", site: "fiveelephant.com", city: "Berlin", roast: [0, 1, 2] },
-    { name: "Public Coffee Roasters", site: "publiccoffeeroasters.com", city: "Berlin", roast: [0, 1] },
-    { name: "Man Versus Machine", site: "mvsm.de", city: "Munich", roast: [0, 1, 2] },
-    { name: "Röststätte", site: "roeststaette.de", city: "Berlin", roast: [1, 2, 3] },
-    { name: "Coffee Circle", site: "coffeecircle.com", city: "Berlin", roast: [1, 2, 3] },
-    { name: "Elbgold", site: "elbgold.com", city: "Hamburg", roast: [1, 2, 3] },
-    { name: "Hoppenworth & Ploch", site: "hoppenworth-ploch.de", city: "Frankfurt", roast: [2, 3, 4] },
-    { name: "Roast Market", site: "roastmarket.de", city: "Berlin", roast: [0, 1, 2, 3] }
-  ];
-  // Your own favourite roasters: always shown. DAK and Nativo have confirmed homepages; the others open a search for their shop.
-  const FAVORITES = [
-    { name: "DAK Coffee Roasters", city: "Amsterdam, ships to DE", href: "https://www.dakcoffeeroasters.com/shop/" },
-    { name: "Nativo", city: "Frankfurt", href: "https://www.nativokaffee.de/" },
-    { name: "Due Mani", city: "", href: "https://www.google.com/search?q=" + encodeURIComponent("Due Mani Kaffeerösterei Bohnen kaufen") },
-    { name: "Bunca", city: "", href: "https://www.google.com/search?q=" + encodeURIComponent("Bunca Kaffeerösterei Bohnen kaufen") }
-  ];
-  const searchUrl = (query) => `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-  const storesFor = (item) => STORES.filter((store) => store.roast.includes(item.roast)).slice(0, 4);
-  const storeLinks = (item) => [
-    ...FAVORITES.map((fav) => ({ label: `★ ${fav.name}${fav.city ? ` · ${fav.city}` : ""}`, href: fav.href, title: `Your favourite roaster: ${fav.name}` })),
-    ...storesFor(item).map((store) => ({ label: `${store.name} · ${store.city}`, href: `https://www.${store.site}/`, title: `Open the ${store.name} homepage` })),
-    ...storesFor(item).slice(0, 2).map((store) => ({ label: `Find it at ${store.name}`, href: searchUrl(`${item.search} Kaffee Bohnen site:${store.site}`), title: `Search ${store.name} for this bean` })),
-    { label: "Compare German shops", href: `https://www.google.de/search?tbm=shop&q=${encodeURIComponent(`${item.search} Specialty Kaffee Bohnen 250g`)}`, title: "Compare prices in shops" }
-  ];
+  // Live shop matches come from data/shop-matches.json, refreshed daily by tools/update-shops.mjs.
+  let shopData = { matches: {} };
+  const matchesFor = (item) => (shopData.matches[item.id] || []).slice().sort((a, b) => Number(b.favorite) - Number(a.favorite) || (a.price ?? 1e9) - (b.price ?? 1e9));
 
   function esc(value = "") {
     return String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -151,8 +126,11 @@
     const origin = isNew ? "New origin for you" : "An origin you already know";
     const query = encodeURIComponent(`${item.search} specialty coffee beans`);
     const tags = item.notes.map((note) => `<span class="tag">${esc(note)}</span>`).join("");
+    const found = matchesFor(item);
     const stores = detailed
-      ? `<div class="store-links"><span class="store-label">Where to buy (Germany)</span>${storeLinks(item).map((link) => `<a class="store-link" href="${esc(link.href)}" title="${esc(link.title)}" target="_blank" rel="noopener noreferrer">${esc(link.label)} ↗</a>`).join("")}</div>`
+      ? found.length
+        ? `<div class="store-links"><span class="store-label">In stock now</span>${found.map((m) => `<a class="store-link" href="${esc(m.url)}" target="_blank" rel="noopener noreferrer">${m.favorite ? "★ " : ""}${esc(m.store)} · ${esc(m.title)}${m.price ? ` · ${m.price.toFixed(2).replace(".", ",")} €` : ""} ↗</a>`).join("")}</div>`
+        : `<p class="recommend-note">No matching bean in stock at the tracked shops right now.</p>`
       : "";
     const foot = detailed
       ? `<div class="recommend-foot"><span>${esc(item.drink)}</span></div>`
@@ -174,7 +152,7 @@
     }
     if (allRoot) {
       allRoot.innerHTML = rated.length
-        ? `<div class="recommend-grid">${results.map((entry) => card(entry, true)).join("")}</div><p class="recommend-note">These are bean styles to look for, not specific products. Roastery links open the German roasteries\u2019 homepages; “Find it” links search that shop, so availability and prices are theirs to confirm. Matches weigh the tasting notes and roast level of coffees you rated, and favour origins you have not tried yet.</p>`
+        ? `<div class="recommend-grid">${results.map((entry) => card(entry, true)).join("")}</div><p class="recommend-note">Only beans currently in stock at the tracked shops are listed, each linking straight to the product page (shop data updated ${esc(shopData.updated ? new Date(shopData.updated).toLocaleDateString("de-DE") : "not yet")}). Prices are the shops\u2019 own. Matches weigh the tasting notes and roast level of coffees you rated, and favour origins you have not tried yet.</p>`
         : empty;
       const target = location.hash && document.getElementById(location.hash.slice(1));
       if (target) { target.classList.add("is-highlighted"); target.scrollIntoView({ block: "start" }); }
@@ -182,5 +160,5 @@
   }
 
   window.addEventListener("storage", (event) => { if (event.key === STORAGE_KEY) render(); });
-  render();
+  fetch("data/shop-matches.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).catch(() => null).then((data) => { if (data && data.matches) shopData = data; render(); });
 })();
