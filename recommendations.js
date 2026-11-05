@@ -49,10 +49,10 @@
     { name: "Hoppenworth & Ploch", site: "hoppenworth-ploch.de", city: "Frankfurt", roast: [2, 3, 4] },
     { name: "Roast Market", site: "roastmarket.de", city: "Berlin", roast: [0, 1, 2, 3] }
   ];
-  // Your own favourite roasters: always shown. Only DAK has a confirmed homepage; the others open a search for their shop.
+  // Your own favourite roasters: always shown. DAK and Nativo have confirmed homepages; the others open a search for their shop.
   const FAVORITES = [
     { name: "DAK Coffee Roasters", city: "Amsterdam, ships to DE", href: "https://www.dakcoffeeroasters.com/shop/" },
-    { name: "Nativo", city: "", href: "https://www.nativocoffeeroasters.com/collections/coffee" },
+    { name: "Nativo", city: "Frankfurt", href: "https://www.nativokaffee.de/" },
     { name: "Due Mani", city: "", href: "https://www.google.com/search?q=" + encodeURIComponent("Due Mani Kaffeerösterei Bohnen kaufen") },
     { name: "Bunca", city: "", href: "https://www.google.com/search?q=" + encodeURIComponent("Bunca Kaffeerösterei Bohnen kaufen") }
   ];
