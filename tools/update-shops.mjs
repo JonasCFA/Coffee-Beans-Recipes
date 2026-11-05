@@ -40,7 +40,7 @@ const RULES = {
   "tanzania-peaberry": { country: /tanzania/, process: /peaberry/ }
 };
 
-const NON_COFFEE = /gift|geschenk|abo\b|subscription|gutschein|voucher|grinder|m[uü]hle|tasse|mug|dripper|machine|maschine|tamper|kettle|waage|scale|shirt|tote|bag clip|reiniger|cleaner|kapsel|capsule|cascara|drip bag|dripbag|sample|probier|bundle|\bbox\b|set\b|calendar|advent|hot chocolate|tree|decaf|entkoffeiniert|ground|gemahlen|instant|\bjar\b|refill|cold brew/;
+const NON_COFFEE = /gift|geschenk|abo\b|subscription|gutschein|voucher|grinder|m[uü]hle|tasse|mug|dripper|machine|maschine|tamper|kettle|waage|scale|shirt|tote|bag clip|reiniger|cleaner|kapsel|capsule|cascara|drip bag|dripbag|sample|probier|bundle|\bbox\b|set\b|calendar|advent|hot chocolate|tree|decaf|entkoffeiniert|ground|gemahlen|instant|\bjar\b|refill|cold brew|vorteilspaket|\d+ ?kg/;
 const BEAN_TYPES = /^(coffee|kaffee|filter coffee|espresso coffee|single estates|blends|röstkaffee)$/i;
 
 // Beans only: a bean-like product type, or (for shops without types) a bag of at least 200 g.
@@ -115,7 +115,11 @@ async function loadHonestRare(shop) {
       const price = after.match(/ty-price-num">\s*([\d.,]+)/);
       products.push({ title, vendor: "", product_type: "Coffee", tags: [], body_html: "", url, variants: [{ available: true, price: price ? Number(price[1].replace(/\./g, "").replace(",", ".")) : NaN, grams: 250 }] });
     }
-    if (!added) break;
+    if (!added) {
+      const i = html.indexOf("product_form");
+      console.log(`Honest & Rare page ${page}: no products parsed; markup: ${html.slice(Math.max(0, i - 300), i + 1800).replace(/\s+/g, " ")}`);
+      break;
+    }
   }
   return products;
 }
