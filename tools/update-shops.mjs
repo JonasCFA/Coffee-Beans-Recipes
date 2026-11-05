@@ -34,11 +34,11 @@ const RULES = {
   "sumatra-wet-hulled": { country: /sumatra|mandheling|indonesia|indonesien/ },
   "el-salvador-pacamara": { country: /el salvador/, process: /pacamara/ },
   "peru-or-honduras-washed": { country: /peru|honduras/, not: /decaf|entkoffeiniert/ },
-  "italian-style-espresso-blend": { country: /espresso/, process: /blend|mischung|miscela|dark|dunkel|italian/ },
+  "italian-style-espresso-blend": { head: true, country: /espresso|blend/, not: /filter/ },
   "tanzania-peaberry": { country: /tanzania/, process: /peaberry/ }
 };
 
-const NON_COFFEE = /gift|geschenk|abo\b|subscription|gutschein|voucher|grinder|m[uü]hle|tasse|mug|dripper|machine|maschine|tamper|kettle|waage|scale|shirt|tote|bag clip|reiniger|cleaner|kapsel|capsule|cascara|drip bag|dripbag|sample|probier|bundle|\bbox\b|set\b|calendar|advent|hot chocolate|tree|decaf|entkoffeiniert|ground|gemahlen|instant/;
+const NON_COFFEE = /gift|geschenk|abo\b|subscription|gutschein|voucher|grinder|m[uü]hle|tasse|mug|dripper|machine|maschine|tamper|kettle|waage|scale|shirt|tote|bag clip|reiniger|cleaner|kapsel|capsule|cascara|drip bag|dripbag|sample|probier|bundle|\bbox\b|set\b|calendar|advent|hot chocolate|tree|decaf|entkoffeiniert|ground|gemahlen|instant|\bjar\b|refill|cold brew/;
 const BEAN_TYPES = /^(coffee|kaffee|filter coffee|espresso coffee|single estates|blends|röstkaffee)$/i;
 
 // Beans only: a bean-like product type, or (for shops without types) a bag of at least 200 g.
@@ -60,13 +60,13 @@ async function loadProducts(shop) {
 }
 
 const text = (product) => [product.title, product.product_type, (product.tags || []).join(" ")].join(" ").toLowerCase();
-const blurb = (product) => String(product.body_html || "").replace(/<[^>]+>/g, " ").toLowerCase().slice(0, 300);
+const blurb = (product) => String(product.body_html || "").replace(/<[^>]+>/g, " ").toLowerCase().slice(0, 150);
 
 function matches(product, rule) {
   const head = text(product);
   const body = head + " " + blurb(product);
   if (!isBeanProduct(product) || NON_COFFEE.test(head)) return false;
-  if (!rule.country.test(rule.country.source.startsWith("espresso") ? head : body)) return false;
+  if (!rule.country.test(rule.head ? head : body)) return false;
   if (rule.process && !rule.process.test(body)) return false;
   if (rule.not && rule.not.test(head)) return false;
   return true;
@@ -85,7 +85,8 @@ for (const shop of SHOPS) {
       for (const [type, titles] of types) console.log(`TYPE ${shop.name} | ${type} | ${titles.length} | ${titles.slice(0, 3).join(" ; ")}`);
     }
     for (const product of products) {
-      const price = Math.min(...product.variants.filter((variant) => variant.available).map((variant) => Number(variant.price)));
+      const bags = product.variants.filter((variant) => variant.available && Number(variant.grams) >= 200);
+      const price = Math.min(...(bags.length ? bags : product.variants.filter((variant) => variant.available)).map((variant) => Number(variant.price)));
       for (const [id, rule] of Object.entries(RULES)) {
         if (matches(product, rule)) result.matches[id].push({ store: shop.name, city: shop.city, favorite: Boolean(shop.favorite), title: product.title, url: `${shop.base}/products/${product.handle}`, price: Number.isFinite(price) ? price : null });
       }
