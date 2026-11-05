@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f3efe8" />
-    <meta name="description" content="Explore how your saved coffee beans may taste as espresso, with dairy milk, and with oat milk." />
+    <meta name="description" content="Explore how your saved coffees may taste as espresso, with dairy milk, and with oat milk." />
     <title>Taste Maps | Daily Pour</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,29 +19,14 @@
         <nav class="main-nav" aria-label="Main navigation"><a href="./index.html#library" class="nav-link">My collection</a><a href="taste-profile.html" class="nav-link active" aria-current="page">Taste maps</a></nav>
         <a class="button button-dark" href="./index.html#library">← Back to collection</a>
       </header>
-
       <main>
-        <section class="taste-hero">
-          <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR COFFEE, THREE WAYS</p>
-          <h1>Where might this<br /><em>bean take you?</em></h1>
-          <p>Compare your saved coffees across espresso, dairy milk and oat milk. Each map plots the roaster tasting notes you saved—not a guarantee of how your cup will taste.</p>
-          <div class="source-note"><span>↗</span><span><strong>Using roaster tasting notes</strong><br />Add the official flavor notes and product URL when you save a coffee. We use those as clues and link back to the source.</span></div>
-        </section>
-
-        <section class="map-section" aria-labelledby="map-heading">
-          <div class="section-heading map-section-heading"><div><p class="eyebrow">THREE SERVING STYLES</p><h2 id="map-heading">Your taste maps</h2></div><p id="mapCount" class="section-note"></p></div>
-          <div id="profileMaps" class="profile-maps" aria-live="polite"></div>
-          <p class="map-footnote">Map positions are flavor-note estimates. Espresso parameters, milk brand, milk temperature and personal taste can change the result. Predictions are not professional cupping scores.</p>
-        </section>
-
-        <section class="bean-predictions-section">
-          <div class="section-heading"><div><p class="eyebrow">THE BEANS BEHIND THE DOTS</p><h2>Predictions & notes</h2></div><p class="section-note">Once you log a rated cup for a style, your own average appears alongside the initial estimate.</p></div>
-          <div id="predictionList" class="prediction-list"></div>
-        </section>
-
+        <section class="taste-hero"><p class="eyebrow"><span class="eyebrow-dot"></span> YOUR COFFEE, THREE WAYS</p><h1>Where might this<br /><em>bean take you?</em></h1><p>Compare saved coffees across espresso, dairy milk and oat milk. Maps use the roaster tasting notes you entered—not a guarantee of how your cup will taste.</p><div class="source-note"><span>↗</span><span><strong>Using roaster tasting notes</strong><br />Add the official flavor notes and product URL when saving a coffee. Estimates use those clues; source links let you check the roastery's description.</span></div></section>
+        <section class="map-section" aria-labelledby="map-heading"><div class="section-heading map-section-heading"><div><p class="eyebrow">THREE SERVING STYLES</p><h2 id="map-heading">Your taste maps</h2></div><p id="mapCount" class="section-note"></p></div><div id="profileMaps" class="profile-maps" aria-live="polite"></div><p class="map-footnote">Map positions are estimates from flavor notes and roast. Espresso recipe, extraction, milk brand, temperature and personal taste can change the result. Predictions are not professional cupping scores.</p></section>
+        <section class="bean-predictions-section"><div class="section-heading"><div><p class="eyebrow">THE BEANS BEHIND THE DOTS</p><h2>Predictions & notes</h2></div><p class="section-note">Rated brews for a drink style replace the initial estimate with your personal average.</p></div><div id="predictionList" class="prediction-list"></div></section>
         <footer class="site-footer"><span>Daily Pour · A little journal for curious coffee people.</span><a href="./index.html#library">Add or update coffees →</a></footer>
       </main>
     </div>
+    <script src="remove-samples.js"></script>
     <script src="taste-profile.js"></script>
   </body>
 </html>

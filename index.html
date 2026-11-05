@@ -11,27 +11,17 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="recipe.css" />
+    <link rel="stylesheet" href="flow-enhancements.css" />
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
         <a class="brand" href="#top" aria-label="Daily Pour home"><span class="brand-mark">dp</span><span class="brand-copy">daily pour<small>coffee journal</small></span></a>
-        <nav class="main-nav" aria-label="Main navigation"><a href="#library" class="nav-link active">My collection</a><a href="taste-profile.html" class="nav-link">Taste maps</a><a href="#tasteProfile" class="nav-link">Taste overview</a></nav>
+        <nav class="main-nav" aria-label="Main navigation"><a href="#library" class="nav-link active">My collection</a><a href="taste-profile.html" class="nav-link">Taste maps</a><a href="#tasteProfile" class="nav-link">My taste</a></nav>
         <button id="addBeanButton" class="button button-dark">＋ Add coffee</button>
       </header>
       <main id="top">
-        <section class="hero">
-          <div class="hero-copy">
-            <p class="eyebrow"><span class="eyebrow-dot"></span> A journal for the slow ritual</p>
-            <h1>Remember every great cup.</h1>
-            <p class="hero-text">Save the coffees you love, the roasteries you trust, the recipes that work, and every little brew note worth repeating.</p>
-            <div class="hero-actions"><button id="introAddButton" class="button button-dark">＋ Add your first coffee</button><a href="#library" class="button button-light">View collection</a></div>
-            <p class="hero-note">Roasteries like Due Mani, Munich, Berlin or Frankfurt are all welcome.</p>
-          </div>
-          <div class="hero-visual" aria-hidden="true"><div class="sun"></div><div class="ring ring-large"></div><div class="ring ring-small"></div><div class="bean-mark">✦</div><div class="hero-card"><span>roasted</span><strong>with intention</strong><small>taste notes · brew log · roastery memory</small></div></div>
-        </section>
-
-        <section id="library" class="library-section">
+        <section id="library" class="library-section collection-first">
           <div class="section-heading"><div><p class="eyebrow">your saved beans live here</p><h2>My collection <span id="visibleCount" class="count-bubble">0</span></h2></div><button id="exportButton" class="button button-light">Export journal ↓</button></div>
           <div class="toolbar">
             <label class="search-field"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Search coffee, roastery or country…" aria-label="Search coffee library" /></label>
@@ -41,6 +31,17 @@
           <div class="content-grid"><div id="beanGrid" class="bean-grid" aria-live="polite"></div><aside id="detailPanel" class="detail-panel" aria-live="polite"></aside></div>
         </section>
 
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> A journal for the slow ritual</p>
+            <h1>Remember every great cup.</h1>
+            <p class="hero-text">Save the coffees you love, the roasteries you trust, the recipes that work, and every little brew note worth repeating.</p>
+            <div class="hero-actions"><button id="introAddButton" class="button button-dark">＋ Add a coffee</button><a href="taste-profile.html" class="button button-light">Explore taste maps</a></div>
+            <p class="hero-note">A personal brew book for every roastery and every bean.</p>
+          </div>
+          <div class="hero-visual" aria-hidden="true"><div class="sun"></div><div class="ring ring-large"></div><div class="ring ring-small"></div><div class="bean-mark">✦</div><div class="hero-card"><span>roasted</span><strong>with intention</strong><small>taste notes · brew log · roastery memory</small></div></div>
+        </section>
+
         <section class="stats-row" aria-label="Coffee summary">
           <article class="stat"><span class="stat-icon">◌</span><div><strong id="beanCount">0</strong><small>coffees saved</small></div></article>
           <article class="stat"><span class="stat-icon">★</span><div><strong id="avgRating">—</strong><small>avg rating / 10</small></div></article>
@@ -48,11 +49,8 @@
           <article class="stat"><span class="stat-icon">♨</span><div><strong id="brewCount">0</strong><small>cups logged</small></div></article>
         </section>
 
-        <section id="tasteProfile" class="taste-profile-section">
-          <div class="section-heading"><div><p class="eyebrow">your palate, at a glance</p><h2>My taste profile</h2></div><p class="section-note">Built from the tasting notes on your saved coffees.</p></div>
-          <div id="tasteOverview" class="taste-overview" aria-live="polite"></div>
-        </section>
-        <section id="clusters" class="clusters-section"><div class="section-heading"><div><p class="eyebrow">taste notes</p><h2>Find your kind of coffee</h2></div><p class="section-note">Taste groups are suggestions based on your notes.</p></div><div id="clusterGrid" class="cluster-grid"></div></section>
+        <section id="tasteProfile" class="taste-profile-section"><div class="section-heading"><div><p class="eyebrow">your palate, at a glance</p><h2>My taste profile</h2></div><p class="section-note">Built from the tasting notes on your saved coffees.</p></div><div id="tasteOverview" class="taste-overview" aria-live="polite"></div></section>
+        <section id="clusters" class="clusters-section"><div class="section-heading"><div><p class="eyebrow">taste notes</p><h2>Find your kind of coffee</h2></div><p class="section-note">Taste groups are suggestions based on your notes, not hard rules.</p></div><div id="clusterGrid" class="cluster-grid"></div></section>
         <footer class="site-footer"><span>Made for coffee people.</span><span>Your beans and notes are saved in this browser.</span></footer>
       </main>
     </div>
@@ -82,14 +80,16 @@
         <label>Grind setting<input name="grind" required maxlength="50" placeholder="e.g. 18 on Niche" /></label><label>Water temperature<input name="water" maxlength="20" placeholder="e.g. 93°C" /></label>
         <label>Brew method<input name="method" required maxlength="50" placeholder="Espresso, V60…" /></label><label>Drink style<select name="drinkStyle"><option value="black">Espresso · black</option><option value="milk">Espresso · dairy milk</option><option value="oat">Espresso · oat milk</option></select></label>
         <label>Pre-infusion / bloom<input name="preInfusion" maxlength="40" placeholder="e.g. 5 seconds" /></label><label>Pressure (bar)<input name="pressure" type="number" min="0" max="15" step="0.1" placeholder="e.g. 9" /></label>
-        <label>Target flow time (s)<input name="targetFlowTime" maxlength="30" placeholder="e.g. 27–32" /><small class="field-help">Suggested time window; machine timing conventions vary.</small></label><label>Actual shot time (s)<input name="flowTime" type="number" min="0" max="180" step="0.1" placeholder="e.g. 30" /><small class="field-help">Record from pump start to target yield.</small></label>
+        <label>Target flow time (s)<input name="targetFlowTime" maxlength="30" placeholder="e.g. 27–32" /><small class="field-help">Suggested from dose, yield, roast and notes. Timed from pump start, including pre-infusion.</small></label>
+        <label>Actual shot time (s)<input name="actualFlowTime" type="number" min="1" max="180" step="0.1" placeholder="Log after brewing" /><small class="field-help">Use the same pump-start-to-target convention as the target.</small></label>
         <label class="wide">Pressure profile<input name="pressureProfile" maxlength="80" placeholder="e.g. 3 bar pre-infusion → 9 bar" /></label>
-        <label class="wide rating-field">Cup rating <span class="rating-value"><output id="ratingOutput">Not rated</output><small> / 10</small></span><input name="rating" id="ratingInput" class="rating-range" type="range" min="0" max="10" step="0.5" value="7" /><span class="range-hint"><span>0 · Not for me</span><label class="unrated-toggle"><input id="unratedCheckbox" type="checkbox" checked /> Leave this cup unrated</label><span>10 · Excellent</span></span></label>
+        <label class="wide rating-field">Cup rating <span class="rating-value"><output id="ratingOutput">Not rated</output><small> / 10</small></span><input name="rating" id="ratingInput" class="rating-range" type="range" min="0" max="10" step="0.5" value="8" /><span class="range-hint"><label class="unrated-toggle"><input id="unratedCheckbox" type="checkbox" checked /> Leave this cup unrated</label><span>0 = not for me · 10 = exceptional</span></span></label>
         <label class="wide">Brew notes<textarea name="notes" rows="3" maxlength="500" placeholder="What did you taste? What will you change next time?"></textarea></label>
       </div>
       <div class="dialog-actions"><button type="button" class="button button-light" data-close>Cancel</button><button type="submit" class="button button-dark">Save latest recipe</button></div>
     </form></dialog>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="script.js"></script>
+    <script src="flow-enhancements.js"></script>
   </body>
 </html>

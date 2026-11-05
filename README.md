@@ -1,28 +1,28 @@
 # Daily Pour — Coffee Journal
 
-A premium-feeling coffee journal for roasteries, tasting notes, personalized recipes and brew logs. It runs as a static website on GitHub Pages.
+A premium-feeling coffee journal for roasteries, tasting notes, recipes and brew logs. It runs as a static website on GitHub Pages.
 
 ## Collection and sample data
 
-The collection is at the top of the homepage, directly below the hero. Saved coffees and brew history live in this browser. The starter example coffees Monsoon Reserve, Velvet Cherry, Yirgacheffe Sunrise and Maya Estate are removed from the current collection and no longer seeded. To keep them in a different browser or old backup, restore them manually from your own backup if needed.
+**My collection is now directly below the header** at the top of the homepage. Saved coffees and brew history live in this browser. The four demo entries—Monsoon Reserve, Velvet Cherry, Yirgacheffe Sunrise (including the requested Yirgaffe spelling), and Maya Estate—are removed from stored collections and sample data.
 
-## Espresso shot-time guidance
+## Espresso flow-time estimate
 
-Espresso starter recipes include a suggested target flow-time window as well as dose, yield, ratio, grind guidance, water, pre-infusion and pressure. The estimate uses the entered roast level and roaster tasting notes: bright/light profiles start with a somewhat longer ratio and time window; darker/chocolate-forward profiles start shorter. The baseline uses 18g in, with example windows of 28–34s (bright), 24–30s (dark) and 26–32s (balanced). These are practical starting estimates, not a scientifically guaranteed “perfect” extraction. The timer should be measured from pump activation to target yield, but machine timers treat pre-infusion differently. Grinder, basket, machine, roast age, dose, pressure behavior and taste all matter.
+Starter espresso recipes include dose, yield, ratio, grind guidance, water, pre-infusion, pressure and a suggested target flow-time window. The estimate starts with a practical 18g in / 40g out baseline and adjusts slightly for dose, brew ratio, roast level and roaster tasting notes. For example, a brighter/light coffee is suggested a little longer, while a darker/roasty coffee is suggested a little shorter.
 
-Record the actual shot time after brewing. Keep the target and actual time visible per bean, and adjust one variable at a time: if the shot tastes sour/thin, try a finer grind or slightly longer yield; if bitter/dry, try a coarser grind or slightly shorter yield. Do not rely on time alone—taste is the judge. Filter recipes show a broader total brew/drawdown window rather than espresso shot time.
+The target is a **dial-in starting window**, not a promise of perfect taste or a professional extraction calculation. Timing convention in the app is pump start through target yield, including pre-infusion; use the same convention for the actual time. Grinder, basket, machine, pre-infusion behavior, coffee age and water all matter. Log the actual shot time and cup rating, then change one variable at a time. If sour/thin, try a finer grind or slightly longer yield; if harsh/bitter, try a coarser grind or shorter yield. Taste is the final test.
+
+## Per-bean recipe memory
+
+Select a bean and use **Adjust recipe / log brew**. The latest dose, yield, grind, temperature, method, drink style, pre-infusion, pressure, target time and actual shot time are remembered for that bean. Switching beans recalls each bean's own recipe; previous brews remain in the history.
 
 ## Taste map
 
-Open `taste-profile.html` for maps of espresso black, espresso with dairy milk and espresso with oat milk. Saved coffees are plotted from the tasting notes and roast level entered on the homepage. Estimates are heuristic guesses and update to your personal rated brews when available. The product URL is a reference link; GitHub Pages does not fetch or verify arbitrary roastery websites.
+Open `taste-profile.html` for maps of espresso black, espresso with dairy milk and espresso with oat milk. Saved coffees are plotted from the tasting notes and roast level entered on the homepage. Drink-style scores are estimates until you log rated cups in that style. The product URL is a reference link; GitHub Pages does not fetch or verify website content.
 
-## Other features
+## Ratings and data
 
-- Save coffees with roastery, location, origin, roast date, roast level, taste notes, method and product URL. German and international roasteries are supported.
-- Log dose, yield, actual and target shot time, grind, water temperature, pressure, pressure profile, pre-infusion, drink style, rating (0–10) and notes.
-- Latest recipe is saved separately per bean; older brews remain in history.
-- Search, filter, sort, favorite and export a JSON backup.
-- Automatically group saved tasting notes and show a taste overview.
+Cup ratings use **0–10**, where 10 is best. A brew can be left unrated or explicitly scored 0. Data is stored in this browser's localStorage, not synced between devices. Use **Export journal** for a JSON backup.
 
 ## Run locally
 
