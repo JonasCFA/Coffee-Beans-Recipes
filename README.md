@@ -1,52 +1,41 @@
 # Daily Pour — Coffee Journal
 
-A premium-feeling coffee journal for roasteries, tasting notes, recipes and brew logs. It runs as a static website and works perfectly on GitHub Pages.
+A premium-feeling coffee journal for roasteries, tasting notes, recipes and brew logs. It runs as a static website and works on GitHub Pages.
 
-## Features
+## Recipe suggestions and dialing in
 
-- Save coffee beans with roastery, country/location, origin, roast date, roast level, tasting notes and product URL.
-- Use a free-text roastery field so German roasteries and local coffee brands work without restrictions.
-- Click a coffee to view its recipe, taste group, recent brew history and favorite state.
-- Log brews with dose, yield, grind setting, water temperature, brew method, pre-infusion, rating and notes.
-- Search, filter and sort the collection by rating, roast date, recency and name.
-- Keep an automatically grouped taste profile for each coffee.
-- Download the full journal as a JSON backup.
-- Save everything in browser localStorage.
+When you add a coffee, the app creates a **suggested starting recipe** using its roast level, tasting notes and selected brew method. For espresso, the starting point is typically 18g in, with a shorter yield for darker/chocolate-forward coffees, a longer yield for lighter/brighter coffees, and a temperature adjusted accordingly. Filter methods get a separate starting dose, water amount, grind guidance and bloom/steep suggestion.
 
-## Roastery website search
+These are general starting points—not a guaranteed perfect recipe. Grind numbers are grinder-specific, so the app does not invent a setting for an unknown grinder. It suggests that you dial in for your grinder, then lets you enter the setting that works for you.
 
-This site can open a search for a roastery and store the official product URL if you paste it. It does not automatically scrape arbitrary roastery websites from the browser because GitHub Pages is a static site and many roastery sites block cross-origin access.
+Use **Adjust recipe / log brew** on a selected bean to edit dose, yield, grind, temperature, brew method and pre-infusion. Save the outcome and it becomes that bean's latest recipe. Each brew is also kept in its history, so switching beans brings back each bean's own last saved settings.
 
-This is the correct approach for a premium static app:
+## Rating
 
-- Enter roastery name and location.
-- Click Search roastery.
-- Verify the correct official site in the browser.
-- Paste the official product page URL in the form.
-- Save the coffee.
+Brew ratings use a 0–10 scale (10 is best). The bean's displayed rating is the average of its rated brews; if it has no rated brews, it is shown as not rated unless there is a migrated legacy rating.
 
-If you want automatic extraction from a roastery website, a small backend/API is needed. That backend can fetch the page and normalize details (name, address, website, email, phone and about text), but the data should still be editable before saving.
+## Other features
+
+- Save coffees with roastery, location, origin, roast date, roast level, tasting notes and product URL.
+- Free-text roastery names support German and international roasters.
+- Search, filter and sort the collection; favorite coffees; export a JSON backup.
+- Automatically group tasting notes into broad taste families.
+- Save data in browser localStorage.
+
+## Existing data
+
+On first load after this update, saved data from the earlier app version is migrated to the new storage key. Its previous 0–5 ratings are converted to the new 0–10 scale. The starter recipe is added to older beans that do not yet have a saved recipe.
+
+## Roastery website lookup
+
+The roastery search opens a web search and lets you save a product-page URL. GitHub Pages cannot reliably scrape arbitrary sites from the browser; automated import requires a backend/API. Verify information on the roaster's official site before saving.
 
 ## Run locally
 
-Open `index.html` directly in a browser, or serve the folder:
+Open `index.html` directly, or serve the folder:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then visit:
-
-- http://localhost:8000
-
-## Publish on GitHub Pages
-
-In the repository:
-
-1. Open Settings > Pages
-2. Set Source to Deploy from a branch
-3. Select branch `main`
-4. Choose the `/root` folder
-5. Save
-
-GitHub will publish the page and show the live URL.
+Then visit http://localhost:8000.
