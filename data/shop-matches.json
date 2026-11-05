@@ -1,1 +1,312 @@
-{"updated":null,"matches":{}}
+{
+ "updated": "2026-11-05T13:08:41.058Z",
+ "shops": {
+  "DAK Coffee Roasters": {
+   "ok": false,
+   "error": "HTTP 404"
+  },
+  "Nativo": {
+   "ok": true,
+   "products": 29
+  },
+  "Due Mani": {
+   "ok": false,
+   "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+  },
+  "Bunca": {
+   "ok": true,
+   "products": 35
+  },
+  "Bonanza Coffee": {
+   "ok": true,
+   "products": 18
+  },
+  "The Barn": {
+   "ok": true,
+   "products": 107
+  },
+  "Five Elephant": {
+   "ok": true,
+   "products": 111
+  },
+  "Public Coffee Roasters": {
+   "ok": false,
+   "error": "HTTP 404"
+  },
+  "Man Versus Machine": {
+   "ok": false,
+   "error": "fetch failed"
+  },
+  "Röststätte": {
+   "ok": false,
+   "error": "fetch failed"
+  },
+  "Coffee Circle": {
+   "ok": false,
+   "error": "HTTP 404"
+  },
+  "Elbgold": {
+   "ok": true,
+   "products": 55
+  },
+  "Hoppenworth & Ploch": {
+   "ok": true,
+   "products": 45
+  },
+  "Roast Market": {
+   "ok": false,
+   "error": "HTTP 404"
+  }
+ },
+ "matches": {
+  "ethiopia-natural-guji-yirgacheffe": [
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "HARIO V60 DRIPPER 01",
+    "url": "https://www.elbgold.com/products/hario-v60-dripper-01",
+    "price": 18.9
+   },
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "HARIO V60 DRIPPER 02",
+    "url": "https://www.elbgold.com/products/hario-v60",
+    "price": 21.9
+   }
+  ],
+  "ethiopia-washed-yirgacheffe-gedeb": [
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "HARIO V60 DRIPPER 01",
+    "url": "https://www.elbgold.com/products/hario-v60-dripper-01",
+    "price": 18.9
+   },
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "HARIO V60 DRIPPER 02",
+    "url": "https://www.elbgold.com/products/hario-v60",
+    "price": 21.9
+   }
+  ],
+  "kenya-aa-washed": [
+   {
+    "store": "Five Elephant",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "KENYA Gondo AB – Espresso",
+    "url": "https://fiveelephant.com/products/kenya-gondo-ab-espresso",
+    "price": 15.89
+   },
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "KENIA DECAF",
+    "url": "https://www.elbgold.com/products/kenia-decaf",
+    "price": 9.9
+   }
+  ],
+  "colombia-washed-huila-narino": [
+   {
+    "store": "Five Elephant",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "COLOMBIA Manos Juntas –  Holiday Espresso",
+    "url": "https://fiveelephant.com/products/colombia-manos-juntas-holiday-espresso",
+    "price": 6.5
+   },
+   {
+    "store": "Five Elephant",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "COLOMBIA Finca El Mesón – Espresso",
+    "url": "https://fiveelephant.com/products/colombia-finca-meson-espresso",
+    "price": 6.5
+   },
+   {
+    "store": "Hoppenworth & Ploch",
+    "city": "Frankfurt",
+    "favorite": false,
+    "title": "[CASCARA] Juan Pablo Marcel Mauricio - Kolumbien",
+    "url": "https://www.hoppenworth-ploch.de/products/cascara",
+    "price": 12.48
+   }
+  ],
+  "colombia-pink-bourbon": [
+   {
+    "store": "Five Elephant",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "COLOMBIA Finca El Mesón – Espresso",
+    "url": "https://fiveelephant.com/products/colombia-finca-meson-espresso",
+    "price": 6.5
+   },
+   {
+    "store": "Five Elephant",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "COLOMBIA La Palma – Espresso",
+    "url": "https://fiveelephant.com/products/colombia-la-palma-espresso",
+    "price": 20.47
+   },
+   {
+    "store": "Hoppenworth & Ploch",
+    "city": "Frankfurt",
+    "favorite": false,
+    "title": "[CASCARA] Juan Pablo Marcel Mauricio - Kolumbien",
+    "url": "https://www.hoppenworth-ploch.de/products/cascara",
+    "price": 12.48
+   }
+  ],
+  "brazil-natural-cerrado-mogiana": [
+   {
+    "store": "Bunca",
+    "city": "",
+    "favorite": true,
+    "title": "SHADOW BLEND",
+    "url": "https://bunca.coffee/products/shadow-blend-kapseln",
+    "price": 13.9
+   },
+   {
+    "store": "Bunca",
+    "city": "",
+    "favorite": true,
+    "title": "ROAR",
+    "url": "https://bunca.coffee/products/roar",
+    "price": 20.9
+   },
+   {
+    "store": "The Barn",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "SUNDROP PEABERRY",
+    "url": "https://www.thebarn.de/products/sundrop-peaberry",
+    "price": 15.9
+   },
+   {
+    "store": "The Barn",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "DONATE A TREE",
+    "url": "https://www.thebarn.de/products/plant-a-tree",
+    "price": 3
+   },
+   {
+    "store": "Hoppenworth & Ploch",
+    "city": "Frankfurt",
+    "favorite": false,
+    "title": "[ONLINE SPECIAL] JOHN DEGENKOLB - PARIS ROUBAIX SIGNATURE ESPRESSO",
+    "url": "https://www.hoppenworth-ploch.de/products/special-john-degenkolb-paris-roubaix-espresso",
+    "price": 15.91
+   }
+  ],
+  "guatemala-huehuetenango-antigua": [
+   {
+    "store": "Bunca",
+    "city": "",
+    "favorite": true,
+    "title": "VELVET BERRY",
+    "url": "https://bunca.coffee/products/velvet-berry",
+    "price": 12.9
+   },
+   {
+    "store": "The Barn",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "CASCARA COFFEE CHERRY",
+    "url": "https://www.thebarn.de/products/cascara-coffee-cherry",
+    "price": 12
+   },
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "LA MARAVILLA",
+    "url": "https://www.elbgold.com/products/la-maravilla",
+    "price": 12.9
+   }
+  ],
+  "costa-rica-honey-process": [],
+  "panama-geisha": [],
+  "rwanda-burundi-washed": [
+   {
+    "store": "The Barn",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "GATARE",
+    "url": "https://www.thebarn.de/products/gatare",
+    "price": 16
+   },
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "NOBILE",
+    "url": "https://www.elbgold.com/products/nobile",
+    "price": 10.9
+   }
+  ],
+  "sumatra-wet-hulled": [],
+  "el-salvador-pacamara": [],
+  "peru-or-honduras-washed": [
+   {
+    "store": "Nativo",
+    "city": "Frankfurt",
+    "favorite": true,
+    "title": "Buena Vista",
+    "url": "https://www.nativokaffee.de/products/buena-vista",
+    "price": 13.5
+   },
+   {
+    "store": "Nativo",
+    "city": "Frankfurt",
+    "favorite": true,
+    "title": "Santa Ana",
+    "url": "https://www.nativokaffee.de/products/santa-ana",
+    "price": 15
+   }
+  ],
+  "italian-style-espresso-blend": [
+   {
+    "store": "Five Elephant",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Meraki. House Blend - Espresso Coffee",
+    "url": "https://fiveelephant.com/products/meraki-house-blend-espresso-coffee",
+    "price": 11.68
+   },
+   {
+    "store": "Five Elephant",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "House – Espresso Coffee",
+    "url": "https://fiveelephant.com/products/house-espresso-coffee",
+    "price": 11.68
+   },
+   {
+    "store": "Elbgold",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "NOBILE",
+    "url": "https://www.elbgold.com/products/nobile",
+    "price": 10.9
+   },
+   {
+    "store": "Hoppenworth & Ploch",
+    "city": "Frankfurt",
+    "favorite": false,
+    "title": "[ONLINE SPECIAL] JOHN DEGENKOLB - PARIS ROUBAIX SIGNATURE ESPRESSO",
+    "url": "https://www.hoppenworth-ploch.de/products/special-john-degenkolb-paris-roubaix-espresso",
+    "price": 15.91
+   }
+  ],
+  "tanzania-peaberry": []
+ }
+}
