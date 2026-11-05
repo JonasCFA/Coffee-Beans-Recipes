@@ -1,118 +1,47 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Coffee Beans Recipes</title>
-    <meta
-      name="description"
-      content="Coffee beans library with taste profiles, recipes, bean clusters and brewing ratings."
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f3ed" />
+    <meta name="description" content="A personal coffee journal for beans, tasting notes, recipes and brew results." />
+    <title>Daily Pour — Coffee journal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="page-shell">
+    <div class="app-shell">
       <header class="topbar">
-        <div class="brand-wrap">
-          <div class="brand-mark">CB</div>
-          <div>
-            <p class="eyebrow">Coffee system</p>
-            <h1>Coffee Beans Library</h1>
-          </div>
-        </div>
-
-        <nav class="nav">
-          <a href="#library">Library</a>
-          <a href="#clusters">Clusters</a>
-          <a href="#favorites">Favorites</a>
-        </nav>
+        <a class="brand" href="#top" aria-label="Daily Pour home"><span class="brand-icon">dp.</span><span>daily pour<small>YOUR COFFEE JOURNAL</small></span></a>
+        <nav aria-label="Main navigation"><a class="nav-link active" href="#library">My coffees</a><a class="nav-link" href="#clusters">Taste groups</a></nav>
+        <button id="addBeanButton" class="button button-dark"><span aria-hidden="true">＋</span> Add a coffee</button>
       </header>
 
-      <main>
-        <section class="hero card">
-          <div class="hero-copy">
-            <p class="eyebrow accent">Roast notes · recipe memory · brew tracking</p>
-            <h2>Keep every bean, recipe and roast profile in one place.</h2>
-            <p>
-              Save each coffee, track its tasting profile, compare your last grind size,
-              and keep the recipe that actually worked best.
-            </p>
-            <div class="hero-actions">
-              <button class="primary-btn">Add new bean</button>
-              <button class="secondary-btn">View clusters</button>
-            </div>
-          </div>
-
-          <div class="hero-stats">
-            <article>
-              <span>Beans</span>
-              <strong id="beanCount">0</strong>
-            </article>
-            <article>
-              <span>Avg rating</span>
-              <strong id="avgRating">0.0</strong>
-            </article>
-            <article>
-              <span>Clusters</span>
-              <strong id="clusterCount">0</strong>
-            </article>
-          </div>
+      <main id="top">
+        <section class="intro">
+          <div class="intro-copy"><p class="overline"><span class="status-dot"></span> YOUR PERSONAL BREW BOOK</p><h1>A better cup starts<br />with <em>remembering.</em></h1><p class="intro-text">Keep the coffees you love, the recipes that work, and every little adjustment in one calm place.</p><button id="introAddButton" class="button button-dark">＋ Add your first coffee</button></div>
+          <div class="coffee-art" aria-hidden="true"><div class="art-sun"></div><div class="art-branch">✳</div><div class="art-label"><span>GOOD COFFEE<br />IS A PRACTICE</span><b>01 — 06</b></div></div>
         </section>
+
+        <section class="stats-row" aria-label="Coffee collection summary"><div class="stat"><span class="stat-icon">◉</span><div><strong id="beanCount">0</strong><small>COFFEES SAVED</small></div></div><div class="stat"><span class="stat-icon">★</span><div><strong id="avgRating">—</strong><small>YOUR AVERAGE RATING</small></div></div><div class="stat"><span class="stat-icon">⌘</span><div><strong id="clusterCount">0</strong><small>TASTE GROUPS</small></div></div><div class="stat"><span class="stat-icon">♨</span><div><strong id="brewCount">0</strong><small>BREWS LOGGED</small></div></div></section>
 
         <section id="library" class="library-section">
-          <div class="toolbar card">
-            <label class="search-box">
-              <span>Search bean</span>
-              <input id="searchInput" type="text" placeholder="Find a roaster or bean" />
-            </label>
-
-            <label>
-              <span>Filter cluster</span>
-              <select id="clusterFilter">
-                <option value="all">All clusters</option>
-              </select>
-            </label>
-
-            <label>
-              <span>Sort by</span>
-              <select id="sortSelect">
-                <option value="rating">Best rating</option>
-                <option value="date">Newest roast</option>
-                <option value="name">Bean name</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="library-grid">
-            <div id="beanGrid" class="bean-grid" aria-live="polite"></div>
-
-            <aside id="detailPanel" class="detail-panel card" aria-live="polite">
-              <div class="blank-state">
-                <div class="empty-icon">☕</div>
-                <h3>Select a coffee</h3>
-                <p>Choose any bean to see its taste profile, recipe and grinder setup.</p>
-              </div>
-            </aside>
-          </div>
+          <div class="section-heading"><div><p class="overline">THE COLLECTION</p><h2>Your coffees<span id="visibleCount" class="count-bubble">0</span></h2></div><button id="exportButton" class="button button-light">Download backup ↓</button></div>
+          <div class="toolbar"><label class="search-field"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Search coffee, roaster, origin…" aria-label="Search coffees" /></label><label class="select-wrap"><span class="sr-only">Filter by taste group</span><select id="clusterFilter"><option value="all">All taste groups</option></select></label><label class="select-wrap"><span class="sr-only">Sort coffees</span><select id="sortSelect"><option value="rating">Top rated</option><option value="recent">Recently added</option><option value="roast">Roast date</option><option value="name">Name A–Z</option></select></label></div>
+          <div class="content-grid"><div id="beanGrid" class="bean-grid" aria-live="polite"></div><aside id="detailPanel" class="detail-panel" aria-live="polite"></aside></div>
         </section>
 
-        <section id="clusters" class="clusters-section">
-          <div class="section-header">
-            <p class="eyebrow">Automatic grouping</p>
-            <h3>Bean clusters</h3>
-          </div>
-
-          <div id="clusterGrid" class="cluster-grid"></div>
-        </section>
+        <section id="clusters" class="clusters-section"><div class="section-heading"><div><p class="overline">A LITTLE PATTERN-FINDING</p><h2>Taste groups</h2></div><p class="section-note">Grouped automatically from tasting notes. Change the notes and the groups update.</p></div><div id="clusterGrid" class="cluster-grid"></div></section>
+        <footer><span>Made for curious coffee people.</span><span>Your data stays in this browser.</span></footer>
       </main>
     </div>
 
+    <dialog id="beanDialog" class="dialog"><form id="beanForm" class="dialog-card"><div class="dialog-heading"><div><p class="overline">ADD TO YOUR JOURNAL</p><h2>A new coffee</h2></div><button type="button" class="icon-button" data-close aria-label="Close">×</button></div><p class="form-hint">German roasters are welcome—enter any roaster name and location.</p><div class="form-grid"><label class="wide">Coffee / lot name<input name="name" required maxlength="80" placeholder="e.g. Los Nogales — Anaerobic" /></label><label>Roastery<input name="roaster" required maxlength="80" placeholder="Any roastery, including German ones" /></label><label>Roastery location<input name="roasterLocation" maxlength="80" placeholder="e.g. Berlin, Germany" /></label><label>Origin<input name="origin" maxlength="80" placeholder="e.g. Huila, Colombia" /></label><label>Roast date<input name="roastDate" type="date" /></label><label class="wide">Tasting notes<input name="profile" maxlength="180" placeholder="peach, jasmine, honey — separate with commas" /></label><label class="wide">Roaster / product page (optional)<input name="productUrl" type="url" placeholder="https://…" /></label><label>Roast level<select name="roastLevel"><option>Light</option><option>Light-medium</option><option selected>Medium</option><option>Medium-dark</option><option>Dark</option></select></label><label>Starting rating<select name="rating"><option value="0">Not rated yet</option><option value="1">1 star</option><option value="2">2 stars</option><option value="3">3 stars</option><option value="4">4 stars</option><option value="5">5 stars</option></select></label></div><div class="dialog-actions"><button type="button" class="button button-light" data-close>Cancel</button><button type="submit" class="button button-dark">Save coffee</button></div></form></dialog>
+
+    <dialog id="brewDialog" class="dialog"><form id="brewForm" class="dialog-card"><div class="dialog-heading"><div><p class="overline">SAVE A BREW</p><h2>How did it taste?</h2></div><button type="button" class="icon-button" data-close aria-label="Close">×</button></div><p id="brewBeanName" class="form-hint"></p><div class="form-grid"><label>Dose in (g)<input name="dose" type="number" min="1" max="100" step="0.1" required /></label><label>Yield out (g)<input name="output" type="number" min="1" max="500" step="0.1" required /></label><label>Grind setting<input name="grind" required maxlength="40" placeholder="e.g. 18 on Niche" /></label><label>Water temperature<input name="water" maxlength="20" placeholder="e.g. 93°C" /></label><label>Brew method<input name="method" maxlength="40" placeholder="Espresso, V60…" /></label><label>Pre-infusion<input name="preInfusion" maxlength="30" placeholder="e.g. 5 seconds" /></label><label class="wide">Your rating <span class="rating-picker" role="radiogroup" aria-label="Rating"><button type="button" data-rating="1" aria-label="1 star">☆</button><button type="button" data-rating="2" aria-label="2 stars">☆</button><button type="button" data-rating="3" aria-label="3 stars">☆</button><button type="button" data-rating="4" aria-label="4 stars">☆</button><button type="button" data-rating="5" aria-label="5 stars">☆</button></span><input name="rating" type="hidden" value="0" /></label><label class="wide">Brew notes<textarea name="notes" rows="3" maxlength="500" placeholder="What worked? What would you change next time?"></textarea></label></div><div class="dialog-actions"><button type="button" class="button button-light" data-close>Cancel</button><button type="submit" class="button button-dark">Save brew</button></div></form></dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="script.js"></script>
   </body>
 </html>
