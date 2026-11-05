@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T13:23:14.603Z",
+ "updated": "2026-11-05T13:25:12.142Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -180,19 +180,19 @@
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "roastmarket ORIGINS KENYA Vorteilspaket 1kg",
+    "title": "roastmarket ORIGINS KENYA",
     "roaster": "",
-    "url": "https://www.roastmarket.de/roastmarket-origins-kenya-vorteilspaket-1kg.html",
-    "price": 35.99
+    "url": "https://www.roastmarket.de/roastmarket-origins-kenya.html",
+    "price": 9.99
    },
    {
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "roastmarket ORIGINS KENYA",
+    "title": "Coffee Annan Uganda Filter 350g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/roastmarket-origins-kenya.html",
-    "price": 9.99
+    "url": "https://www.roastmarket.de/coffee-annan-uganda-filter-350g.html",
+    "price": 15.99
    }
   ],
   "colombia-washed-huila-narino": [
@@ -356,19 +356,19 @@
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Caffè Toraldo Miscela Rosso 1kg",
+    "title": "Supremo Tesouro Brazil",
     "roaster": "",
-    "url": "https://www.roastmarket.de/caffe-toraldo-miscela-rosso-1kg.html",
-    "price": 27.99
+    "url": "https://www.roastmarket.de/supremo-tesouro-brazil.html",
+    "price": 9.49
    },
    {
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Supremo Tesouro Brazil 1kg",
+    "title": "roastmarket ORIGINS BRAZIL",
     "roaster": "",
-    "url": "https://www.roastmarket.de/supremo-tesouro-brazil-1kg.html",
-    "price": 34.99
+    "url": "https://www.roastmarket.de/roastmarket-origins-brazil.html",
+    "price": 9.99
    }
   ],
   "guatemala-huehuetenango-antigua": [
@@ -667,10 +667,10 @@
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Gorilla Café Creme Vorteilspaket 8kg",
+    "title": "Coffee Annan House Blend 350g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/gorilla-cafe-creme-vorteilspaket-8kg.html",
-    "price": 178.99
+    "url": "https://www.roastmarket.de/coffee-annan-house-blend-350g.html",
+    "price": 12.99
    }
   ],
   "tanzania-peaberry": []
