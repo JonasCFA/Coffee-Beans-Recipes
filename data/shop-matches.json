@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T13:12:59.061Z",
+ "updated": "2026-11-05T13:14:04.883Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": false,
@@ -404,60 +404,20 @@
     "price": 19.9
    },
    {
-    "store": "The Barn",
+    "store": "Five Elephant",
     "city": "Berlin",
     "favorite": false,
-    "title": "SUNDROP PEABERRY",
-    "url": "https://www.thebarn.de/products/sundrop-peaberry",
-    "price": 15.9
-   },
-   {
-    "store": "The Barn",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "LOS PIRINEOS BOURBON",
-    "url": "https://www.thebarn.de/products/los-pirineos-bourbon-elite",
-    "price": 16.4
+    "title": "Meraki. House Blend - Espresso Coffee",
+    "url": "https://fiveelephant.com/products/meraki-house-blend-espresso-coffee",
+    "price": 11.68
    },
    {
     "store": "Five Elephant",
     "city": "Berlin",
     "favorite": false,
-    "title": "COLOMBIA Manos Juntas –  Holiday Espresso",
-    "url": "https://fiveelephant.com/products/colombia-manos-juntas-holiday-espresso",
-    "price": 17.66
-   },
-   {
-    "store": "Five Elephant",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "COLOMBIA Finca El Mesón – Espresso",
-    "url": "https://fiveelephant.com/products/colombia-finca-meson-espresso",
-    "price": 22.43
-   },
-   {
-    "store": "Elbgold",
-    "city": "Hamburg",
-    "favorite": false,
-    "title": "LA MARAVILLA",
-    "url": "https://www.elbgold.com/products/la-maravilla",
-    "price": 12.9
-   },
-   {
-    "store": "Elbgold",
-    "city": "Hamburg",
-    "favorite": false,
-    "title": "GAME CHANGER",
-    "url": "https://www.elbgold.com/products/game-changer",
-    "price": 40.9
-   },
-   {
-    "store": "Hoppenworth & Ploch",
-    "city": "Frankfurt",
-    "favorite": false,
-    "title": "[ONLINE SPECIAL] JOHN DEGENKOLB - PARIS ROUBAIX SIGNATURE ESPRESSO",
-    "url": "https://www.hoppenworth-ploch.de/products/special-john-degenkolb-paris-roubaix-espresso",
-    "price": 15.91
+    "title": "House – Espresso Coffee",
+    "url": "https://fiveelephant.com/products/house-espresso-coffee",
+    "price": 11.68
    }
   ],
   "tanzania-peaberry": []
