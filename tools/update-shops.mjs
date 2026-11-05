@@ -16,16 +16,9 @@ const SHOPS = [
   { name: "Coffee Circle", city: "Berlin", base: "https://www.coffeecircle.com" },
   { name: "Elbgold", city: "Hamburg", base: "https://www.elbgold.com" },
   { name: "Hoppenworth & Ploch", city: "Frankfurt", base: "https://www.hoppenworth-ploch.de" },
-  { name: "Roast Market", city: "Berlin", base: "https://roastmarket.de" },
   // Multi-roaster shops: several different roasteries in one place.
-  { name: "Honest & Rare", city: "Germany", base: "https://www.honest-rare.de", multi: true },
-  { name: "Kaffeekollektiv", city: "Germany", base: "https://www.kaffeekollektiv.de", multi: true },
-  { name: "Kaffeezentrale", city: "Germany", base: "https://www.kaffeezentrale.de", multi: true },
-  { name: "Coffee Friends", city: "Germany", base: "https://www.coffeefriends.de", multi: true },
-  { name: "Nordic Approach", city: "Europe", base: "https://nordicapproach.com", multi: true },
-  { name: "Kaffeetreff", city: "Germany", base: "https://www.kaffeetreff.de", multi: true },
-  { name: "Bean Brothers", city: "Germany", base: "https://www.beanbrothers.de", multi: true },
-  { name: "Roastery Box", city: "Germany", base: "https://www.roasteryshop.de", multi: true }
+  { name: "Roast Market", city: "Germany", base: "https://www.roastmarket.de", multi: true, loader: "roastmarket" },
+  { name: "Honest & Rare", city: "Germany", base: "https://www.honest-rare.de", multi: true, loader: "honestrare" }
 ];
 
 // Keys are the slugified catalog titles from recommendations.js.
@@ -87,7 +80,49 @@ async function loadWoo(shop) {
   return products;
 }
 
+// Roast Market exposes a Vue Storefront (Elasticsearch) catalog API.
+async function loadRoastMarket(shop) {
+  const products = [];
+  for (let from = 0; from < 4000; from += 500) {
+    const request = { query: { bool: { filter: [{ term: { status: 1 } }] } }, from, size: 500, _source: ["name", "url_path", "url_key", "price", "final_price", "stock", "meta_description"] };
+    const data = await getJson(`${shop.base}/api/catalog/vue_storefront_catalog/product/_search?request=${encodeURIComponent(JSON.stringify(request))}`);
+    const hits = data.hits?.hits || [];
+    for (const { _source: item } of hits) {
+      const path = item.url_path || (item.url_key ? `${item.url_key}.html` : "");
+      if (!path || !item.name) continue;
+      products.push({ title: item.name, vendor: "", product_type: "Coffee", tags: [], body_html: item.meta_description || "", url: `${shop.base}/${path.replace(/^\//, "")}`, variants: [{ available: item.stock ? item.stock.is_in_stock !== false : true, price: Number(item.final_price || item.price), grams: 250 }] });
+    }
+    if (hits.length < 500) break;
+  }
+  return products;
+}
+
+// Honest & Rare (CS-Cart): server-rendered listing pages of coffee beans.
+async function loadHonestRare(shop) {
+  const products = [];
+  const seen = new Set();
+  for (let page = 1; page <= 20; page++) {
+    const response = await fetch(`${shop.base}/kaffeebohnen/${page > 1 ? `page-${page}/` : ""}`, { headers: { "user-agent": "daily-pour-bean-finder/1.0" }, signal: AbortSignal.timeout(25000) });
+    if (!response.ok) { if (page === 1) throw new Error(`HTTP ${response.status}`); break; }
+    const html = await response.text();
+    let added = 0;
+    for (const match of html.matchAll(/<a[^>]+href="([^"]+)"[^>]*class="[^"]*product-title[^"]*"[^>]*>([\s\S]*?)<\/a>/g)) {
+      const url = match[1];
+      const title = match[2].replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+      if (!title || seen.has(url)) continue;
+      seen.add(url); added++;
+      const after = html.slice(match.index, match.index + 2500);
+      const price = after.match(/ty-price-num">\s*([\d.,]+)/);
+      products.push({ title, vendor: "", product_type: "Coffee", tags: [], body_html: "", url, variants: [{ available: true, price: price ? Number(price[1].replace(/\./g, "").replace(",", ".")) : NaN, grams: 250 }] });
+    }
+    if (!added) break;
+  }
+  return products;
+}
+
 async function loadProducts(shop) {
+  if (shop.loader === "roastmarket") return loadRoastMarket(shop);
+  if (shop.loader === "honestrare") return loadHonestRare(shop);
   try { return await loadShopify(shop); }
   catch (shopifyError) {
     try { return await loadWoo(shop); }
@@ -141,5 +176,16 @@ for (const id of Object.keys(result.matches)) {
   result.matches[id] = result.matches[id].filter((entry) => { const count = perShop.get(entry.store) || 0; perShop.set(entry.store, count + 1); return count < 2; });
   console.log(`${id}: ${result.matches[id].length} matches`);
 }
+// Keep only links that really open, so every button leads to a live product page.
+async function linkWorks(url) {
+  try {
+    const response = await fetch(url, { method: "GET", redirect: "follow", headers: { "user-agent": "Mozilla/5.0 daily-pour-bean-finder/1.0" }, signal: AbortSignal.timeout(20000) });
+    return response.ok;
+  } catch { return false; }
+}
+const unique = [...new Set(Object.values(result.matches).flat().map((entry) => entry.url))];
+const alive = new Set();
+for (let i = 0; i < unique.length; i += 8) await Promise.all(unique.slice(i, i + 8).map(async (url) => { if (await linkWorks(url)) alive.add(url); else console.log(`dead link dropped: ${url}`); }));
+for (const id of Object.keys(result.matches)) result.matches[id] = result.matches[id].filter((entry) => alive.has(entry.url));
 await mkdir("data", { recursive: true });
 await writeFile("data/shop-matches.json", JSON.stringify(result, null, 1) + "\n");
