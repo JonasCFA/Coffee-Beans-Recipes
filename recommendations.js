@@ -42,15 +42,24 @@
     { name: "The Barn", site: "thebarn.de", city: "Berlin", roast: [0, 1] },
     { name: "Five Elephant", site: "fiveelephant.com", city: "Berlin", roast: [0, 1, 2] },
     { name: "Public Coffee Roasters", site: "publiccoffeeroasters.com", city: "Berlin", roast: [0, 1] },
+    { name: "Man Versus Machine", site: "mvsm.de", city: "Munich", roast: [0, 1, 2] },
     { name: "Röststätte", site: "roeststaette.de", city: "Berlin", roast: [1, 2, 3] },
     { name: "Coffee Circle", site: "coffeecircle.com", city: "Berlin", roast: [1, 2, 3] },
     { name: "Elbgold", site: "elbgold.com", city: "Hamburg", roast: [1, 2, 3] },
     { name: "Hoppenworth & Ploch", site: "hoppenworth-ploch.de", city: "Frankfurt", roast: [2, 3, 4] },
     { name: "Roast Market", site: "roastmarket.de", city: "Berlin", roast: [0, 1, 2, 3] }
   ];
+  // Your own favourite roasters: always shown. Only DAK has a confirmed homepage; the others open a search for their shop.
+  const FAVORITES = [
+    { name: "DAK Coffee Roasters", city: "Amsterdam, ships to DE", href: "https://www.dakcoffeeroasters.com/shop/" },
+    { name: "Nativo", city: "", href: "https://www.nativocoffeeroasters.com/collections/coffee" },
+    { name: "Due Mani", city: "", href: "https://www.google.com/search?q=" + encodeURIComponent("Due Mani Kaffeerösterei Bohnen kaufen") },
+    { name: "Bunca", city: "", href: "https://www.google.com/search?q=" + encodeURIComponent("Bunca Kaffeerösterei Bohnen kaufen") }
+  ];
   const searchUrl = (query) => `https://www.google.com/search?q=${encodeURIComponent(query)}`;
   const storesFor = (item) => STORES.filter((store) => store.roast.includes(item.roast)).slice(0, 4);
   const storeLinks = (item) => [
+    ...FAVORITES.map((fav) => ({ label: `★ ${fav.name}${fav.city ? ` · ${fav.city}` : ""}`, href: fav.href, title: `Your favourite roaster: ${fav.name}` })),
     ...storesFor(item).map((store) => ({ label: `${store.name} · ${store.city}`, href: `https://www.${store.site}/`, title: `Open the ${store.name} homepage` })),
     ...storesFor(item).slice(0, 2).map((store) => ({ label: `Find it at ${store.name}`, href: searchUrl(`${item.search} Kaffee Bohnen site:${store.site}`), title: `Search ${store.name} for this bean` })),
     { label: "Compare German shops", href: `https://www.google.de/search?tbm=shop&q=${encodeURIComponent(`${item.search} Specialty Kaffee Bohnen 250g`)}`, title: "Compare prices in shops" }
