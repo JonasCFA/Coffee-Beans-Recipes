@@ -1,10 +1,12 @@
 const STORAGE_KEY = "daily-pour-coffee-journal-v4";
 const LEGACY_KEYS = ["daily-pour-coffee-journal-v3", "daily-pour-coffee-journal-v2", "daily-pour-coffee-journal-v1"];
-const STYLES = ["black", "americano", "milk", "oat"];
+const STYLES = ["black", "americano", "milk", "oat", "icedmilk", "icedoat"];
 const STYLE_INFO = {
   black: { label: "Espresso · black", subtitle: "Clarity, acidity and the bean on its own", icon: "◉", className: "map-black", color: "#5c7059" },
   americano: { label: "Americano", subtitle: "Espresso diluted with hot water: longer, lighter, more transparent", icon: "◌", className: "map-black", color: "#4f7a86" },
   milk: { label: "Espresso · dairy milk", subtitle: "Milk can soften sharper edges and add sweetness", icon: "◒", className: "map-milk", color: "#b67b50" },
+  icedmilk: { label: "Iced latte · dairy milk", subtitle: "Cold dilution mutes aroma and bitterness; sweetness and fruit stand out", icon: "❄", className: "map-milk", color: "#7a9aa6" },
+  icedoat: { label: "Iced latte · oat milk", subtitle: "Cold oat is smooth and grainy-sweet; needs a bold, sweet shot", icon: "❅", className: "map-oat", color: "#7a9a86" },
   oat: { label: "Espresso · oat milk", subtitle: "Oat adds its own sweetness and cereal-like notes", icon: "◍", className: "map-oat", color: "#858653" }
 };
 const $ = (selector) => document.querySelector(selector);
@@ -63,7 +65,9 @@ function estimate(bean, style) {
   if (style === "americano") score += (f.bright ? 1 : 0) + (f.floral ? 0.7 : 0) + (f.chocolate ? 0.2 : 0) + (f.sweetness ? 0.2 : 0) - (f.bitter ? 0.9 : 0) - (f.darkRoast ? 0.3 : 0);
   if (style === "milk") score += (f.chocolate ? 1.2 : 0) + (f.nut ? 0.8 : 0) + (f.sweetness ? 0.7 : 0) - (f.floral ? 0.4 : 0);
   if (style === "oat") score += (f.chocolate ? 0.9 : 0) + (f.nut ? 0.8 : 0) + (f.sweetness ? 0.5 : 0) - (f.bright ? 0.25 : 0) - (f.bitter ? 0.8 : 0);
-  if (f.darkRoast && style !== "black") score += 0.25;
+  if (style === "icedmilk") score += (f.chocolate ? 1 : 0) + (f.nut ? 0.7 : 0) + (f.sweetness ? 0.7 : 0) + (f.fruit ? 0.3 : 0) - (f.bitter ? 0.4 : 0) - (f.lightRoast && !f.sweetness ? 0.3 : 0);
+  if (style === "icedoat") score += (f.chocolate ? 0.8 : 0) + (f.nut ? 0.7 : 0) + (f.sweetness ? 0.5 : 0) - (f.bitter ? 0.7 : 0) - (f.floral ? 0.3 : 0);
+  if (f.darkRoast && (style === "milk" || style === "oat")) score += 0.25;
   if (!getNotes(bean).length) score = 5.5;
   score = Math.max(0, Math.min(10, score));
   const certainty = getNotes(bean).length >= 3 && bean.roastLevel ? "Some clues: roast level and saved roaster notes are available." : "Low confidence: add the roaster’s official taste notes and roast level for a more useful estimate.";
@@ -81,6 +85,16 @@ function tasteSentence(f, style, personal) {
     if (f.floral || f.fruit || f.bright) return "Water opens up the fruit and floral notes and makes the cup tea-like and clear. Body drops, so a slightly finer grind helps.";
     if (f.chocolate || f.nut || f.sweetness) return "Cocoa and nut notes stay present but lighter and cleaner; expect less sweetness and body than the plain shot.";
     return "A longer, lighter cup that shows the bean's clarity; try about 1:3 to 1:4 shot to water and note what you taste.";
+  }
+  if (style === "icedmilk") {
+    if (f.chocolate || f.nut || f.sweetness) return "Cold milk keeps chocolate, nut and caramel notes smooth and sweet. Pull a slightly shorter, stronger shot so ice does not wash it out.";
+    if (f.fruit || f.bright || f.floral) return "Cold dilution mutes aroma, but fruit can turn juicy and refreshing; it can taste thin or sour if the shot is too short.";
+    return "Ice mutes bitterness and aroma, so use a stronger, sweeter shot and note what remains.";
+  }
+  if (style === "icedoat") {
+    if (f.bitter || (f.darkRoast && !f.sweetness)) return "Cold oat softens roast a little, but bitter notes can still read grainy; pull a shorter, sweeter shot.";
+    if (f.chocolate || f.nut || f.sweetness) return "Chocolate, nut and sweet notes pair well with cold oat's smooth, grainy sweetness. Often one of the easiest ways to enjoy these beans.";
+    return "Cold oat adds a smooth, cereal sweetness; bright beans can taste flat or sharp, so test with a bold shot.";
   }
   if (style === "milk") {
     if (f.chocolate || f.nut || f.sweetness) return "Chocolate, nut or sweet notes may pair well; dairy can round acidity and add a creamy texture.";
@@ -102,6 +116,8 @@ function position(bean, style) {
   if (f.darkRoast) x += 12;
   if (f.sweetness) x += 2;
   if (style === "americano") x -= 3;
+  if (style === "icedmilk") x += f.chocolate || f.nut ? 5 : -1;
+  if (style === "icedoat") x += f.bitter || f.darkRoast ? 6 : f.sweetness ? 2 : 0;
   if (style === "milk") x += f.chocolate || f.nut ? 6 : 1;
   if (style === "oat") x += f.bitter || f.darkRoast ? 8 : f.sweetness ? 2 : 0;
   let y = 52;
@@ -109,6 +125,8 @@ function position(bean, style) {
   if (f.darkRoast) y += 14;
   if (f.bodyWords) y += 12;
   if (style === "americano") y -= 10;
+  if (style === "icedmilk") y += 2;
+  if (style === "icedoat") y += 0;
   if (style === "milk") y += 8;
   if (style === "oat") y += 6;
   return { x: Math.max(9, Math.min(91, x)), y: Math.max(12, Math.min(88, y)) };

@@ -1,6 +1,6 @@
 const STORAGE_KEY = "daily-pour-coffee-journal-v4";
 const LEGACY_KEYS = ["daily-pour-coffee-journal-v3", "daily-pour-coffee-journal-v2", "daily-pour-coffee-journal-v1"];
-const DRINK_STYLES = ["black", "americano", "milk", "oat"];
+const DRINK_STYLES = ["black", "americano", "milk", "oat", "icedmilk", "icedoat"];
 const REMOVED_SAMPLE_NAMES = new Set(["monsoon reserve", "velvet cherry", "yirgacheffe sunrise", "maya estate"]);
 const TASTE_GROUPS = [
   { name: "Bright & floral", words: ["floral", "jasmine", "bergamot", "tea", "blossom", "blüte"] },
@@ -139,11 +139,13 @@ function getDrinkProfile(bean, style) {
   if (style === "americano") score += (fruitBright ? 1 : 0) + (has(["floral", "jasmine", "bergamot", "tea"]) ? 0.6 : 0) + (chocolate ? 0.2 : 0) - (bitter ? 0.9 : 0);
   if (style === "milk") score += (chocolate ? 1.4 : 0) + (sweetNut ? 1 : 0) - (has(["lemon", "citrus", "floral", "jasmine"]) ? 0.5 : 0);
   if (style === "oat") score += (chocolate ? 0.9 : 0) + (sweetNut ? 0.8 : 0) - (fruitBright ? 0.5 : 0) - (bitter ? 0.8 : 0);
-  if (roast.includes("dark") && style !== "black") score += 0.2;
+  if (style === "icedmilk") score += (chocolate ? 1 : 0) + (sweetNut ? 0.8 : 0) + (fruitBright ? 0.3 : 0) - (bitter ? 0.4 : 0);
+  if (style === "icedoat") score += (chocolate ? 0.7 : 0) + (sweetNut ? 0.7 : 0) + (fruitBright ? 0.2 : 0) - (bitter ? 0.7 : 0);
+  if (roast.includes("dark") && style !== "black" && style !== "americano" && !style.startsWith("iced")) score += 0.2;
   if (!getTasteNotes(bean).length) score = 5.5;
   return { score: Math.max(0, Math.min(10, score)), source: "note-based estimate" };
 }
-function drinkLabel(style) { return ({ black: "Espresso · black", americano: "Americano", milk: "With dairy milk", oat: "With oat milk" })[style] || "Espresso · black"; }
+function drinkLabel(style) { return ({ black: "Espresso · black", americano: "Americano", milk: "With dairy milk", oat: "With oat milk", icedmilk: "Iced latte · dairy milk", icedoat: "Iced latte · oat milk" })[style] || "Espresso · black"; }
 function formatDate(value) { if (!value) return "Date not set"; const date = new Date(value.includes("T") ? value : `${value}T12:00:00`); return Number.isNaN(date.getTime()) ? escapeHTML(value) : date.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); }
 function safeUrl(url) { try { const parsed = new URL(url); return ["http:", "https:"].includes(parsed.protocol) ? parsed.href : ""; } catch { return ""; } }
 function showRating(value) { return value === null ? "Not rated" : `${Number(value).toFixed(1)} / 10`; }
