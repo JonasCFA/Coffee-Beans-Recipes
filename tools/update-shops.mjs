@@ -34,7 +34,7 @@ const RULES = {
   "sumatra-wet-hulled": { country: /sumatra|mandheling|indonesia|indonesien/ },
   "el-salvador-pacamara": { country: /el salvador/, process: /pacamara/ },
   "peru-or-honduras-washed": { country: /peru|honduras/, not: /decaf|entkoffeiniert/ },
-  "italian-style-espresso-blend": { head: true, country: /espresso|blend/, not: /filter/ },
+  "italian-style-espresso-blend": { title: /blend|house|espresso essentials|cr[eè]me/, country: /./, not: /filter/ },
   "tanzania-peaberry": { country: /tanzania/, process: /peaberry/ }
 };
 
@@ -66,7 +66,8 @@ function matches(product, rule) {
   const head = text(product);
   const body = head + " " + blurb(product);
   if (!isBeanProduct(product) || NON_COFFEE.test(head)) return false;
-  if (!rule.country.test(rule.head ? head : body)) return false;
+  if (rule.title && !rule.title.test(String(product.title).toLowerCase())) return false;
+  if (!rule.country.test(body)) return false;
   if (rule.process && !rule.process.test(body)) return false;
   if (rule.not && rule.not.test(head)) return false;
   return true;
