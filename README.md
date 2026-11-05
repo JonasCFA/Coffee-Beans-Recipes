@@ -2,35 +2,31 @@
 
 A premium-feeling coffee journal for roasteries, tasting notes, personalized recipes and brew logs. It runs as a static website and works on GitHub Pages.
 
+## Your collection and taste profile
+
+Add a coffee with roastery, origin, roast date and tasting notes. Saved beans appear in **My collection** on the homepage; use search, taste-group filters and sorting to find one, then select it to view its profile, recipe, history and drink-style suggestions. **My taste profile** summarizes the tasting notes across all coffees you have saved and shows which taste families are most represented.
+
+Each coffee detail includes three espresso serving profiles: straight/black, with dairy milk, and with oat milk. At first, the 0–10 compatibility scores are clearly labelled flavour-note estimates, based on the roaster's described notes—not a guarantee of your preference. When you log a brew, select its drink style and optionally rate it. For a style with your own ratings, the displayed score uses the average of those personal ratings instead of the estimate. Rating brews in each style lets the suggestions reflect your palate over time.
+
 ## Smart recipe builder
 
-When you add a coffee, Daily Pour suggests a **starting recipe** using the chosen brew method, roast level and tasting notes. Espresso starts around 18g in, with a suggested yield, temperature, pre-infusion and 9-bar reference pressure. Light/bright profiles get a slightly longer ratio and hotter water; darker/chocolate-forward profiles get a shorter ratio and slightly cooler water. Filter methods get their own dose, water amount, grind guidance and bloom/steep time; pressure is marked not applicable.
+The app suggests a starting recipe using brew method, roast level and tasting notes. Espresso starts around 18g in, with a suggested yield, temperature, pre-infusion and 9-bar reference pressure; filter methods have their own starting dose, water amount, grind guidance and bloom/steep time. Pressure is shown as not applicable for filter. Suggestions are not guaranteed recipes: grinder settings and machine pressure vary.
 
-These are suggestions, not a promise of a perfect cup. Grinder settings vary, and pressure/pre-infusion depend on your espresso machine. The app deliberately does not invent a numeric grind setting: enter the setting for your own grinder.
+Choose a saved coffee and select **Adjust recipe / log brew**. The latest recipe for that particular bean is loaded. Adjust dose, yield, grind, temperature, method, drink style, pre-infusion, pressure and pressure profile to describe the actual cup. Saving a brew updates that bean's latest recipe while keeping earlier brews in its history. Switch beans and each one recalls its own settings.
 
-## Dial in and remember each bean
+## Ratings and saved data
 
-Select a bean and choose **Adjust recipe / log brew**. The form loads that bean's latest saved recipe. Adjust dose, yield, grind, temperature, method, pre-infusion, pressure in bar and pressure profile to reflect the actual brew, then save. That version becomes the latest recipe for that bean and is recalled when you return to it. Previous brews remain in the history, including their pressure and pre-infusion values, so you can switch between beans without having to remember their settings.
+Cup ratings use **0–10**, with 10 best. Leave the unrated option checked to omit a score; uncheck it to give an explicit score, including zero. The bean's overall score is the average of its rated brews, falling back to its saved starting rating if it has no rated brews.
 
-## Rating scale
-
-Brew ratings use **0–10**, where 10 is best. Leave **Leave this cup unrated** checked to omit a rating, or uncheck it to enter a score including 0. The score for a coffee is the average of its rated brews, falling back to its saved starting rating when it has no rated brews. Older 0–5 scores from the first storage format are migrated to 0–10 automatically.
-
-## Other features
-
-- Save coffees with roastery, location, origin, roast date, roast level, tasting notes and product URL.
-- Free-text roastery names support German and international roasters.
-- Search, filter and sort; favorite coffees; export a JSON backup.
-- Automatically group tasting notes into broad taste families.
-- Save data in browser localStorage.
+Data is stored in this browser's localStorage, not synced between devices. Use **Export journal** to download a backup. Older stored data is migrated automatically.
 
 ## Roastery lookup limitation
 
-The roastery search opens a web search and lets you save a product-page URL. GitHub Pages cannot reliably scrape arbitrary sites from the browser; automated import requires a backend/API. Verify information on the official roastery website before saving.
+Roastery search opens a web search and allows saving a product-page URL. GitHub Pages cannot reliably scrape arbitrary websites in the browser; automated import requires a backend/API. Verify details on the official roastery website before saving.
 
 ## Run locally
 
-Open `index.html` directly, or serve the folder:
+Open `index.html` directly, or serve the project folder:
 
 ```bash
 python3 -m http.server 8000
