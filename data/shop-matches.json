@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T13:27:11.864Z",
+ "updated": "2026-11-05T13:28:54.492Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -59,7 +59,7 @@
   },
   "Honest & Rare": {
    "ok": true,
-   "products": 0
+   "products": 99
   }
  },
  "matches": {
@@ -90,6 +90,15 @@
     "roaster": "",
     "url": "https://www.thebarn.de/products/summer-coffee",
     "price": 16.9
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "INDIE ROASTERS Organic Natural Ethiopia Filter",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/indie-roasters-organic-natural-ethiopia-filter/",
+    "price": 13.5
    }
   ],
   "ethiopia-washed-yirgacheffe-gedeb": [
@@ -193,6 +202,15 @@
     "roaster": "",
     "url": "https://www.roastmarket.de/coffee-annan-uganda-filter-350g.html",
     "price": 15.99
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Kaffee Kenia Perlbohne",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/kenia-perlbohne-3/",
+    "price": 9.5
    }
   ],
   "colombia-washed-huila-narino": [
@@ -285,6 +303,15 @@
     "roaster": "",
     "url": "https://www.roastmarket.de/vee-s-organic-kolumbien-250g.html",
     "price": 9.99
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Colombia Single Origin",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/ettli-kaffee-colombia-single-origin/",
+    "price": 14.3
    }
   ],
   "colombia-pink-bourbon": [],
@@ -369,6 +396,24 @@
     "roaster": "",
     "url": "https://www.roastmarket.de/roastmarket-origins-brazil.html",
     "price": 9.99
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Kaffee Brazil Sao Silvestre",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/kaffee-brazil-sao-silvestre-3/",
+    "price": 8.75
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Brasil Single Origin",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/ettli-kaffee-brasil-single-origin/",
+    "price": 13.7
    }
   ],
   "guatemala-huehuetenango-antigua": [
@@ -452,6 +497,24 @@
     "roaster": "",
     "url": "https://www.roastmarket.de/black-hat-coffee-fortuna-espresso-250g.html",
     "price": 14.99
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Kaffee Guatemala Lampocoy",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/classic-caffee-guatemala-lampocoy/",
+    "price": 34.9
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Guatemala-Mischung",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/ettli-kaffee-guatemala-mischung/",
+    "price": 13.15
    }
   ],
   "costa-rica-honey-process": [],
@@ -503,6 +566,15 @@
     "roaster": "",
     "url": "https://www.roastmarket.de/vee-s-organic-sumatra.html",
     "price": 10.99
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Kaffee Indonesien Sumatra Lintong",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/classic-caffee-indonesien-sumatra-lintong/",
+    "price": 8.9
    }
   ],
   "el-salvador-pacamara": [
@@ -671,6 +743,24 @@
     "roaster": "",
     "url": "https://www.roastmarket.de/coffee-annan-house-blend-350g.html",
     "price": 12.99
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Indie Roasters Organic Natural Espressoblend",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/indie-roasters-organic-natural-espressoblend/",
+    "price": 13.5
+   },
+   {
+    "store": "Honest & Rare",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Ettli Espresso Special Blend",
+    "roaster": "",
+    "url": "https://www.honest-rare.de/ettli-espresso-special-blend/",
+    "price": 16.2
    }
   ],
   "tanzania-peaberry": []
