@@ -1,8 +1,9 @@
 const STORAGE_KEY = "daily-pour-coffee-journal-v4";
 const LEGACY_KEYS = ["daily-pour-coffee-journal-v3", "daily-pour-coffee-journal-v2", "daily-pour-coffee-journal-v1"];
-const STYLES = ["black", "milk", "oat"];
+const STYLES = ["black", "americano", "milk", "oat"];
 const STYLE_INFO = {
   black: { label: "Espresso · black", subtitle: "Clarity, acidity and the bean on its own", icon: "◉", className: "map-black", color: "#5c7059" },
+  americano: { label: "Americano", subtitle: "Espresso diluted with hot water: longer, lighter, more transparent", icon: "◌", className: "map-black", color: "#4f7a86" },
   milk: { label: "Espresso · dairy milk", subtitle: "Milk can soften sharper edges and add sweetness", icon: "◒", className: "map-milk", color: "#b67b50" },
   oat: { label: "Espresso · oat milk", subtitle: "Oat adds its own sweetness and cereal-like notes", icon: "◍", className: "map-oat", color: "#858653" }
 };
@@ -59,6 +60,7 @@ function estimate(bean, style) {
   if (personal !== null) return { score: personal, source: "your logged cup", taste: tasteSentence(f, style, true), confidence: "Based on your own rated brew(s) for this drink style." };
   let score = 6;
   if (style === "black") score += (f.bright ? 1.1 : 0) + (f.floral ? 0.9 : 0) + (f.chocolate ? 0.3 : 0) - (f.bitter ? 0.7 : 0);
+  if (style === "americano") score += (f.bright ? 1 : 0) + (f.floral ? 0.7 : 0) + (f.chocolate ? 0.2 : 0) + (f.sweetness ? 0.2 : 0) - (f.bitter ? 0.9 : 0) - (f.darkRoast ? 0.3 : 0);
   if (style === "milk") score += (f.chocolate ? 1.2 : 0) + (f.nut ? 0.8 : 0) + (f.sweetness ? 0.7 : 0) - (f.floral ? 0.4 : 0);
   if (style === "oat") score += (f.chocolate ? 0.9 : 0) + (f.nut ? 0.8 : 0) + (f.sweetness ? 0.5 : 0) - (f.bright ? 0.25 : 0) - (f.bitter ? 0.8 : 0);
   if (f.darkRoast && style !== "black") score += 0.25;
@@ -73,6 +75,12 @@ function tasteSentence(f, style, personal) {
     if (f.floral || f.fruit) return "Likely to show more of its fruit, citrus or floral character, with less milk to soften acidity.";
     if (f.chocolate || f.nut) return "Likely to lean toward cocoa, nuts or sweetness, with the bean’s roast character up front.";
     return "A starting guess from the saved notes; try a shot and record what you actually taste.";
+  }
+  if (style === "americano") {
+    if (f.bitter || f.darkRoast) return "Added water thins the body and can stretch bitter or roasty notes; pull a shorter, sweeter shot and add less water.";
+    if (f.floral || f.fruit || f.bright) return "Water opens up the fruit and floral notes and makes the cup tea-like and clear. Body drops, so a slightly finer grind helps.";
+    if (f.chocolate || f.nut || f.sweetness) return "Cocoa and nut notes stay present but lighter and cleaner; expect less sweetness and body than the plain shot.";
+    return "A longer, lighter cup that shows the bean's clarity; try about 1:3 to 1:4 shot to water and note what you taste.";
   }
   if (style === "milk") {
     if (f.chocolate || f.nut || f.sweetness) return "Chocolate, nut or sweet notes may pair well; dairy can round acidity and add a creamy texture.";
@@ -93,12 +101,14 @@ function position(bean, style) {
   if (f.nut) x += 10;
   if (f.darkRoast) x += 12;
   if (f.sweetness) x += 2;
+  if (style === "americano") x -= 3;
   if (style === "milk") x += f.chocolate || f.nut ? 6 : 1;
   if (style === "oat") x += f.bitter || f.darkRoast ? 8 : f.sweetness ? 2 : 0;
   let y = 52;
   if (f.lightRoast) y -= 13;
   if (f.darkRoast) y += 14;
   if (f.bodyWords) y += 12;
+  if (style === "americano") y -= 10;
   if (style === "milk") y += 8;
   if (style === "oat") y += 6;
   return { x: Math.max(9, Math.min(91, x)), y: Math.max(12, Math.min(88, y)) };
@@ -128,8 +138,10 @@ function predictionCard(bean) {
     return `<article class="prediction-drink"><small>${esc(STYLE_INFO[style].label)}</small><strong>${result.score.toFixed(1)} / 10 · ${result.source === "your logged cup" ? "your score" : "estimate"}</strong><p>${esc(result.taste)}</p></article>`;
   }).join("");
   const notes = getNotes(bean).map((note) => `<span class="tag">${esc(note)}</span>`).join("") || '<span class="tag">No official notes saved yet</span>';
+  const ranked = STYLES.map((style) => ({ style, score: estimate(bean, style).score })).sort((a, b) => b.score - a.score);
+  const best = getNotes(bean).length || ranked.some((entry) => getRating(bean, entry.style) !== null) ? `<p class="prediction-best">Best as: <strong>${esc(STYLE_INFO[ranked[0].style].label)}</strong> (${ranked[0].score.toFixed(1)}/10) · weakest: ${esc(STYLE_INFO[ranked[ranked.length - 1].style].label)} (${ranked[ranked.length - 1].score.toFixed(1)}/10)</p>` : "";
   const confidence = STYLES.map((style) => estimate(bean, style).confidence)[0];
-  return `<article class="prediction-card" data-bean-id="${esc(bean.id)}"><div class="prediction-header"><div><h3>${esc(bean.name)}</h3><p>${esc(bean.roaster)}${bean.roasterLocation ? ` · ${esc(bean.roasterLocation)}` : ""}${bean.roastLevel ? ` · ${esc(bean.roastLevel)} roast` : ""}</p></div>${source ? `<a class="prediction-source" href="${esc(source)}" target="_blank" rel="noopener noreferrer">Open saved source ↗</a>` : "<span class=\"prediction-source\">No source URL saved</span>"}</div><div class="prediction-notes">${notes}</div><div class="prediction-drinks">${styles}</div><p class="prediction-confidence">${esc(confidence)} Estimates use only saved flavor notes and roast level. The product URL is shown as a reference link; GitHub Pages does not fetch or verify that website.</p></article>`;
+  return `<article class="prediction-card" data-bean-id="${esc(bean.id)}"><div class="prediction-header"><div><h3>${esc(bean.name)}</h3><p>${esc(bean.roaster)}${bean.roasterLocation ? ` · ${esc(bean.roasterLocation)}` : ""}${bean.roastLevel ? ` · ${esc(bean.roastLevel)} roast` : ""}</p></div>${source ? `<a class="prediction-source" href="${esc(source)}" target="_blank" rel="noopener noreferrer">Open saved source ↗</a>` : "<span class=\"prediction-source\">No source URL saved</span>"}</div><div class="prediction-notes">${notes}</div>${best}<div class="prediction-drinks">${styles}</div><p class="prediction-confidence">${esc(confidence)} Estimates use only saved flavor notes and roast level. The product URL is shown as a reference link; GitHub Pages does not fetch or verify that website.</p></article>`;
 }
 function highlightBean(id) {
   activeBeanId = id;
