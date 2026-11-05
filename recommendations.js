@@ -38,7 +38,7 @@
   CATALOG.forEach((item) => { item.id = item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); });
   // Live shop matches come from data/shop-matches.json, refreshed daily by tools/update-shops.mjs.
   let shopData = { matches: {} };
-  const matchesFor = (item) => (shopData.matches[item.id] || []).slice().sort((a, b) => Number(b.favorite) - Number(a.favorite) || (a.price ?? 1e9) - (b.price ?? 1e9));
+  const matchesFor = (item) => (shopData.matches[item.id] || []).slice().sort((a, b) => Number(b.favorite) - Number(a.favorite) || (a.price ?? 1e9) - (b.price ?? 1e9)).slice(0, 8);
 
   function esc(value = "") {
     return String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
