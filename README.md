@@ -2,26 +2,28 @@
 
 A calm coffee journal for recording beans, roaster tasting notes, recipes and brew results. The static site runs on GitHub Pages.
 
-## Shared online storage: recommended setup
+## Shared online storage: how to make friends see the same collection
 
-Right now the journal uses browser `localStorage`: your friends will not see your collection or ratings from their devices. To share data reliably, connect the app to a hosted database. A straightforward option for this static site is **Supabase** (Postgres database + Auth + Row Level Security).
+At present, the app stores data in browser `localStorage`. That means entries stay on the browser/device that created them; friends opening the website on their own devices will not see your collection or ratings. To share them, connect the app to a hosted database. Supabase is a good fit for a GitHub Pages site because it provides Postgres, authentication and row-level access policies.
 
-Choose a sharing model first:
+### Pick who can see and edit
 
-1. **One private shared journal for your group (recommended):** invite friends to sign in, store rows under a shared `collection_id`, and use database policies so only members can read/write the collection.
-2. **Public read-only collection:** anyone with the link can see beans and ratings; only you can edit. Make read-only access explicit and never store private notes in that collection.
+- **Private group journal (recommended):** you and invited friends sign in. Members can read and add/edit coffee and brew records.
+- **Public read-only share:** anyone with a link can view selected coffees and ratings, but only signed-in members can change anything. Keep private tasting notes out of public rows.
 
-Implementation outline:
+Do not make the database anonymously writable. A hard-to-guess URL alone is not a robust access-control system; use authentication or a revocable, server-checked share token.
+
+### Supabase setup outline
 
 1. Create a Supabase project and enable email authentication.
-2. Create tables for `collections`, `collection_members`, `beans`, and `brews` (each bean and brew belongs to a collection; each brew references one bean).
-3. Enable Row Level Security on every table. Add policies that check the signed-in user is a member of the relevant collection. For a public share view, expose a separate read-only view or Edge Function and share a random, revocable token—do not make the entire database anonymously writable.
-4. Add Supabase's browser client to the site using the project URL and **anon/publishable key**. These are intended for browser use only when RLS is correctly configured. Never put a `service_role` or other secret key in JavaScript, HTML, or a public GitHub repository.
-5. Replace the `loadBeans` / `saveBeans` localStorage functions with authenticated Supabase reads and writes. Keep local cache only as an offline convenience, and add loading/error states.
-6. Import existing browser data with the JSON backup/export, then check the beans and brew histories before sharing.
-7. Test access with two accounts: members can see the shared collection; signed-out users and non-members cannot read or change private data.
+2. Create tables such as `collections` (owner/name), `collection_members` (collection/user/role), `beans` (collection_id plus bean fields and recipe JSON), and `brews` (bean_id plus recipe snapshot, drink style, rating, notes and timestamp).
+3. Enable Row Level Security on **every** table. Add policies so signed-in users can select/insert/update/delete rows only when they are members of that row's collection. Public shares should use a separate read-only view or Edge Function that checks a random revocable token.
+4. Add Supabase's browser client to the site using the project URL and the **anon/publishable key**. These are designed for browser use only when RLS policies are correctly configured. Never put the `service_role` key or any secret in public JavaScript or GitHub.
+5. Replace the `loadBeans()` / `saveBeans()` localStorage adapter in `script.js` with asynchronous database reads/writes. Add sign-in, loading/error states, and a collection selector. Keep localStorage only as an optional offline cache.
+6. Import your existing data using **Export journal** and an authenticated import step. Check bean and brew records before sharing.
+7. Test with two accounts and a signed-out browser: only invited members should see private collections; non-members must not read or modify them. Test public links as read-only and make sure they can be revoked.
 
-Supabase is only one possible provider. Firebase or a small API plus a database can also work, but browser authentication and authorization rules are essential. A random share URL alone should not be treated as secure unless access is checked server-side and the token can be revoked.
+Because this needs a Supabase project, schema/policies, and your desired sharing model, the current static app has **not** been connected to a database yet. Once the project is configured, only its public URL and anon/publishable key belong in frontend configuration; database policies are what protect the data.
 
 ## Existing app features
 
