@@ -55,7 +55,9 @@
     const scores = (Array.isArray(bean.brews) ? bean.brews : [])
       .filter((brew) => brew.rating !== null && brew.rating !== undefined && brew.rating !== "" && Number.isFinite(Number(brew.rating)))
       .map((brew) => Number(brew.rating));
-    return scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
+    if (scores.length) return scores.reduce((a, b) => a + b, 0) / scores.length;
+    const own = Number(bean.rating);
+    return bean.rating !== null && bean.rating !== undefined && bean.rating !== "" && Number.isFinite(own) && own > 0 ? own : null;
   }
   function categoriesOf(bean) {
     const text = (Array.isArray(bean.profile) ? bean.profile : []).join(" ").toLowerCase();
@@ -98,7 +100,14 @@
       const affinity = profile.hasSignal ? CATEGORIES.reduce((sum, cat) => sum + profile.weights[cat] * (item.cats[cat] || 0), 0) / total : 0;
       const roastFit = profile.roast === null ? .6 : 1 - Math.min(4, Math.abs(profile.roast - item.roast)) / 4;
       const isNew = item.country === "blend" || !owned.some((origin) => origin.includes(item.country));
-      const score = .6 * ((affinity + 1) / 2) + .25 * roastFit + .15 * (isNew ? 1 : .4);
+      let originPull = 0, originBean = null;
+      rated.forEach(({ bean, rating }) => {
+        if (item.country !== "blend" && String(bean.origin || "").toLowerCase().includes(item.country)) {
+          const pull = Math.max(-1, Math.min(1, (rating - 6) / 4));
+          if (Math.abs(pull) > Math.abs(originPull)) { originPull = pull; originBean = { bean, rating }; }
+        }
+      });
+      const score = Math.max(0, .5 * ((affinity + 1) / 2) + .2 * roastFit + .1 * (isNew ? 1 : .4) + .2 * ((originPull + 1) / 2));
 
       let best = null, bestShared = [];
       loved.forEach(({ bean, rating }) => {
@@ -110,19 +119,21 @@
         const shared = categoriesOf(bean).filter((cat) => strong.includes(cat));
         if (shared.length && !clash) clash = { bean, rating, shared };
       });
-      return { item, score, isNew, best, bestShared, clash };
+      return { item, score, isNew, best, bestShared, clash, originBean, originPull };
     });
 
     results.sort((a, b) => b.score - a.score);
     return { rated, results };
   }
 
-  function card({ item, score, isNew, best, bestShared, clash }, detailed = false) {
+  function card({ item, score, isNew, best, bestShared, clash, originBean, originPull }, detailed = false) {
     const percent = Math.round(Math.max(40, Math.min(98, score * 100)));
-    const why = best
+    const why = originBean && originPull >= .5
+      ? `You rated <strong>${esc(originBean.bean.name)}</strong> from ${esc(item.country)} ${originBean.rating.toFixed(1)}/10, so this origin is a safe bet.${best && bestShared.length ? ` It also shares the ${esc(joinList(bestShared))} character you like.` : ""}`
+      : best
       ? `Shares the ${joinList(bestShared)} character of <strong>${esc(best.bean.name)}</strong>, which you rated ${best.rating.toFixed(1)}/10.`
       : isNew ? "A fresh direction compared with the beans you have logged so far, with a flavour profile close to your taste." : "Close to the flavour balance of the coffees you rated well.";
-    const headsUp = clash ? `<p class="recommend-heads-up">Heads-up: leans ${esc(joinList(clash.shared))}, which you rated lower in <strong>${esc(clash.bean.name)}</strong> (${clash.rating.toFixed(1)}/10).</p>` : "";
+    const headsUp = originBean && originPull <= -.2 ? `<p class="recommend-heads-up">Heads-up: you rated <strong>${esc(originBean.bean.name)}</strong> (${esc(item.country)}) only ${originBean.rating.toFixed(1)}/10.</p>` : clash ? `<p class="recommend-heads-up">Heads-up: leans ${esc(joinList(clash.shared))}, which you rated lower in <strong>${esc(clash.bean.name)}</strong> (${clash.rating.toFixed(1)}/10).</p>` : "";
     const origin = isNew ? "New origin for you" : "An origin you already know";
     const query = encodeURIComponent(`${item.search} specialty coffee beans`);
     const tags = item.notes.map((note) => `<span class="tag">${esc(note)}</span>`).join("");
