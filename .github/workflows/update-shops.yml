@@ -14,6 +14,8 @@ jobs:
         with:
           node-version: 20
       - run: node tools/update-shops.mjs
+        env:
+          DEBUG_TYPES: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"

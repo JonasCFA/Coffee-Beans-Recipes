@@ -72,6 +72,11 @@ for (const shop of SHOPS) {
   try {
     const products = (await loadProducts(shop)).filter((product) => (product.variants || []).some((variant) => variant.available));
     result.shops[shop.name] = { ok: true, products: products.length };
+    if (process.env.DEBUG_TYPES) {
+      const types = new Map();
+      for (const product of products) { const key = product.product_type || "(none)"; (types.get(key) || types.set(key, []).get(key)).push(product.title); }
+      for (const [type, titles] of types) console.log(`TYPE ${shop.name} | ${type} | ${titles.length} | ${titles.slice(0, 3).join(" ; ")}`);
+    }
     for (const product of products) {
       const price = Math.min(...product.variants.filter((variant) => variant.available).map((variant) => Number(variant.price)));
       for (const [id, rule] of Object.entries(RULES)) {
