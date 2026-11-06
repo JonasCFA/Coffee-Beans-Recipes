@@ -124,6 +124,15 @@ function getCluster(bean) {
   return best.name;
 }
 function getTasteNotes(bean) { return (bean.profile || []).map((note) => note.trim()).filter(Boolean); }
+function noteAdjustment(bean, style) {
+  const POS = ["delicious", "great", "good", "tasty", "smooth", "balanced", "sweet", "love", "nice", "perfect", "creamy", "juicy", "lecker", "gut", "super", "mild", "toll", "süß", "rund"];
+  const NEG = ["bitter", "sour", "sauer", "thin", "watery", "burnt", "harsh", "astringent", "weak", "bad", "salty", "flat", "muddy", "dry", "schlecht", "dünn", "wässrig", "herb", "verbrannt"];
+  const text = (bean.brews || []).filter((brew) => brew.drinkStyle === style).map((brew) => String(brew.notes || "").toLowerCase()).join(" ");
+  if (!text) return { delta: 0, used: false };
+  const count = (words) => words.reduce((sum, word) => sum + (text.includes(word) ? 1 : 0), 0);
+  const delta = Math.max(-2, Math.min(2, (count(POS) - count(NEG)) * 0.5));
+  return { delta, used: true };
+}
 function getDrinkProfile(bean, style) {
   const ratedBrews = (bean.brews || []).filter((brew) => brew.drinkStyle === style && brew.rating !== null && brew.rating !== undefined && brew.rating !== "" && Number.isFinite(Number(brew.rating)));
   if (ratedBrews.length) return { score: ratedBrews.reduce((sum, brew) => sum + Number(brew.rating), 0) / ratedBrews.length, source: `${ratedBrews.length} personal rating${ratedBrews.length === 1 ? "" : "s"}` };
@@ -143,7 +152,11 @@ function getDrinkProfile(bean, style) {
   if (style === "icedoat") score += (chocolate ? 0.7 : 0) + (sweetNut ? 0.7 : 0) + (fruitBright ? 0.2 : 0) - (bitter ? 0.7 : 0);
   if (roast.includes("dark") && style !== "black" && style !== "americano" && !style.startsWith("iced")) score += 0.2;
   if (!getTasteNotes(bean).length) score = 5.5;
-  return { score: Math.max(0, Math.min(10, score)), source: "note-based estimate" };
+  const adj = noteAdjustment(bean, style);
+  const logged = (bean.brews || []).filter((brew) => brew.drinkStyle === style).length;
+  score += adj.delta;
+  const source = logged ? `${logged} unrated cup${logged === 1 ? "" : "s"} logged${adj.used ? " · adjusted by your notes" : ""}` : "note-based estimate";
+  return { score: Math.max(0, Math.min(10, score)), source };
 }
 function drinkLabel(style) { return ({ black: "Espresso · black", americano: "Americano", milk: "With dairy milk", oat: "With oat milk", icedmilk: "Iced latte · dairy milk", icedoat: "Iced latte · oat milk" })[style] || "Espresso · black"; }
 function formatDate(value) { if (!value) return "Date not set"; const date = new Date(value.includes("T") ? value : `${value}T12:00:00`); return Number.isNaN(date.getTime()) ? escapeHTML(value) : date.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); }

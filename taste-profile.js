@@ -46,6 +46,15 @@ function loggedInfo(bean, style) {
   const lastNote = [...brews].reverse().map((brew) => String(brew.notes || "").trim()).find(Boolean) || "";
   return { total: brews.length, rated: rated.length, unrated: brews.length - rated.length, lastNote };
 }
+function noteAdjustment(bean, style) {
+  const POS = ["delicious", "great", "good", "tasty", "smooth", "balanced", "sweet", "love", "nice", "perfect", "creamy", "juicy", "lecker", "gut", "super", "mild", "toll", "süß", "rund"];
+  const NEG = ["bitter", "sour", "sauer", "thin", "watery", "burnt", "harsh", "astringent", "weak", "bad", "salty", "flat", "muddy", "dry", "schlecht", "dünn", "wässrig", "herb", "verbrannt"];
+  const text = (bean.brews || []).filter((brew) => brew.drinkStyle === style).map((brew) => String(brew.notes || "").toLowerCase()).join(" ");
+  if (!text) return { delta: 0, used: false };
+  const count = (words) => words.reduce((sum, word) => sum + (text.includes(word) ? 1 : 0), 0);
+  const delta = Math.max(-2, Math.min(2, (count(POS) - count(NEG)) * 0.5));
+  return { delta, used: true };
+}
 function features(bean) {
   const text = getNotes(bean).join(" ").toLowerCase();
   const contains = (words) => words.some((word) => text.includes(word));
@@ -75,6 +84,7 @@ function estimate(bean, style) {
   if (style === "icedoat") score += (f.chocolate ? 0.8 : 0) + (f.nut ? 0.7 : 0) + (f.sweetness ? 0.5 : 0) - (f.bitter ? 0.7 : 0) - (f.floral ? 0.3 : 0);
   if (f.darkRoast && (style === "milk" || style === "oat")) score += 0.25;
   if (!getNotes(bean).length) score = 5.5;
+  score += noteAdjustment(bean, style).delta;
   score = Math.max(0, Math.min(10, score));
   const certainty = getNotes(bean).length >= 3 && bean.roastLevel ? "Some clues: roast level and saved roaster notes are available." : "Low confidence: add the roaster’s official taste notes and roast level for a more useful estimate.";
   return { score, source: "flavour-note estimate", taste: tasteSentence(f, style, false, bean), confidence: certainty };
@@ -83,7 +93,7 @@ function tasteSentence(f, style, personal, bean) {
   const log = bean ? loggedInfo(bean, style) : { total: 0, rated: 0, unrated: 0, lastNote: "" };
   const extra = log.lastNote ? ` Your last note: “${log.lastNote}”.` : "";
   if (personal) return `Average of ${log.rated} rated cup${log.rated === 1 ? "" : "s"} for this style.${log.unrated ? ` ${log.unrated} unrated cup${log.unrated === 1 ? " is" : "s are"} ignored.` : ""}${extra}`;
-  if (log.total) return `${log.total} cup${log.total === 1 ? "" : "s"} logged but not rated, so this is still the note-based estimate. Rate a cup (untick “Leave this cup unrated”) to update it.${extra}`;
+  if (log.total) return `${log.total} cup${log.total === 1 ? "" : "s"} logged but not rated, so the score is a note-based estimate, adjusted by the words in your brew notes. Rate a cup (untick “Leave this cup unrated”) to update it.${extra}`;
   if (style === "black") {
     if (f.floral || f.fruit) return "Likely to show more of its fruit, citrus or floral character, with less milk to soften acidity.";
     if (f.chocolate || f.nut) return "Likely to lean toward cocoa, nuts or sweetness, with the bean’s roast character up front.";
