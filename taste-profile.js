@@ -40,6 +40,12 @@ function getRating(bean, style) {
   const scores = (bean.brews || []).filter((brew) => brew.drinkStyle === style && brew.rating !== null && brew.rating !== undefined && brew.rating !== "" && Number.isFinite(Number(brew.rating))).map((brew) => Number(brew.rating));
   return scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : null;
 }
+function loggedInfo(bean, style) {
+  const brews = (bean.brews || []).filter((brew) => brew.drinkStyle === style);
+  const rated = brews.filter((brew) => brew.rating !== null && brew.rating !== undefined && brew.rating !== "" && Number.isFinite(Number(brew.rating)));
+  const lastNote = [...brews].reverse().map((brew) => String(brew.notes || "").trim()).find(Boolean) || "";
+  return { total: brews.length, rated: rated.length, unrated: brews.length - rated.length, lastNote };
+}
 function features(bean) {
   const text = getNotes(bean).join(" ").toLowerCase();
   const contains = (words) => words.some((word) => text.includes(word));
@@ -59,7 +65,7 @@ function features(bean) {
 function estimate(bean, style) {
   const f = features(bean);
   const personal = getRating(bean, style);
-  if (personal !== null) return { score: personal, source: "your logged cup", taste: tasteSentence(f, style, true), confidence: "Based on your own rated brew(s) for this drink style." };
+  if (personal !== null) return { score: personal, source: "your logged cup", taste: tasteSentence(f, style, true, bean), confidence: "Based on your own rated brew(s) for this drink style." };
   let score = 6;
   if (style === "black") score += (f.bright ? 1.1 : 0) + (f.floral ? 0.9 : 0) + (f.chocolate ? 0.3 : 0) - (f.bitter ? 0.7 : 0);
   if (style === "americano") score += (f.bright ? 1 : 0) + (f.floral ? 0.7 : 0) + (f.chocolate ? 0.2 : 0) + (f.sweetness ? 0.2 : 0) - (f.bitter ? 0.9 : 0) - (f.darkRoast ? 0.3 : 0);
@@ -71,10 +77,13 @@ function estimate(bean, style) {
   if (!getNotes(bean).length) score = 5.5;
   score = Math.max(0, Math.min(10, score));
   const certainty = getNotes(bean).length >= 3 && bean.roastLevel ? "Some clues: roast level and saved roaster notes are available." : "Low confidence: add the roaster’s official taste notes and roast level for a more useful estimate.";
-  return { score, source: "flavour-note estimate", taste: tasteSentence(f, style, false), confidence: certainty };
+  return { score, source: "flavour-note estimate", taste: tasteSentence(f, style, false, bean), confidence: certainty };
 }
-function tasteSentence(f, style, personal) {
-  if (personal) return "Your own cup ratings replace the estimate for this style. Keep logging to refine your personal score.";
+function tasteSentence(f, style, personal, bean) {
+  const log = bean ? loggedInfo(bean, style) : { total: 0, rated: 0, unrated: 0, lastNote: "" };
+  const extra = log.lastNote ? ` Your last note: “${log.lastNote}”.` : "";
+  if (personal) return `Average of ${log.rated} rated cup${log.rated === 1 ? "" : "s"} for this style.${log.unrated ? ` ${log.unrated} unrated cup${log.unrated === 1 ? " is" : "s are"} ignored.` : ""}${extra}`;
+  if (log.total) return `${log.total} cup${log.total === 1 ? "" : "s"} logged but not rated, so this is still the note-based estimate. Rate a cup (untick “Leave this cup unrated”) to update it.${extra}`;
   if (style === "black") {
     if (f.floral || f.fruit) return "Likely to show more of its fruit, citrus or floral character, with less milk to soften acidity.";
     if (f.chocolate || f.nut) return "Likely to lean toward cocoa, nuts or sweetness, with the bean’s roast character up front.";
