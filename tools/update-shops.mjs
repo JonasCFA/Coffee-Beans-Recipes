@@ -9,6 +9,8 @@ const SHOPS = [
   { name: "Bunca", city: "", base: "https://bunca.coffee", favorite: true },
   { name: "Bonanza Coffee", city: "Berlin", base: "https://bonanzacoffee.de" },
   { name: "19grams", city: "Berlin", base: "https://19grams.coffee", beanTypes: ["Espresso", "Filter"] },
+  { name: "Higher Coffee Roastery", city: "Düsseldorf", base: "https://highercoffee.co" },
+  { name: "CULTD Coffee Unlimited", city: "Hamburg", base: "https://coffee-unlimited.com" },
   { name: "The Barn", city: "Berlin", base: "https://www.thebarn.de" },
   { name: "Five Elephant", city: "Berlin", base: "https://fiveelephant.com" },
   { name: "Public Coffee Roasters", city: "Berlin", base: "https://publiccoffeeroasters.com" },
