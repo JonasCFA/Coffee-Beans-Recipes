@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T08:22:13.513Z",
+ "updated": "2026-11-08T08:23:52.111Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -264,6 +264,15 @@
     "price": 30
    },
    {
+    "store": "19grams",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "El Vergel - Kolumbien Espresso",
+    "roaster": "",
+    "url": "https://19grams.coffee/products/el-vergel-kolumbien-espresso",
+    "price": 18
+   },
+   {
     "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
@@ -364,6 +373,24 @@
     "roaster": "",
     "url": "https://bonanzacoffee.de/products/bonanza-blend",
     "price": 14.9
+   },
+   {
+    "store": "19grams",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Copacabana Brasilien Espresso",
+    "roaster": "",
+    "url": "https://19grams.coffee/products/copacabana-brasilien-espresso",
+    "price": 11
+   },
+   {
+    "store": "19grams",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "120 Hz Espresso",
+    "roaster": "",
+    "url": "https://19grams.coffee/products/120-hz-espresso",
+    "price": 16
    },
    {
     "store": "The Barn",
@@ -655,6 +682,24 @@
     "roaster": "",
     "url": "https://bonanzacoffee.de/products/bonanza-blend",
     "price": 14.9
+   },
+   {
+    "store": "19grams",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Los Planes - Honduras Espresso",
+    "roaster": "",
+    "url": "https://19grams.coffee/products/planes-honduras-espresso",
+    "price": 18
+   },
+   {
+    "store": "19grams",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Los Planes - Honduras Filter",
+    "roaster": "",
+    "url": "https://19grams.coffee/products/planes-honduras-filter",
+    "price": 18
    },
    {
     "store": "The Barn",
