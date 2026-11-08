@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T05:57:47.988Z",
+ "updated": "2026-11-08T08:22:13.513Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -20,6 +20,10 @@
   "Bonanza Coffee": {
    "ok": true,
    "products": 18
+  },
+  "19grams": {
+   "ok": true,
+   "products": 148
   },
   "The Barn": {
    "ok": true,
@@ -249,6 +253,15 @@
     "roaster": "",
     "url": "https://bonanzacoffee.de/products/jaguarundi",
     "price": 19.5
+   },
+   {
+    "store": "19grams",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Hachi - Kolumbien Filter",
+    "roaster": "",
+    "url": "https://19grams.coffee/products/hachi-kolumbien-filter",
+    "price": 30
    },
    {
     "store": "The Barn",
