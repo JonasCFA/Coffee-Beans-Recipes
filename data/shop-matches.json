@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T08:23:52.111Z",
+ "updated": "2026-11-08T08:27:43.475Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -24,6 +24,14 @@
   "19grams": {
    "ok": true,
    "products": 148
+  },
+  "Higher Coffee Roastery": {
+   "ok": true,
+   "products": 38
+  },
+  "CULTD Coffee Unlimited": {
+   "ok": true,
+   "products": 89
   },
   "The Barn": {
    "ok": true,
@@ -85,6 +93,15 @@
     "roaster": "",
     "url": "https://bonanzacoffee.de/products/gogogu",
     "price": 17.9
+   },
+   {
+    "store": "Higher Coffee Roastery",
+    "city": "Düsseldorf",
+    "favorite": false,
+    "title": "Äthiopien Kaffa - fruchtig, nussig, omni-roast",
+    "roaster": "",
+    "url": "https://highercoffee.co/products/ethiopia-kaffa-omni-roast",
+    "price": 12
    },
    {
     "store": "The Barn",
@@ -152,6 +169,24 @@
     "roaster": "",
     "url": "https://bonanzacoffee.de/products/ab-kithungururu",
     "price": 18.9
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Kenia Baragwi",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/kenia-baragwi-espresso/",
+    "price": 9.45
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Kenia Baragwi",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/kenia-baragwi/",
+    "price": 9.45
    },
    {
     "store": "The Barn",
@@ -271,6 +306,24 @@
     "roaster": "",
     "url": "https://19grams.coffee/products/el-vergel-kolumbien-espresso",
     "price": 18
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Colombia La Sirena Mandel Marzipan",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/colombia-la-sirena-mandel-marzipan/",
+    "price": 26.9
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Colombia El Mirador Fruity Mousse",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/colombia-el-mirador-fruity-mousse/",
+    "price": 24.9
    },
    {
     "store": "The Barn",
@@ -393,6 +446,24 @@
     "price": 16
    },
    {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Brasil Dolce Cerrado",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/brasil-dolce-cerrado-kaffee/",
+    "price": 8.45
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Brasil Dolce Cerrado",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/brasilien-dolce-cerrado/",
+    "price": 8.45
+   },
+   {
     "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
@@ -465,6 +536,24 @@
     "roaster": "",
     "url": "https://bunca.coffee/products/velvet-berry",
     "price": 12.9
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Guatemala Antigua Finca Medina",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/guatemala-antigua-finca-medina/",
+    "price": 13.9
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Guatemala Lampocoy",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/guatemala-lampocoy-2/",
+    "price": 9.05
    },
    {
     "store": "The Barn",
@@ -557,7 +646,17 @@
     "price": 13.15
    }
   ],
-  "costa-rica-honey-process": [],
+  "costa-rica-honey-process": [
+   {
+    "store": "Higher Coffee Roastery",
+    "city": "Düsseldorf",
+    "favorite": false,
+    "title": "Costa Rica La Pachuca – fruchtig, würzig, juicy honey, omni-roast",
+    "roaster": "",
+    "url": "https://highercoffee.co/products/costa-rica-la-pachuca-tropische-bombe-fruchtig-wurzig-juicy-honey",
+    "price": 16
+   }
+  ],
   "panama-geisha": [],
   "rwanda-burundi-washed": [
    {
@@ -580,6 +679,24 @@
    }
   ],
   "sumatra-wet-hulled": [
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Indonesien Tri Hita Karana",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/tri-hita-karana-2/",
+    "price": 9.15
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Indonesien Tri Hita Karana",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/tri-hita-karana/",
+    "price": 9.15
+   },
    {
     "store": "The Barn",
     "city": "Berlin",
@@ -702,6 +819,33 @@
     "price": 18
    },
    {
+    "store": "Higher Coffee Roastery",
+    "city": "Düsseldorf",
+    "favorite": false,
+    "title": "Peru Moyobamba - süß, weich, schokoladig, omni-roast",
+    "roaster": "",
+    "url": "https://highercoffee.co/products/peru-moyobamba-omni-roast",
+    "price": 12
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "MAYA Peru Tukan Bio",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/peru-tukan-bio-2/",
+    "price": 9.2
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "MAYA Peru Tukan Bio",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/peru-tukan-bio/",
+    "price": 9.2
+   },
+   {
     "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
@@ -747,6 +891,24 @@
     "roaster": "",
     "url": "https://bunca.coffee/products/shadow-blend",
     "price": 11.9
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Café Crème Schümli",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/cultd-cafe-creme/",
+    "price": 9.15
+   },
+   {
+    "store": "CULTD Coffee Unlimited",
+    "city": "Hamburg",
+    "favorite": false,
+    "title": "Hammerbrooklyn Blend",
+    "roaster": "",
+    "url": "https://coffee-unlimited.com/produkt/hammerbrooklyn-blend-2/",
+    "price": 7.95
    },
    {
     "store": "Five Elephant",
