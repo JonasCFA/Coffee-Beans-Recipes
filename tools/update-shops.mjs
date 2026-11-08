@@ -8,6 +8,7 @@ const SHOPS = [
   { name: "Due Mani", city: "", base: "https://duemani.de", favorite: true },
   { name: "Bunca", city: "", base: "https://bunca.coffee", favorite: true },
   { name: "Bonanza Coffee", city: "Berlin", base: "https://bonanzacoffee.de" },
+  { name: "19grams", city: "Berlin", base: "https://19grams.coffee" },
   { name: "The Barn", city: "Berlin", base: "https://www.thebarn.de" },
   { name: "Five Elephant", city: "Berlin", base: "https://fiveelephant.com" },
   { name: "Public Coffee Roasters", city: "Berlin", base: "https://publiccoffeeroasters.com" },
