@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-07T05:56:45.859Z",
+ "updated": "2026-11-08T05:57:47.988Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -55,7 +55,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3620
+   "products": 3636
   },
   "Honest & Rare": {
    "ok": true,
@@ -198,10 +198,10 @@
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Coffee Annan Kenya Filter 350g",
+    "title": "roastmarket ORIGINS KENYA 250g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/coffee-annan-kenya-filter-350g.html",
-    "price": 15.99
+    "url": "https://www.roastmarket.de/caffe-corsini-ethiopia-harenna-250g.html",
+    "price": 9.99
    },
    {
     "store": "Honest & Rare",
