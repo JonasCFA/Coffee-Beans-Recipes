@@ -8,7 +8,7 @@ const SHOPS = [
   { name: "Due Mani", city: "", base: "https://duemani.de", favorite: true },
   { name: "Bunca", city: "", base: "https://bunca.coffee", favorite: true },
   { name: "Bonanza Coffee", city: "Berlin", base: "https://bonanzacoffee.de" },
-  { name: "19grams", city: "Berlin", base: "https://19grams.coffee" },
+  { name: "19grams", city: "Berlin", base: "https://19grams.coffee", beanTypes: ["Espresso", "Filter"] },
   { name: "The Barn", city: "Berlin", base: "https://www.thebarn.de" },
   { name: "Five Elephant", city: "Berlin", base: "https://fiveelephant.com" },
   { name: "Public Coffee Roasters", city: "Berlin", base: "https://publiccoffeeroasters.com" },
@@ -60,7 +60,11 @@ async function loadShopify(shop) {
   const products = [];
   for (let page = 1; page <= 6; page++) {
     const batch = (await getJson(`${shop.base}/products.json?limit=250&page=${page}`)).products || [];
-    products.push(...batch.map((product) => ({ ...product, url: `${shop.base}/products/${product.handle}` })));
+    products.push(...batch.map((product) => ({
+      ...product,
+      product_type: shop.beanTypes?.includes(product.product_type) && (product.variants || []).some((variant) => Number(variant.grams) >= 200) ? "Coffee" : product.product_type,
+      url: `${shop.base}/products/${product.handle}`
+    })));
     if (batch.length < 250) break;
   }
   return products;
