@@ -38,7 +38,37 @@
   CATALOG.forEach((item) => { item.id = item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); });
   // Live shop matches come from data/shop-matches.json, refreshed daily by tools/update-shops.mjs.
   let shopData = { matches: {} };
-  const matchesFor = (item) => (shopData.matches[item.id] || []).slice().sort((a, b) => Number(b.favorite) - Number(a.favorite) || (a.price ?? 1e9) - (b.price ?? 1e9)).slice(0, 8);
+  const DRINK_LABELS = { black: "Espresso", americano: "Americano", milk: "Dairy milk", oat: "Oat milk", icedmilk: "Iced latte · dairy", icedoat: "Iced latte · oat" };
+
+  function productKey(value) {
+    try {
+      const url = new URL(value);
+      if (!["http:", "https:"].includes(url.protocol)) return "";
+      return `${url.hostname.toLowerCase().replace(/^www\./, "")}${url.pathname.replace(/\/+$/, "")}`;
+    } catch { return ""; }
+  }
+
+  function beanForProduct(beans, url) {
+    const key = productKey(url);
+    return key ? beans.find((bean) => productKey(bean.recommendationUrl || bean.productUrl) === key) : null;
+  }
+
+  function matchesFor(item, beans) {
+    const available = (shopData.matches[item.id] || []).map((product) => ({ product, bean: beanForProduct(beans, product.url), available: true }));
+    available.sort((a, b) => {
+      const aRating = a.bean ? averageRating(a.bean) : null;
+      const bRating = b.bean ? averageRating(b.bean) : null;
+      return (bRating !== null) - (aRating !== null) || (bRating ?? 0) - (aRating ?? 0) ||
+        Number(b.product.favorite) - Number(a.product.favorite) || (a.product.price ?? 1e9) - (b.product.price ?? 1e9);
+    });
+    const shown = available.slice(0, 8);
+    for (const entry of available.slice(8)) if (entry.bean && entry.bean.recommendationCategory === item.id) shown.push(entry);
+    const saved = beans.filter((bean) => bean.recommendationCategory === item.id && bean.recommendationUrl &&
+      !available.some(({ bean: matched }) => matched === bean))
+      .map((bean) => ({ bean, available: false, product: { title: bean.name, store: bean.roaster, url: bean.recommendationUrl } }));
+    saved.sort((a, b) => (averageRating(b.bean) !== null) - (averageRating(a.bean) !== null) || (averageRating(b.bean) ?? 0) - (averageRating(a.bean) ?? 0));
+    return { shown, saved };
+  }
 
   function esc(value = "") {
     return String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -57,7 +87,7 @@
       .map((brew) => Number(brew.rating));
     if (scores.length) return scores.reduce((a, b) => a + b, 0) / scores.length;
     const own = Number(bean.rating);
-    return bean.rating !== null && bean.rating !== undefined && bean.rating !== "" && Number.isFinite(own) && own > 0 ? own : null;
+    return bean.rating !== null && bean.rating !== undefined && bean.rating !== "" && Number.isFinite(own) ? own : null;
   }
   function categoriesOf(bean) {
     const text = (Array.isArray(bean.profile) ? bean.profile : []).join(" ").toLowerCase();
@@ -126,7 +156,21 @@
     return { rated, results };
   }
 
-  function card({ item, score, isNew, best, bestShared, clash, originBean, originPull }, detailed = false) {
+  function productCard({ product, bean, available }, item) {
+    const rating = bean ? averageRating(bean) : null;
+    const breakdown = bean ? Object.entries(DRINK_LABELS).map(([style, label]) => {
+      const scores = (bean.brews || []).filter((brew) => brew.drinkStyle === style && brew.rating !== null && brew.rating !== undefined && brew.rating !== "" && Number.isFinite(Number(brew.rating))).map((brew) => Number(brew.rating));
+      return scores.length ? `${label}: ${(scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1)}/10 (${scores.length})` : "";
+    }).filter(Boolean).join(" · ") : "";
+    const params = new URLSearchParams(bean
+      ? { bean: String(bean.id) }
+      : { addProduct: "1", name: product.title, roaster: product.roaster || (["Roast Market", "Honest & Rare"].includes(product.store) ? "" : product.store), url: product.url, category: item.id });
+    const label = rating === null ? (bean ? "Saved · not rated" : "Not tried yet") : `Your average: ${rating.toFixed(1)}/10`;
+    const productLink = available ? `<a class="store-link" href="${esc(product.url)}" target="_blank" rel="noopener noreferrer">${product.favorite ? "★ " : ""}${esc(product.store)} · ${esc(product.title)}${Number.isFinite(product.price) ? ` · ${product.price.toFixed(2).replace(".", ",")} €` : ""} ↗</a>` : `<span>${esc(product.title)} · ${esc(product.store)}</span>`;
+    return `<div class="recommend-product">${productLink}<div class="recommend-product-meta"><strong>${esc(label)}</strong>${breakdown ? `<span>${esc(breakdown)}</span>` : ""}${!available ? '<span>Not currently listed in this category’s shop results</span>' : ""}<a href="index.html?${esc(params.toString())}#library">${bean ? "View / rate coffee →" : "Add to collection →"}</a></div></div>`;
+  }
+
+  function card({ item, score, isNew, best, bestShared, clash, originBean, originPull }, detailed = false, beans = []) {
     const percent = Math.round(Math.max(40, Math.min(98, score * 100)));
     const why = originBean && originPull >= .5
       ? `You rated <strong>${esc(originBean.bean.name)}</strong> from ${esc(item.country)} ${originBean.rating.toFixed(1)}/10, so this origin is a safe bet.${best && bestShared.length ? ` It also shares the ${esc(joinList(bestShared))} character you like.` : ""}`
@@ -135,13 +179,10 @@
       : isNew ? "A fresh direction compared with the beans you have logged so far, with a flavour profile close to your taste." : "Close to the flavour balance of the coffees you rated well.";
     const headsUp = originBean && originPull <= -.2 ? `<p class="recommend-heads-up">Heads-up: you rated <strong>${esc(originBean.bean.name)}</strong> (${esc(item.country)}) only ${originBean.rating.toFixed(1)}/10.</p>` : clash ? `<p class="recommend-heads-up">Heads-up: leans ${esc(joinList(clash.shared))}, which you rated lower in <strong>${esc(clash.bean.name)}</strong> (${clash.rating.toFixed(1)}/10).</p>` : "";
     const origin = isNew ? "New origin for you" : "An origin you already know";
-    const query = encodeURIComponent(`${item.search} specialty coffee beans`);
     const tags = item.notes.map((note) => `<span class="tag">${esc(note)}</span>`).join("");
-    const found = matchesFor(item);
+    const { shown, saved } = matchesFor(item, beans);
     const stores = detailed
-      ? found.length
-        ? `<div class="store-links"><span class="store-label">In stock now</span>${found.map((m) => `<a class="store-link" href="${esc(m.url)}" target="_blank" rel="noopener noreferrer">${m.favorite ? "★ " : ""}${esc(m.store)} · ${esc(m.title)}${m.price ? ` · ${m.price.toFixed(2).replace(".", ",")} €` : ""} ↗</a>`).join("")}</div>`
-        : `<p class="recommend-note">No matching bean in stock at the tracked shops right now.</p>`
+      ? `<div class="store-links"><span class="store-label">In stock now</span>${shown.length ? shown.map((entry) => productCard(entry, item)).join("") : '<p class="recommend-note">No matching bean in stock at the tracked shops right now.</p>'}${saved.length ? `<span class="store-label">Your previously saved coffees</span>${saved.map((entry) => productCard(entry, item)).join("")}` : ""}</div>`
       : "";
     const foot = detailed
       ? `<div class="recommend-foot"><span>${esc(item.drink)}</span></div>`
@@ -163,7 +204,7 @@
     }
     if (allRoot) {
       allRoot.innerHTML = rated.length
-        ? `<div class="recommend-grid">${results.map((entry) => card(entry, true)).join("")}</div><p class="recommend-note">Only beans currently in stock at the tracked shops are listed, each linking straight to the product page (shop data updated ${esc(shopData.updated ? new Date(shopData.updated).toLocaleDateString("de-DE") : "not yet")}). Prices are the shops\u2019 own. Matches weigh the tasting notes and roast level of coffees you rated, and favour origins you have not tried yet.</p>`
+        ? `<p class="recommend-note">Add a product to your collection, then log a rated cup. Your rated products appear first, ordered by your average across drink styles; the separate drink averages are shown too. Untried products have no personal score. Saved coffees remain below when no longer listed.</p><div class="recommend-grid">${results.map((entry) => card(entry, true, beans)).join("")}</div><p class="recommend-note">Shop data updated ${esc(shopData.updated ? new Date(shopData.updated).toLocaleDateString("de-DE") : "not yet")}. Prices are the shops’ own. The match percentage describes the bean style, not an individual product.</p>`
         : empty;
       const target = location.hash && document.getElementById(location.hash.slice(1));
       if (target) { target.classList.add("is-highlighted"); target.scrollIntoView({ block: "start" }); }
@@ -171,5 +212,6 @@
   }
 
   window.addEventListener("storage", (event) => { if (event.key === STORAGE_KEY) render(); });
+  window.addEventListener("pageshow", (event) => { if (event.persisted) render(); });
   fetch("data/shop-matches.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).catch(() => null).then((data) => { if (data && data.matches) shopData = data; render(); });
 })();

@@ -20,6 +20,7 @@ const ESPRESSO_PLANS = {
 let beans = loadBeans();
 let selectedBeanId = beans[0]?.id ?? null;
 let activeBrewBeanId = null;
+let pendingRecommendation = null;
 let toastTimer;
 const $ = (selector) => document.querySelector(selector);
 const beanGrid = $("#beanGrid");
@@ -214,7 +215,48 @@ function renderClusters() {
   $("#clusterGrid").innerHTML = groups.size ? [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([name, members]) => { const notes = [...new Set(members.flatMap((bean) => getTasteNotes(bean)))].slice(0, 4); const ratings = members.map(getRating).filter((rating) => rating !== null); const average = ratings.length ? (ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length).toFixed(1) : "—"; return `<article class="cluster-card"><p class="eyebrow">taste family</p><h3>${escapeHTML(name)}</h3><p>${notes.map(escapeHTML).join(" · ") || "Add tasting notes to describe this group."}</p><footer><span>${members.length} ${members.length === 1 ? "coffee" : "coffees"} · avg ${average}${average !== "—" ? " / 10" : ""}</span><button data-action="filter-cluster" data-cluster="${escapeHTML(name)}">Explore →</button></footer></article>`; }).join("") : '<div class="empty-results">Add coffees with tasting notes to see their groups.</div>';
 }
 function render() { renderFilter(); renderStats(); renderTasteOverview(); renderBeans(); renderDetail(); renderClusters(); }
-function openBeanDialog() { $("#beanForm").reset(); beanDialog.showModal(); }
+function productKey(value) {
+  try {
+    const url = new URL(value);
+    if (!["http:", "https:"].includes(url.protocol)) return "";
+    return `${url.hostname.toLowerCase().replace(/^www\./, "")}${url.pathname.replace(/\/+$/, "")}`;
+  } catch { return ""; }
+}
+function openBeanDialog() {
+  pendingRecommendation = null;
+  $("#beanForm").reset();
+  $("#beanForm > .form-hint").textContent = "Search the roastery online, then keep the details you care about. German roasteries are fully supported.";
+  beanDialog.showModal();
+}
+function openRecommendation() {
+  const params = new URLSearchParams(location.search);
+  const beanId = params.get("bean");
+  if (beanId) {
+    const bean = beans.find((item) => String(item.id) === beanId);
+    if (bean) { selectedBeanId = bean.id; render(); showToast("Select Adjust recipe / log brew to rate this coffee."); }
+    else showToast("This coffee is no longer in your collection.");
+  } else if (params.get("addProduct") === "1") {
+    const url = safeUrl(params.get("url") || "");
+    const category = params.get("category") || "";
+    if (!url || !/^[a-z0-9-]+$/.test(category)) {
+      showToast("Could not open this recommendation.");
+    } else {
+      const existing = beans.find((bean) => productKey(bean.recommendationUrl || bean.productUrl) === productKey(url));
+      if (existing) { selectedBeanId = existing.id; render(); showToast("This coffee is already saved. Log a brew to rate it."); }
+      else {
+        openBeanDialog();
+        pendingRecommendation = { url, category };
+        const form = $("#beanForm");
+        form.elements.name.value = params.get("name") || "";
+        form.elements.roaster.value = params.get("roaster") || "";
+        form.elements.productUrl.value = url;
+        $("#beanForm > .form-hint").textContent = "Check the product details and enter the actual roaster, origin, roast and tasting notes. Category notes are not copied because each coffee is different.";
+        showToast("Check the details and add the roaster’s notes before saving.");
+      }
+    }
+  }
+  if (beanId || params.has("addProduct")) history.replaceState(null, "", `${location.pathname}${location.hash}`);
+}
 function updateRatingDisplay() { const checkbox = $("#unratedCheckbox"); const input = $("#ratingInput"); const output = $("#ratingOutput"); input.disabled = checkbox.checked; output.textContent = checkbox.checked ? "Not rated" : Number(input.value).toFixed(1); }
 function openBrewDialog(id) {
   const bean = beans.find((item) => String(item.id) === String(id)); if (!bean) return;
@@ -225,7 +267,7 @@ function openBrewDialog(id) {
 function attachEvents() {
   $("#addBeanButton").addEventListener("click", openBeanDialog); $("#introAddButton")?.addEventListener("click", openBeanDialog);
   $("#searchRoasteryButton").addEventListener("click", () => { const form = $("#beanForm"); const name = form.elements.roaster.value.trim(); const location = form.elements.roasterLocation.value.trim(); if (!name) { form.elements.roaster.focus(); showToast("Enter a roastery name first."); return; } window.open(`https://www.google.com/search?q=${encodeURIComponent(`${name} ${location} official roastery coffee`)}`, "_blank", "noopener,noreferrer"); });
-  $("#beanForm").addEventListener("submit", (event) => { event.preventDefault(); const values = new FormData(event.currentTarget); const bean = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), name: values.get("name").trim(), roaster: values.get("roaster").trim(), roasterLocation: values.get("roasterLocation").trim(), origin: values.get("origin").trim(), roastDate: values.get("roastDate"), roastLevel: values.get("roastLevel"), method: values.get("method"), profile: values.get("profile").split(",").map((note) => note.trim()).filter(Boolean), rating: null, productUrl: values.get("productUrl").trim(), recipe: {}, brews: [], favorite: false, addedAt: new Date().toISOString() }; bean.recipe = adaptedRecipe(bean, beans); beans.unshift(bean); selectedBeanId = bean.id; saveBeans(); render(); beanDialog.close(); showToast("Coffee saved with a suggested starting recipe based on your past shots."); });
+  $("#beanForm").addEventListener("submit", (event) => { event.preventDefault(); const values = new FormData(event.currentTarget); const bean = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), name: values.get("name").trim(), roaster: values.get("roaster").trim(), roasterLocation: values.get("roasterLocation").trim(), origin: values.get("origin").trim(), roastDate: values.get("roastDate"), roastLevel: values.get("roastLevel"), method: values.get("method"), profile: values.get("profile").split(",").map((note) => note.trim()).filter(Boolean), rating: null, productUrl: values.get("productUrl").trim(), recipe: {}, brews: [], favorite: false, addedAt: new Date().toISOString() }; if (pendingRecommendation && productKey(bean.productUrl) === productKey(pendingRecommendation.url)) { const existing = beans.find((item) => productKey(item.recommendationUrl || item.productUrl) === productKey(pendingRecommendation.url)); if (existing) { selectedBeanId = existing.id; render(); beanDialog.close(); showToast("This coffee is already in your collection."); return; } bean.recommendationUrl = pendingRecommendation.url; bean.recommendationCategory = pendingRecommendation.category; } bean.recipe = adaptedRecipe(bean, beans); beans.unshift(bean); selectedBeanId = bean.id; if (!saveBeans()) { beans.shift(); return; } pendingRecommendation = null; render(); beanDialog.close(); showToast("Coffee saved. Log a brew to rate it."); });
   $("#brewForm").addEventListener("submit", (event) => { event.preventDefault(); const bean = beans.find((item) => String(item.id) === String(activeBrewBeanId)); if (!bean) return; const values = new FormData(event.currentTarget); const unrated = $("#unratedCheckbox").checked; const brew = { date: new Date().toISOString(), dose: Number(values.get("dose")), output: Number(values.get("output")), grind: values.get("grind").trim(), method: values.get("method").trim(), drinkStyle: values.get("drinkStyle"), preInfusion: values.get("preInfusion").trim(), preInfusionPressure: values.get("preInfusionPressure").trim(), targetFlowTime: values.get("targetFlowTime").trim(), rating: unrated ? null : Number(values.get("rating")), notes: values.get("notes").trim() }; bean.recipe = { ...brew, guidance: "Your latest personally adjusted recipe. Use your tasting notes to guide the next adjustment." }; bean.method = brew.method; bean.brews ||= []; bean.brews.push(brew); selectedBeanId = bean.id; saveBeans(); render(); brewDialog.close(); showToast("Latest recipe saved for this bean."); });
   $("#ratingInput").addEventListener("input", updateRatingDisplay); $("#unratedCheckbox").addEventListener("change", updateRatingDisplay); $("#searchInput").addEventListener("input", render); $("#clusterFilter").addEventListener("change", render); $("#sortSelect").addEventListener("change", render);
   beanGrid.addEventListener("click", (event) => { const favorite = event.target.closest('[data-action="favorite"]'); if (favorite) { event.stopPropagation(); const bean = beans.find((item) => String(item.id) === String(favorite.dataset.id)); if (bean) { bean.favorite = !bean.favorite; saveBeans(); render(); } return; } const card = event.target.closest(".bean-card"); if (card) { selectedBeanId = card.dataset.id; render(); } });
@@ -238,3 +280,4 @@ function attachEvents() {
 }
 attachEvents();
 render();
+openRecommendation();

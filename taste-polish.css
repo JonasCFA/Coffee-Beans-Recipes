@@ -42,6 +42,11 @@
 .store-label { width: 100%; color: var(--muted); font-size: .6rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .store-link { padding: 7px 12px; border-radius: 999px; background: #f0efe9; color: var(--ink); font-size: .7rem; font-weight: 700; text-decoration: none; }
 .store-link:hover { background: var(--olive-soft); color: var(--olive); }
+.recommend-product { width: 100%; display: grid; gap: 5px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .75rem; }
+.recommend-product .store-link { display: block; border-radius: 9px; overflow-wrap: anywhere; }
+.recommend-product-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px 12px; color: var(--muted); line-height: 1.5; }
+.recommend-product-meta strong { color: var(--ink); }
+.recommend-product-meta a { color: var(--olive); font-weight: 700; }
 .recommend-note a { color: var(--olive); font-weight: 700; text-decoration: none; }
 .recommend-note a:hover { text-decoration: underline; }
 .recommend-card { scroll-margin-top: 96px; }
