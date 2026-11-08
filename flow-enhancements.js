@@ -68,7 +68,7 @@
     const window = espressoTimeWindow(bean, dose, output);
     if (keepTarget) return;
     form.elements.targetFlowTime.value = window;
-    note.textContent = `${dose}g in → ${output}g out (1:${(output / dose).toFixed(1)}) in about ${window}s, timed from pump start including pre-infusion. Main pressure and temperature are fixed on your Meraki: if the shot runs fast or tastes sour, go one grinder step finer or add 0.5g dose; if slow or bitter, go one step coarser or stop earlier. Change one thing at a time.`;
+    note.textContent = `${dose}g in → ${output}g out (1:${(output / dose).toFixed(1)}) in about ${window}s, timed from pump start including pre-infusion. This is a starting range, not a target to force. Main pressure and temperature are fixed on your Meraki; taste and change one variable at a time.`;
   }
 
   const brewForm = document.querySelector("#brewForm");

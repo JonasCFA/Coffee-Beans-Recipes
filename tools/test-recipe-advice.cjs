@@ -1,0 +1,23 @@
+const assert = require("node:assert/strict");
+const { advice, diagnose } = require("../recipe-advice.js");
+
+const shot = { method: "Espresso", drinkStyle: "black", dose: 18, output: 36, actualFlowTime: 29, grind: "4", rating: 5, notes: "leicht sauer am Ende" };
+const bean = { brews: [shot], roasterRecipe: { dose: 18, output: 37, time: "27–30s" } };
+const sour = advice(bean, "black");
+assert.match(sour.tip, /37 g out instead of 36 g/);
+assert.match(sour.tip, /roaster reference/);
+assert.match(sour.roaster, /29 s/);
+assert.match(advice({ brews: [{ ...shot, notes: "bitter" }] }, "black").tip, /34 g out/);
+assert.match(advice({ brews: [{ ...shot, notes: "sauer und bitter" }] }, "black").tip, /distribution/);
+assert.match(advice({ brews: [{ ...shot, notes: "nicht sauer, bitter" }] }, "black").tip, /34 g out/);
+assert.match(advice({ brews: [{ ...shot, notes: "lecker", rating: 9 }] }, "black").tip, /Repeat/);
+assert.match(advice({ brews: [{ ...shot, notes: "", rating: 2 }] }, "black").tip, /No clear adjustment/);
+assert.match(advice({ brews: [{ ...shot, method: "V60" }] }, "black").tip, /not recorded as espresso/);
+assert.match(advice({ brews: [shot] }, "oat").tip, /No cup logged/);
+assert.equal(diagnose("nicht zu sauer und nicht bitter").sour, false);
+assert.equal(diagnose("nicht zu sauer und nicht bitter").bitter, false);
+assert.equal(diagnose("spritzt").channeling, true);
+assert.equal(advice({ brews: [{ ...shot, rating: 9, notes: "great" }, shot] }, "black").best.rating, 9);
+assert.match(advice({ brews: [{ ...shot, output: 54 }] }, "black").tip, /finer/);
+assert.match(advice({ brews: [{ ...shot, output: 20, notes: "bitter" }] }, "black").tip, /coarser/);
+console.log("Recipe advice tests passed");

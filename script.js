@@ -57,7 +57,7 @@ function starterRecipe(bean) {
   const dose = 18;
   const output = plan.output;
   const targetFlowTime = espressoTimeWindow(bean, dose, output);
-  return { recipeVersion: RECIPE_VERSION, dose, output, grind: "Start at your current base-grinder setting", water: "", method, preInfusion: plan.preInfusion, preInfusionPressure: plan.preInfusionPressure, pressure: "", pressureProfile: "Pre-infusion pressure adjustable; main pressure fixed", targetFlowTime, flowTime: "", guidance: `${plan.why} Start with ${dose}g in → ${output}g out (1:${(output / dose).toFixed(1)}), pre-infusion ${plan.preInfusion} at ${plan.preInfusionPressure} bar, total shot ${targetFlowTime}s from pump start. Main pressure and temperature are fixed on your machine, so adjust the grinder, yield and pre-infusion (longer or higher-pressure pre-infusion if the shot channels or runs fast): shot too fast or sour/thin → grind one step finer or raise dose 0.5g; too slow or bitter/dry → one step coarser or stop the shot earlier. Change one thing at a time.` };
+  return { recipeVersion: RECIPE_VERSION, dose, output, grind: "Start at your current base-grinder setting", water: "", method, preInfusion: plan.preInfusion, preInfusionPressure: plan.preInfusionPressure, pressure: "", pressureProfile: "Pre-infusion pressure adjustable; main pressure fixed", targetFlowTime, flowTime: "", guidance: `${plan.why} Start with ${dose}g in → ${output}g out (1:${(output / dose).toFixed(1)}), pre-infusion ${plan.preInfusion} at ${plan.preInfusionPressure} bar, total shot ${targetFlowTime}s from pump start. Main pressure and temperature are fixed on your machine. Log the result, then change one variable at a time.` };
 }
 function adaptedRecipe(bean, others) {
   const base = starterRecipe(bean);

@@ -1,1 +1,13 @@
 .field-help{display:block;color:#736864;font-size:.62rem;font-weight:400;letter-spacing:0;text-transform:none;line-height:1.45}.recipe-metric strong{overflow-wrap:anywhere}.detail-section .recipe-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:580px){.detail-section .recipe-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.recipe-coach { padding: 12px; border: 1px solid #e3e7dd; border-radius: 10px; background: #f3f6f0; color: var(--ink); font-size: .75rem; line-height: 1.55; }
+.recipe-coach p { margin: 0 0 8px; overflow-wrap: anywhere; }
+.recipe-coach p:last-child { margin-bottom: 0; }
+.recipe-coach a { color: var(--olive); font-weight: 700; }
+.recipe-coach .coach-label { color: var(--muted); font-weight: 700; }
+#recipeCoachDialog { margin: 12px 0; }
+.coach-reference { margin-top: 12px; color: var(--muted); font-size: .72rem; line-height: 1.5; }
+.coach-reference summary { cursor: pointer; color: var(--ink); font-weight: 700; }
+.coach-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.coach-form label { display: grid; gap: 4px; font-weight: 700; }
+.coach-form input { width: 100%; min-width: 0; padding: 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; font: inherit; }
+.coach-form button { grid-column: 1 / -1; justify-self: start; }
