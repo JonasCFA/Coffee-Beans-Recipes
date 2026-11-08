@@ -12,8 +12,11 @@ const STYLE_INFO = {
 const $ = (selector) => document.querySelector(selector);
 const mapRoot = $("#profileMaps");
 const predictionRoot = $("#predictionList");
+const comparisonRoot = $("#tasteComparison");
 let beans = loadBeans();
 let activeBeanId = null;
+let comparisonBeanId = null;
+let comparisonStyle = "milk";
 
 function loadBeans() {
   try {
@@ -36,6 +39,12 @@ function esc(value = "") {
   return String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
 }
 function getNotes(bean) { return (bean.profile || []).map((note) => String(note).trim()).filter(Boolean); }
+function personalTaste(bean, style) {
+  const taste = bean.tasteProfiles?.[style];
+  if (!taste || typeof taste !== "object") return null;
+  const valid = (value) => typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 100;
+  return valid(taste.flavor) && valid(taste.body) ? taste : null;
+}
 function getRating(bean, style) {
   const scores = (bean.brews || []).filter((brew) => brew.drinkStyle === style && brew.rating !== null && brew.rating !== undefined && brew.rating !== "" && Number.isFinite(Number(brew.rating))).map((brew) => Number(brew.rating));
   return scores.length ? scores.reduce((sum, score) => sum + score, 0) / scores.length : null;
@@ -126,6 +135,8 @@ function tasteSentence(f, style, personal, bean) {
   return "Oat milk adds its own cereal-like sweetness. This is an uncertain starting guess until you log a cup.";
 }
 function position(bean, style) {
+  const personal = personalTaste(bean, style);
+  if (personal) return { x: 9 + personal.flavor * .82, y: 12 + personal.body * .76, personal: true };
   const f = features(bean);
   let x = 50;
   if (f.fruit) x -= 20;
@@ -148,7 +159,7 @@ function position(bean, style) {
   if (style === "icedoat") y += 0;
   if (style === "milk") y += 8;
   if (style === "oat") y += 6;
-  return { x: Math.max(9, Math.min(91, x)), y: Math.max(12, Math.min(88, y)) };
+  return { x: Math.max(9, Math.min(91, x)), y: Math.max(12, Math.min(88, y)), personal: false };
 }
 function pointColor(index) { return ["#58705a", "#b6754f", "#7b7994", "#a18a4d", "#568494", "#a76060", "#6e8878", "#94709c"][index % 8]; }
 function plotSVG(style) {
@@ -174,21 +185,58 @@ function plotSVG(style) {
     coords.forEach((c) => { c.x = Math.max(left + 10, Math.min(right - 10, c.x)); c.y = Math.max(top + 10, Math.min(bottom - 10, c.y)); });
     if (!moved) break;
   }
-  const points = coords.map(({ bean, index, x, y, color }) => `<g class="plot-bean-point" data-bean-id="${esc(bean.id)}" tabindex="0" role="button" aria-label="Highlight ${esc(bean.name)}"><circle class="point-halo" cx="${x}" cy="${y}" r="10"/><circle class="point" cx="${x}" cy="${y}" r="7" fill="${color}"/><text class="point-index" x="${x}" y="${y}">${index + 1}</text><title>${esc(bean.name)} · ${esc(bean.roaster)}</title></g>`).join("");
-  return `<svg class="taste-plot" viewBox="0 0 480 292" role="img" aria-label="${esc(info.label)} coffee taste map. Horizontal axis ranges from bright and fruity to chocolate and nutty. Vertical axis ranges from delicate to full-bodied."><rect class="plot-bg" x="${left}" y="${top}" width="${right - left}" height="${bottom - top}" rx="12"/><line class="grid-line" x1="${left + (right-left)/3}" y1="${top}" x2="${left + (right-left)/3}" y2="${bottom}"/><line class="grid-line" x1="${left + 2*(right-left)/3}" y1="${top}" x2="${left + 2*(right-left)/3}" y2="${bottom}"/><line class="grid-line" x1="${left}" y1="${top + (bottom-top)/3}" x2="${right}" y2="${top + (bottom-top)/3}"/><line class="grid-line" x1="${left}" y1="${top + 2*(bottom-top)/3}" x2="${right}" y2="${top + 2*(bottom-top)/3}"/><text class="axis-label" x="${left}" y="267">Delicate</text><text class="axis-label" x="${right}" y="267" text-anchor="end">Full-bodied</text><text class="axis-title" x="${(left+right)/2}" y="282" text-anchor="middle">BODY / ROAST IMPRESSION</text><text class="axis-label" x="${left}" y="17">Bright · fruit · floral</text><text class="axis-label" x="${right}" y="17" text-anchor="end">Chocolate · nut</text>${points || '<text class="plot-empty" x="240" y="145">Add coffees to place your beans here</text>'}</svg>`;
+  const points = coords.map(({ bean, index, x, y, color }) => `<g class="plot-bean-point" data-bean-id="${esc(bean.id)}" tabindex="0" role="button" aria-label="Highlight ${esc(bean.name)}"><circle class="point-halo" cx="${x}" cy="${y}" r="10"/><circle class="point" cx="${x}" cy="${y}" r="7" fill="${color}"/><text class="point-index" x="${x}" y="${y}">${index + 1}</text><title>${esc(bean.name)} · ${esc(bean.roaster)} · ${position(bean, style).personal ? "your taste" : "estimated position"}</title></g>`).join("");
+  return `<svg class="taste-plot" viewBox="0 0 480 292" role="img" aria-label="${esc(info.label)} taste map. Left: fruit and floral. Right: chocolate and nut. Top: full-bodied. Bottom: delicate."><rect class="plot-bg" x="${left}" y="${top}" width="${right - left}" height="${bottom - top}" rx="12"/><line class="grid-line" x1="${left + (right-left)/3}" y1="${top}" x2="${left + (right-left)/3}" y2="${bottom}"/><line class="grid-line" x1="${left + 2*(right-left)/3}" y1="${top}" x2="${left + 2*(right-left)/3}" y2="${bottom}"/><line class="grid-line" x1="${left}" y1="${top + (bottom-top)/3}" x2="${right}" y2="${top + (bottom-top)/3}"/><line class="grid-line" x1="${left}" y1="${top + 2*(bottom-top)/3}" x2="${right}" y2="${top + 2*(bottom-top)/3}"/><text class="axis-label" x="${left}" y="17">Bright · fruit · floral</text><text class="axis-label" x="${right}" y="17" text-anchor="end">Chocolate · nut</text><text class="axis-title" x="14" y="145" text-anchor="middle" transform="rotate(-90 14 145)">DELICATE ← BODY → FULL</text>${points || '<text class="plot-empty" x="240" y="145">Add coffees to place your beans here</text>'}</svg>`;
 }
 function mapCard(style) {
   const info = STYLE_INFO[style];
   const scores = beans.map((bean) => estimate(bean, style).score).filter(Number.isFinite);
   const avg = scores.length ? (scores.reduce((sum, score) => sum + score, 0) / scores.length).toFixed(1) : "—";
-  const legend = beans.map((bean, index) => `<div class="plot-bean" data-bean-id="${esc(bean.id)}"><span class="legend-dot" style="background:${pointColor(index)}"></span><button type="button" data-action="highlight" data-bean-id="${esc(bean.id)}">${index + 1}. ${esc(bean.name)} · ${estimate(bean, style).score.toFixed(1)}/10</button>${bean.productUrl ? `<a class="legend-source" href="${esc(safeUrl(bean.productUrl))}" target="_blank" rel="noopener noreferrer" title="Open saved roaster / product page">source ↗</a>` : ""}</div>`).join("");
-  return `<article class="profile-map-card ${info.className}"><div class="profile-map-top"><div><h3>${esc(info.label)}</h3><p>${esc(info.subtitle)}</p></div><span class="map-illustration" aria-hidden="true">${info.icon}</span></div><div class="plot-wrap">${plotSVG(style)}</div><div class="map-score-note"><strong>${avg}/10</strong> average predicted compatibility for saved beans. Individual scores are guesses until you log a cup.</div><div class="plot-legend">${legend || '<span class="plot-bean">No saved beans yet.</span>'}</div></article>`;
+  const legend = beans.map((bean, index) => `<div class="plot-bean" data-bean-id="${esc(bean.id)}"><span class="legend-dot" style="background:${pointColor(index)}"></span><button type="button" data-action="highlight" data-bean-id="${esc(bean.id)}">${index + 1}. ${esc(bean.name)} · ${position(bean, style).personal ? "your taste" : "estimated position"} · ${estimate(bean, style).score.toFixed(1)}/10 ${getRating(bean, style) === null ? "estimate" : "your rating"}</button>${bean.productUrl ? `<a class="legend-source" href="${esc(safeUrl(bean.productUrl))}" target="_blank" rel="noopener noreferrer" title="Open saved roaster / product page">source ↗</a>` : ""}</div>`).join("");
+  return `<article class="profile-map-card ${info.className}"><div class="profile-map-top"><div><h3>${esc(info.label)}</h3><p>${esc(info.subtitle)}</p></div><span class="map-illustration" aria-hidden="true">${info.icon}</span></div><div class="plot-wrap">${plotSVG(style)}</div><div class="map-score-note"><strong>${avg}/10</strong> average of personal scores and estimates. Ratings do not determine the position.</div><div class="plot-legend">${legend || '<span class="plot-bean">No saved beans yet.</span>'}</div></article>`;
+}
+function comparisonPlot(bean) {
+  const left = 44, right = 436, top = 27, bottom = 250;
+  const positions = STYLES.map((style) => {
+    const p = position(bean, style);
+    return { style, x: left + p.x / 100 * (right - left), y: bottom - p.y / 100 * (bottom - top), personal: p.personal };
+  });
+  const markers = positions.map(({ style, x, y, personal }, index) => {
+    const previous = positions.slice(0, index).filter((other) => Math.abs(other.x - x) < 14 && Math.abs(other.y - y) < 14).length;
+    const offset = previous * 14;
+    return `<g><circle cx="${x + offset}" cy="${y}" r="11" fill="${personal ? STYLE_INFO[style].color : "#fff"}" stroke="${STYLE_INFO[style].color}" stroke-width="2" ${personal ? "" : 'stroke-dasharray="3 2"'} /><text x="${x + offset}" y="${y + 4}" text-anchor="middle" font-size="11" font-weight="700" fill="${personal ? "#fff" : "#333"}">${index + 1}</text><title>${esc(STYLE_INFO[style].label)}: ${personal ? "your taste" : "estimated position"}</title></g>`;
+  }).join("");
+  return `<svg class="taste-plot comparison-plot" viewBox="0 0 480 280" role="img" aria-label="Drink comparison for ${esc(bean.name)}. Left fruit and floral; right chocolate and nut. Top full-bodied; bottom delicate."><rect class="plot-bg" x="${left}" y="${top}" width="${right-left}" height="${bottom-top}" rx="12"/><line class="grid-line" x1="240" y1="${top}" x2="240" y2="${bottom}"/><line class="grid-line" x1="${left}" y1="138" x2="${right}" y2="138"/><text class="axis-label" x="${left}" y="17">Bright · fruit · floral</text><text class="axis-label" x="${right}" y="17" text-anchor="end">Chocolate · nut</text><text class="axis-title" x="14" y="145" text-anchor="middle" transform="rotate(-90 14 145)">DELICATE ← BODY → FULL</text>${markers}</svg>`;
+}
+function options(values, selected) {
+  return values.map(([value, label]) => `<option value="${esc(value)}"${String(value) === String(selected ?? "") ? " selected" : ""}>${esc(label)}</option>`).join("");
+}
+function renderComparison(message = "") {
+  if (!beans.length) {
+    comparisonRoot.innerHTML = '<div class="empty-map-state">Add a coffee to compare its drinks. <a href="./index.html#library">Go to My collection →</a></div>';
+    return;
+  }
+  const bean = beans.find((item) => String(item.id) === String(comparisonBeanId)) || beans[0];
+  comparisonBeanId = String(bean.id);
+  const saved = personalTaste(bean, comparisonStyle);
+  const currentNotes = loggedInfo(bean, comparisonStyle).lastNote;
+  const legend = STYLES.map((style, index) => {
+    const taste = personalTaste(bean, style);
+    const rating = getRating(bean, style);
+    const note = taste?.notes || loggedInfo(bean, style).lastNote;
+    return `<li><span class="comparison-number" style="border-color:${STYLE_INFO[style].color};color:${STYLE_INFO[style].color}">${index + 1}</span><div><strong>${esc(STYLE_INFO[style].label)}</strong> · ${taste ? "your position" : "estimated position"}${rating === null ? "" : ` · your rating ${rating.toFixed(1)}/10`}${taste?.bitterness ? ` · bitterness: ${esc(taste.bitterness)}` : ""}${note ? `<p>${esc(note)}</p>` : ""}</div></li>`;
+  }).join("");
+  const steps = [["", "Choose…"], ["0", "Bright / fruity / floral"], ["25", "Mostly bright / fruity"], ["50", "Balanced / other"], ["75", "Mostly chocolate / nut"], ["100", "Chocolate / nut"]];
+  const bodies = [["", "Choose…"], ["0", "Very delicate / thin"], ["25", "Light"], ["50", "Medium"], ["75", "Full"], ["100", "Very full / deep"]];
+  const bitterness = [["", "Not recorded"], ["none", "None"], ["slight", "Slight"], ["moderate", "Moderate"], ["strong", "Strong"]];
+  comparisonRoot.innerHTML = `<div class="taste-comparison"><label class="comparison-select">Coffee<select id="compareBean">${options(beans.map((item) => [String(item.id), `${item.name} · ${item.roaster}`]), bean.id)}</select></label><div class="comparison-layout"><div>${comparisonPlot(bean)}<p class="comparison-caption">Filled = your position · dashed = estimate. Overlapping markers may be shifted slightly.</p><ol class="comparison-legend">${legend}</ol></div><form id="tasteForm" class="taste-form"><h3>Describe your cup</h3><p>Save a separate impression for each drink. This does not change your cup rating or recipe.</p><label>Drink style<select name="style">${options(STYLES.map((style) => [style, STYLE_INFO[style].label]), comparisonStyle)}</select></label><label>Flavour direction<select name="flavor" required>${options(steps, saved?.flavor)}</select></label><label>Body / depth<select name="body" required>${options(bodies, saved?.body)}</select></label><label>Bitterness<select name="bitterness">${options(bitterness, saved?.bitterness)}</select></label><label>What did you taste?<textarea name="notes" rows="3" maxlength="500" placeholder="e.g. Nutella, creamy; or less depth, slightly bitter">${esc(saved?.notes || "")}</textarea></label>${currentNotes ? `<p class="comparison-previous">Latest brew note for this drink: “${esc(currentNotes)}”</p>` : ""}<button class="button button-dark" type="submit">Save taste impression</button><p class="comparison-message" role="status">${esc(message)}</p></form></div></div>`;
 }
 function predictionCard(bean) {
   const source = safeUrl(bean.productUrl || "");
   const styles = STYLES.map((style) => {
     const result = estimate(bean, style);
-    return `<article class="prediction-drink"><small>${esc(STYLE_INFO[style].label)}</small><strong>${result.score.toFixed(1)} / 10 · ${result.source === "your logged cup" ? "your score" : "estimate"}</strong><p>${esc(result.taste)}</p></article>`;
+    const taste = personalTaste(bean, style);
+    return `<article class="prediction-drink"><small>${esc(STYLE_INFO[style].label)}</small><strong>${result.score.toFixed(1)} / 10 · ${result.source === "your logged cup" ? "your score" : "estimate"}</strong>${taste?.notes ? `<p>Your taste: ${esc(taste.notes)}</p>` : ""}${taste?.bitterness ? `<p>Bitterness: ${esc(taste.bitterness)}</p>` : ""}<p>${esc(result.taste)}</p></article>`;
   }).join("");
   const notes = getNotes(bean).map((note) => `<span class="tag">${esc(note)}</span>`).join("") || '<span class="tag">No official notes saved yet</span>';
   const ranked = STYLES.map((style) => ({ style, score: estimate(bean, style).score })).sort((a, b) => b.score - a.score);
@@ -198,12 +246,15 @@ function predictionCard(bean) {
 }
 function highlightBean(id) {
   activeBeanId = id;
+  comparisonBeanId = String(id);
+  renderComparison();
   document.querySelectorAll("[data-bean-id]").forEach((element) => element.classList.toggle("is-filtered-out", element.dataset.beanId !== id));
   document.querySelectorAll(".prediction-card").forEach((element) => element.classList.toggle("is-highlighted", element.dataset.beanId === id));
 }
 function render() {
   $("#mapCount").textContent = beans.length ? `${beans.length} ${beans.length === 1 ? "saved coffee" : "saved coffees"} plotted on each map` : "Add beans to see your personal taste maps";
   if (!beans.length) {
+    renderComparison();
     const message = '<div class="empty-map-state">No saved coffees yet. Add a bean from your collection first; it will appear here automatically.<br /><a href="./index.html#library">Go to My collection →</a></div>';
     mapRoot.innerHTML = STYLES.map((style) => `<article class="profile-map-card ${STYLE_INFO[style].className}"><div class="profile-map-top"><div><h3>${esc(STYLE_INFO[style].label)}</h3><p>${esc(STYLE_INFO[style].subtitle)}</p></div><span class="map-illustration">${STYLE_INFO[style].icon}</span></div>${message}</article>`).join("");
     predictionRoot.innerHTML = message;
@@ -211,12 +262,46 @@ function render() {
   }
   mapRoot.innerHTML = STYLES.map(mapCard).join("");
   predictionRoot.innerHTML = beans.map(predictionCard).join("");
+  renderComparison();
   if (activeBeanId && beans.some((bean) => bean.id === activeBeanId)) highlightBean(activeBeanId);
 }
 function safeUrl(value) {
   try { const url = new URL(value); return ["http:", "https:"].includes(url.protocol) ? url.href : ""; }
   catch { return ""; }
 }
+comparisonRoot.addEventListener("change", (event) => {
+  if (event.target.id === "compareBean") { comparisonBeanId = event.target.value; renderComparison(); }
+  if (event.target.name === "style") { comparisonStyle = event.target.value; renderComparison(); }
+});
+comparisonRoot.addEventListener("submit", (event) => {
+  if (event.target.id !== "tasteForm") return;
+  event.preventDefault();
+  const form = event.target;
+  const values = new FormData(form);
+  const style = String(values.get("style"));
+  const flavor = String(values.get("flavor"));
+  const body = String(values.get("body"));
+  const bitterness = String(values.get("bitterness"));
+  const validSteps = ["0", "25", "50", "75", "100"];
+  if (!STYLES.includes(style) || !validSteps.includes(flavor) || !validSteps.includes(body) || !["", "none", "slight", "moderate", "strong"].includes(bitterness)) {
+    form.querySelector(".comparison-message").textContent = "Choose a flavour direction and body to save your impression.";
+    return;
+  }
+  try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    if (!Array.isArray(stored)) throw new Error("Journal not found");
+    const bean = stored.find((item) => String(item.id) === comparisonBeanId);
+    if (!bean) throw new Error("Coffee not found");
+    bean.tasteProfiles = { ...bean.tasteProfiles, [style]: { flavor: Number(flavor), body: Number(body), bitterness, notes: String(values.get("notes") || "").trim() } };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+    beans = normalize(stored);
+    render();
+    comparisonRoot.querySelector(".comparison-message").textContent = "Taste impression saved.";
+  } catch (error) {
+    console.warn("Could not save taste impression", error);
+    form.querySelector(".comparison-message").textContent = "Could not save your impression. Check browser storage and try again.";
+  }
+});
 mapRoot.addEventListener("click", (event) => {
   const control = event.target.closest('[data-action="highlight"], .plot-bean-point');
   if (control) highlightBean(control.dataset.beanId);
