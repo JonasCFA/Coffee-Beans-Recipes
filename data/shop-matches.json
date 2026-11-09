@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-08T08:27:43.475Z",
+ "updated": "2026-11-09T06:19:49.588Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
-   "products": 30
+   "products": 29
   },
   "Nativo": {
    "ok": true,
@@ -27,7 +27,7 @@
   },
   "Higher Coffee Roastery": {
    "ok": true,
-   "products": 38
+   "products": 37
   },
   "CULTD Coffee Unlimited": {
    "ok": true,
@@ -35,7 +35,7 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 107
+   "products": 106
   },
   "Five Elephant": {
    "ok": true,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3636
+   "products": 3630
   },
   "Honest & Rare": {
    "ok": true,
@@ -296,7 +296,7 @@
     "title": "Hachi - Kolumbien Filter",
     "roaster": "",
     "url": "https://19grams.coffee/products/hachi-kolumbien-filter",
-    "price": 30
+    "price": 31
    },
    {
     "store": "19grams",
@@ -443,7 +443,7 @@
     "title": "120 Hz Espresso",
     "roaster": "",
     "url": "https://19grams.coffee/products/120-hz-espresso",
-    "price": 16
+    "price": 17
    },
    {
     "store": "CULTD Coffee Unlimited",
@@ -488,7 +488,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.8
+    "price": 15.82
    },
    {
     "store": "Roast Market",
@@ -607,16 +607,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.8
-   },
-   {
-    "store": "Roast Market",
-    "city": "Germany",
-    "favorite": false,
-    "title": "Caffè Corsini Guatemala Huehuetenango Highland Coffee 250g",
-    "roaster": "",
-    "url": "https://www.roastmarket.de/caffe-corsini-guatemala-huehuetenango-highland-coffee-bohnen-250g.html",
-    "price": 8.49
+    "price": 15.82
    },
    {
     "store": "Roast Market",
@@ -625,6 +616,15 @@
     "title": "Dinzler Kaffee Guatemala 250g",
     "roaster": "",
     "url": "https://www.roastmarket.de/dinzler-kaffee-guatemala-250g.html",
+    "price": 8.99
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Dinzler Kaffee Guatemala",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/dinzler-kaffee-guatemala.html",
     "price": 8.99
    },
    {
