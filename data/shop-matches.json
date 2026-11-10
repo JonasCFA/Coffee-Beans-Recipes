@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T06:19:49.588Z",
+ "updated": "2026-11-10T06:02:33.567Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -19,11 +19,11 @@
   },
   "Bonanza Coffee": {
    "ok": true,
-   "products": 18
+   "products": 17
   },
   "19grams": {
    "ok": true,
-   "products": 148
+   "products": 149
   },
   "Higher Coffee Roastery": {
    "ok": true,
@@ -35,11 +35,11 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 106
+   "products": 108
   },
   "Five Elephant": {
    "ok": true,
-   "products": 112
+   "products": 118
   },
   "Public Coffee Roasters": {
    "ok": true,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3630
+   "products": 3622
   },
   "Honest & Rare": {
    "ok": true,
@@ -275,19 +275,19 @@
     "store": "Bonanza Coffee",
     "city": "Berlin",
     "favorite": false,
-    "title": "Santa Monica",
+    "title": "Jaguarundi",
     "roaster": "",
-    "url": "https://bonanzacoffee.de/products/santa-monica",
-    "price": 24.9
+    "url": "https://bonanzacoffee.de/products/jaguarundi",
+    "price": 19.5
    },
    {
     "store": "Bonanza Coffee",
     "city": "Berlin",
     "favorite": false,
-    "title": "Jaguarundi",
+    "title": "Almibar",
     "roaster": "",
-    "url": "https://bonanzacoffee.de/products/jaguarundi",
-    "price": 19.5
+    "url": "https://bonanzacoffee.de/products/almibar",
+    "price": 17.9
    },
    {
     "store": "19grams",
@@ -305,7 +305,7 @@
     "title": "El Vergel - Kolumbien Espresso",
     "roaster": "",
     "url": "https://19grams.coffee/products/el-vergel-kolumbien-espresso",
-    "price": 18
+    "price": 19
    },
    {
     "store": "CULTD Coffee Unlimited",
@@ -338,19 +338,19 @@
     "store": "Five Elephant",
     "city": "Berlin",
     "favorite": false,
-    "title": "COLOMBIA Manos Juntas –  Holiday Espresso",
+    "title": "ETHIOPIA Esayas Beriso – Espresso",
     "roaster": "",
-    "url": "https://fiveelephant.com/products/colombia-manos-juntas-holiday-espresso",
-    "price": 17.66
+    "url": "https://fiveelephant.com/products/ethiopia-esayas-beriso-espresso",
+    "price": 19.63
    },
    {
     "store": "Five Elephant",
     "city": "Berlin",
     "favorite": false,
-    "title": "COLOMBIA Chiroso Imperial – Filter",
+    "title": "COLOMBIA Manos Juntas –  Holiday Espresso",
     "roaster": "",
-    "url": "https://fiveelephant.com/products/colombia-chiroso-imperial-filter",
-    "price": 23.83
+    "url": "https://fiveelephant.com/products/colombia-manos-juntas-holiday-espresso",
+    "price": 17.66
    },
    {
     "store": "Public Coffee Roasters",
@@ -434,7 +434,7 @@
     "title": "Copacabana Brasilien Espresso",
     "roaster": "",
     "url": "https://19grams.coffee/products/copacabana-brasilien-espresso",
-    "price": 11
+    "price": 12
    },
    {
     "store": "19grams",
@@ -488,7 +488,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.82
+    "price": 15.92
    },
    {
     "store": "Roast Market",
@@ -577,6 +577,15 @@
     "store": "Five Elephant",
     "city": "Berlin",
     "favorite": false,
+    "title": "GUATEMALA Buena Vista Pacamara Natural – Filter",
+    "roaster": "",
+    "url": "https://fiveelephant.com/products/guatemala-buena-vista-pacamara-natural-filter",
+    "price": 31.31
+   },
+   {
+    "store": "Five Elephant",
+    "city": "Berlin",
+    "favorite": false,
     "title": "GUATEMALA Buena Vista – Espresso",
     "roaster": "",
     "url": "https://fiveelephant.com/products/guatemala-buena-vista-espresso",
@@ -607,7 +616,16 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.82
+    "price": 15.92
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Caffè Corsini Guatemala Huehuetenango Highland Coffee 250g",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/caffe-corsini-guatemala-huehuetenango-highland-coffee-bohnen-250g.html",
+    "price": 8.49
    },
    {
     "store": "Roast Market",
@@ -616,15 +634,6 @@
     "title": "Dinzler Kaffee Guatemala 250g",
     "roaster": "",
     "url": "https://www.roastmarket.de/dinzler-kaffee-guatemala-250g.html",
-    "price": 8.99
-   },
-   {
-    "store": "Roast Market",
-    "city": "Germany",
-    "favorite": false,
-    "title": "Dinzler Kaffee Guatemala",
-    "roaster": "",
-    "url": "https://www.roastmarket.de/dinzler-kaffee-guatemala.html",
     "price": 8.99
    },
    {
@@ -807,7 +816,7 @@
     "title": "Los Planes - Honduras Espresso",
     "roaster": "",
     "url": "https://19grams.coffee/products/planes-honduras-espresso",
-    "price": 18
+    "price": 19
    },
    {
     "store": "19grams",
@@ -816,7 +825,7 @@
     "title": "Los Planes - Honduras Filter",
     "roaster": "",
     "url": "https://19grams.coffee/products/planes-honduras-filter",
-    "price": 18
+    "price": 19
    },
    {
     "store": "Higher Coffee Roastery",
