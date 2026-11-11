@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-10T06:02:33.567Z",
+ "updated": "2026-11-11T06:11:14.917Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
-   "products": 29
+   "products": 30
   },
   "Nativo": {
    "ok": true,
@@ -15,11 +15,11 @@
   },
   "Bunca": {
    "ok": true,
-   "products": 33
+   "products": 34
   },
   "Bonanza Coffee": {
    "ok": true,
-   "products": 17
+   "products": 16
   },
   "19grams": {
    "ok": true,
@@ -35,7 +35,7 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 108
+   "products": 107
   },
   "Five Elephant": {
    "ok": true,
@@ -59,7 +59,7 @@
   },
   "Elbgold": {
    "ok": true,
-   "products": 55
+   "products": 56
   },
   "Hoppenworth & Ploch": {
    "ok": true,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3622
+   "products": 3629
   },
   "Honest & Rare": {
    "ok": true,
@@ -169,6 +169,15 @@
     "roaster": "",
     "url": "https://bonanzacoffee.de/products/ab-kithungururu",
     "price": 18.9
+   },
+   {
+    "store": "19grams",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Kii - Kenia Filter",
+    "roaster": "",
+    "url": "https://19grams.coffee/products/rungeto-kii-kenia-filter",
+    "price": 19
    },
    {
     "store": "CULTD Coffee Unlimited",
@@ -305,7 +314,7 @@
     "title": "El Vergel - Kolumbien Espresso",
     "roaster": "",
     "url": "https://19grams.coffee/products/el-vergel-kolumbien-espresso",
-    "price": 19
+    "price": 18
    },
    {
     "store": "CULTD Coffee Unlimited",
@@ -434,7 +443,7 @@
     "title": "Copacabana Brasilien Espresso",
     "roaster": "",
     "url": "https://19grams.coffee/products/copacabana-brasilien-espresso",
-    "price": 12
+    "price": 11
    },
    {
     "store": "19grams",
@@ -488,7 +497,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.92
+    "price": 15.82
    },
    {
     "store": "Roast Market",
@@ -616,7 +625,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.92
+    "price": 15.82
    },
    {
     "store": "Roast Market",
@@ -795,15 +804,6 @@
     "store": "Bonanza Coffee",
     "city": "Berlin",
     "favorite": false,
-    "title": "Sergio Julcarima",
-    "roaster": "",
-    "url": "https://bonanzacoffee.de/products/sergio-julcarima",
-    "price": 18.5
-   },
-   {
-    "store": "Bonanza Coffee",
-    "city": "Berlin",
-    "favorite": false,
     "title": "Bonanza Blend",
     "roaster": "",
     "url": "https://bonanzacoffee.de/products/bonanza-blend",
@@ -816,7 +816,7 @@
     "title": "Los Planes - Honduras Espresso",
     "roaster": "",
     "url": "https://19grams.coffee/products/planes-honduras-espresso",
-    "price": 19
+    "price": 18
    },
    {
     "store": "19grams",
@@ -825,7 +825,7 @@
     "title": "Los Planes - Honduras Filter",
     "roaster": "",
     "url": "https://19grams.coffee/products/planes-honduras-filter",
-    "price": 19
+    "price": 18
    },
    {
     "store": "Higher Coffee Roastery",
