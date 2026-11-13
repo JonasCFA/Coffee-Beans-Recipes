@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-12T06:15:06.524Z",
+ "updated": "2026-11-13T06:12:20.061Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
-   "products": 29
+   "products": 31
   },
   "Nativo": {
    "ok": true,
@@ -23,7 +23,7 @@
   },
   "19grams": {
    "ok": true,
-   "products": 150
+   "products": 152
   },
   "Higher Coffee Roastery": {
    "ok": true,
@@ -35,11 +35,11 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 107
+   "products": 111
   },
   "Five Elephant": {
    "ok": true,
-   "products": 118
+   "products": 119
   },
   "Public Coffee Roasters": {
    "ok": true,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3394
+   "products": 3594
   },
   "Honest & Rare": {
    "ok": true,
@@ -110,7 +110,7 @@
     "title": "INKU",
     "roaster": "",
     "url": "https://www.thebarn.de/products/inku",
-    "price": 17.9
+    "price": 15.22
    },
    {
     "store": "The Barn",
@@ -119,7 +119,7 @@
     "title": "KAYON MOUNTAIN",
     "roaster": "",
     "url": "https://www.thebarn.de/products/summer-coffee",
-    "price": 16.9
+    "price": 14.37
    },
    {
     "store": "Honest & Rare",
@@ -148,7 +148,7 @@
     "title": "BISHAN WATE",
     "roaster": "",
     "url": "https://www.thebarn.de/products/bishan-wate",
-    "price": 18.4
+    "price": 15.64
    },
    {
     "store": "Five Elephant",
@@ -213,7 +213,7 @@
     "title": "GATOMBOYA AA",
     "roaster": "",
     "url": "https://www.thebarn.de/products/gatomboya-aa",
-    "price": 15.4
+    "price": 13.09
    },
    {
     "store": "Five Elephant",
@@ -246,18 +246,18 @@
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "roastmarket ORIGINS KENYA 250g",
+    "title": "Caffè Corsini Kenya \"AA\" Washed 250g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/caffe-corsini-ethiopia-harenna-250g.html",
-    "price": 9.99
+    "url": "https://www.roastmarket.de/corsini-caffe-kenya-aa-washed-bohnen-250g.html",
+    "price": 8.49
    },
    {
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "roastmarket ORIGINS KENYA",
+    "title": "roastmarket ORIGINS KENYA 250g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/roastmarket-origins-kenya.html",
+    "url": "https://www.roastmarket.de/caffe-corsini-ethiopia-harenna-250g.html",
     "price": 9.99
    },
    {
@@ -344,13 +344,13 @@
     "price": 24.9
    },
    {
-    "store": "The Barn",
+    "store": "Five Elephant",
     "city": "Berlin",
     "favorite": false,
-    "title": "GUAVA BANANA",
+    "title": "COLOMBIA La Violeta Sidra – Filter",
     "roaster": "",
-    "url": "https://www.thebarn.de/products/guava-banana",
-    "price": 21.9
+    "url": "https://fiveelephant.com/products/colombia-la-violeta-sidra-filter",
+    "price": 21.03
    },
    {
     "store": "Five Elephant",
@@ -360,15 +360,6 @@
     "roaster": "",
     "url": "https://fiveelephant.com/products/ethiopia-esayas-beriso-espresso",
     "price": 19.63
-   },
-   {
-    "store": "Five Elephant",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "COLOMBIA Manos Juntas –  Holiday Espresso",
-    "roaster": "",
-    "url": "https://fiveelephant.com/products/colombia-manos-juntas-holiday-espresso",
-    "price": 17.66
    },
    {
     "store": "Public Coffee Roasters",
@@ -383,18 +374,18 @@
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Caffè Corsini Colombia Medellin Supremo 250g",
+    "title": "Vee’s Organic Kolumbien 250g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/corsini-caffe-colombia-medellin-supremo-bohnen-250g.html",
-    "price": 8.99
+    "url": "https://www.roastmarket.de/vee-s-organic-kolumbien-250g.html",
+    "price": 9.99
    },
    {
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Vee’s Organic Kolumbien 250g",
+    "title": "Vee’s Organic Kolumbien",
     "roaster": "",
-    "url": "https://www.roastmarket.de/vee-s-organic-kolumbien-250g.html",
+    "url": "https://www.roastmarket.de/vee-s-organic-kolumbien.html",
     "price": 9.99
    },
    {
@@ -488,7 +479,7 @@
     "title": "SUNDROP PEABERRY",
     "roaster": "",
     "url": "https://www.thebarn.de/products/sundrop-peaberry",
-    "price": 15.9
+    "price": 13.52
    },
    {
     "store": "The Barn",
@@ -497,7 +488,7 @@
     "title": "SUNDROP",
     "roaster": "",
     "url": "https://www.thebarn.de/products/sundrop",
-    "price": 16.4
+    "price": 13.94
    },
    {
     "store": "Hoppenworth & Ploch",
@@ -506,25 +497,25 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.71
+    "price": 15.68
    },
    {
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Schamong Brasilien Capim Branco 250g",
+    "title": "Drago Mocambo Brasilia 250g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/schamong-brasilien-capim-branco-250g.html",
-    "price": 9.99
+    "url": "https://www.roastmarket.de/mocambo-brasilia-bohnen-250g.html",
+    "price": 6.9
    },
    {
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Schamong Brasilien Capim Branco",
+    "title": "Caffè Corsini Brasil Santos 250g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/schamong-brasilien-capim-branco.html",
-    "price": 9.99
+    "url": "https://www.roastmarket.de/corsini-caffe-brasil-santos-bohnen-250g.html",
+    "price": 7.49
    },
    {
     "store": "Honest & Rare",
@@ -580,7 +571,7 @@
     "title": "LA COLINA WASHED",
     "roaster": "",
     "url": "https://www.thebarn.de/products/la-colina",
-    "price": 15.4
+    "price": 13.09
    },
    {
     "store": "The Barn",
@@ -634,7 +625,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.71
+    "price": 15.68
    },
    {
     "store": "Roast Market",
@@ -649,9 +640,9 @@
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Murnauer San Miguel Guatemala 250g",
+    "title": "Dinzler Kaffee Guatemala 250g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/murnauer-san-miguel-guatemala-250g.html",
+    "url": "https://www.roastmarket.de/dinzler-kaffee-guatemala-250g.html",
     "price": 8.99
    },
    {
@@ -731,7 +722,7 @@
     "title": "KARANA",
     "roaster": "",
     "url": "https://www.thebarn.de/products/karana",
-    "price": 16.4
+    "price": 13.94
    },
    {
     "store": "Roast Market",
@@ -769,7 +760,7 @@
     "title": "LOS PIRINEOS ANAEROBIC",
     "roaster": "",
     "url": "https://www.thebarn.de/products/los-pirineos-anaerobic",
-    "price": 18.9
+    "price": 16.07
    },
    {
     "store": "Five Elephant",
@@ -876,19 +867,19 @@
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Speicherstadt Honduras 18 Conejo Bio Demeter Kaffee",
+    "title": "Dinzler Espresso Peru Organico 250g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/speicherstadt-honduras-18-conejo-bio-demeter-kaffee.html",
-    "price": 11.99
+    "url": "https://www.roastmarket.de/dinzler-espresso-peru-organico-250g.html",
+    "price": 9.99
    },
    {
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Speicherstadt Honduras 18 Conejo Bio Demeter Kaffee 250g",
+    "title": "Dinzler Espresso Peru Organico",
     "roaster": "",
-    "url": "https://www.roastmarket.de/speicherstadt-honduras-18-conejo-bio-demeter-kaffee-250g.html",
-    "price": 11.99
+    "url": "https://www.roastmarket.de/dinzler-espresso-peru-organico.html",
+    "price": 9.99
    }
   ],
   "italian-style-espresso-blend": [
@@ -968,19 +959,19 @@
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Hoppenworth & Ploch Natural Blend Espresso Bio",
+    "title": "Speicherstadt Schümli Café Crème 250g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/hoppenworth-ploch-natural-blend-espresso.html",
-    "price": 12.99
+    "url": "https://www.roastmarket.de/speicherstadt-schuemli-cafe-creme-bohnen-250g.html",
+    "price": 9.99
    },
    {
     "store": "Roast Market",
     "city": "Germany",
     "favorite": false,
-    "title": "Hoppenworth & Ploch Natural Blend Espresso Bio 250g",
+    "title": "Speicherstadt Schümli Café Crème 500g",
     "roaster": "",
-    "url": "https://www.roastmarket.de/hoppenworth-ploch-natural-blend-espresso-250g.html",
-    "price": 12.99
+    "url": "https://www.roastmarket.de/speicherstadt-schuemli-cafe-creme-bohnen-500g.html",
+    "price": 19.99
    },
    {
     "store": "Honest & Rare",
