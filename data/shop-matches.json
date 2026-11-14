@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-13T06:12:20.061Z",
+ "updated": "2026-11-14T05:59:08.719Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
-   "products": 31
+   "products": 33
   },
   "Nativo": {
    "ok": true,
@@ -23,7 +23,7 @@
   },
   "19grams": {
    "ok": true,
-   "products": 152
+   "products": 151
   },
   "Higher Coffee Roastery": {
    "ok": true,
@@ -35,11 +35,11 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 111
+   "products": 110
   },
   "Five Elephant": {
    "ok": true,
-   "products": 119
+   "products": 118
   },
   "Public Coffee Roasters": {
    "ok": true,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3594
+   "products": 3576
   },
   "Honest & Rare": {
    "ok": true,
@@ -440,19 +440,19 @@
     "store": "19grams",
     "city": "Berlin",
     "favorite": false,
-    "title": "Copacabana Brasilien Espresso",
+    "title": "Fazenda Guariroba - Brasilien Filter",
     "roaster": "",
-    "url": "https://19grams.coffee/products/copacabana-brasilien-espresso",
-    "price": 11
+    "url": "https://19grams.coffee/products/fazenda-guariroba-brasilien-filter",
+    "price": 26
    },
    {
     "store": "19grams",
     "city": "Berlin",
     "favorite": false,
-    "title": "120 Hz Espresso",
+    "title": "Copacabana Brasilien Espresso",
     "roaster": "",
-    "url": "https://19grams.coffee/products/120-hz-espresso",
-    "price": 16
+    "url": "https://19grams.coffee/products/copacabana-brasilien-espresso",
+    "price": 11
    },
    {
     "store": "CULTD Coffee Unlimited",
@@ -497,7 +497,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.68
+    "price": 15.63
    },
    {
     "store": "Roast Market",
@@ -625,7 +625,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.68
+    "price": 15.63
    },
    {
     "store": "Roast Market",
