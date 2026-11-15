@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-14T05:59:08.719Z",
+ "updated": "2026-11-15T06:00:36.162Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
-   "products": 33
+   "products": 32
   },
   "Nativo": {
    "ok": true,
@@ -23,7 +23,7 @@
   },
   "19grams": {
    "ok": true,
-   "products": 151
+   "products": 150
   },
   "Higher Coffee Roastery": {
    "ok": true,
@@ -35,7 +35,7 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 110
+   "products": 109
   },
   "Five Elephant": {
    "ok": true,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3576
+   "products": 3561
   },
   "Honest & Rare": {
    "ok": true,
@@ -178,15 +178,6 @@
     "roaster": "",
     "url": "https://bonanzacoffee.de/products/ab-kithungururu",
     "price": 18.9
-   },
-   {
-    "store": "19grams",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "Kii - Kenia Filter",
-    "roaster": "",
-    "url": "https://19grams.coffee/products/rungeto-kii-kenia-filter",
-    "price": 19
    },
    {
     "store": "CULTD Coffee Unlimited",
