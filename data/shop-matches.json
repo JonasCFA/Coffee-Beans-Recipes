@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-15T06:00:36.162Z",
+ "updated": "2026-11-16T06:37:02.026Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
-   "products": 32
+   "products": 33
   },
   "Nativo": {
    "ok": true,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3561
+   "products": 3546
   },
   "Honest & Rare": {
    "ok": true,
