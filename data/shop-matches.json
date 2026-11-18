@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17T06:12:41.617Z",
+ "updated": "2026-11-18T06:16:59.831Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -7,7 +7,7 @@
   },
   "Nativo": {
    "ok": true,
-   "products": 29
+   "products": 26
   },
   "Due Mani": {
    "ok": false,
@@ -23,7 +23,7 @@
   },
   "19grams": {
    "ok": true,
-   "products": 149
+   "products": 150
   },
   "Higher Coffee Roastery": {
    "ok": true,
@@ -35,7 +35,7 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 109
+   "products": 106
   },
   "Five Elephant": {
    "ok": true,
@@ -43,7 +43,7 @@
   },
   "Public Coffee Roasters": {
    "ok": true,
-   "products": 50
+   "products": 49
   },
   "Man Versus Machine": {
    "ok": false,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3530
+   "products": 3539
   },
   "Honest & Rare": {
    "ok": true,
@@ -93,6 +93,15 @@
     "roaster": "",
     "url": "https://bonanzacoffee.de/products/gogogu",
     "price": 17.9
+   },
+   {
+    "store": "19grams",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "Gatta Anaerobic Washed - Äthiopien Filter",
+    "roaster": "",
+    "url": "https://19grams.coffee/products/gatta-anaerobic-washed-athiopien-filter",
+    "price": 41
    },
    {
     "store": "Higher Coffee Roastery",
@@ -488,16 +497,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.61
-   },
-   {
-    "store": "Roast Market",
-    "city": "Germany",
-    "favorite": false,
-    "title": "Drago Mocambo Brasilia 250g",
-    "roaster": "",
-    "url": "https://www.roastmarket.de/mocambo-brasilia-bohnen-250g.html",
-    "price": 6.9
+    "price": 15.57
    },
    {
     "store": "Roast Market",
@@ -507,6 +507,15 @@
     "roaster": "",
     "url": "https://www.roastmarket.de/corsini-caffe-brasil-santos-bohnen-250g.html",
     "price": 7.49
+   },
+   {
+    "store": "Roast Market",
+    "city": "Germany",
+    "favorite": false,
+    "title": "Hanseatic Coffee Roasters Brasil Fine Cup",
+    "roaster": "",
+    "url": "https://www.roastmarket.de/hanseatic-brasil-fine-cup.html",
+    "price": 29.99
    },
    {
     "store": "Honest & Rare",
@@ -616,7 +625,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.61
+    "price": 15.57
    },
    {
     "store": "Roast Market",
@@ -772,15 +781,6 @@
     "roaster": "",
     "url": "https://www.dakcoffeeroasters.com/product/hazel-nuts/",
     "price": 16
-   },
-   {
-    "store": "Nativo",
-    "city": "Frankfurt",
-    "favorite": true,
-    "title": "Buena Vista",
-    "roaster": "",
-    "url": "https://www.nativokaffee.de/products/buena-vista",
-    "price": 13.5
    },
    {
     "store": "Nativo",
