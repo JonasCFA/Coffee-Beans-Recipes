@@ -1,13 +1,13 @@
 {
- "updated": "2026-11-18T06:16:59.831Z",
+ "updated": "2026-11-19T06:14:42.074Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
-   "products": 30
+   "products": 34
   },
   "Nativo": {
    "ok": true,
-   "products": 26
+   "products": 24
   },
   "Due Mani": {
    "ok": false,
@@ -35,7 +35,7 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 106
+   "products": 105
   },
   "Five Elephant": {
    "ok": true,
@@ -63,11 +63,11 @@
   },
   "Hoppenworth & Ploch": {
    "ok": true,
-   "products": 45
+   "products": 47
   },
   "Roast Market": {
    "ok": true,
-   "products": 3539
+   "products": 3535
   },
   "Honest & Rare": {
    "ok": true,
@@ -497,7 +497,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.57
+    "price": 15.55
    },
    {
     "store": "Roast Market",
@@ -625,7 +625,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.57
+    "price": 15.55
    },
    {
     "store": "Roast Market",
@@ -677,15 +677,6 @@
   ],
   "panama-geisha": [],
   "rwanda-burundi-washed": [
-   {
-    "store": "The Barn",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "GATARE",
-    "roaster": "",
-    "url": "https://www.thebarn.de/products/gatare",
-    "price": 16
-   },
    {
     "store": "Roast Market",
     "city": "Germany",
