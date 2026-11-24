@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T15:59:37.853Z",
+ "updated": "2026-11-24T15:54:02.906Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
@@ -23,7 +23,7 @@
   },
   "19grams": {
    "ok": true,
-   "products": 150
+   "products": 151
   },
   "Higher Coffee Roastery": {
    "ok": true,
@@ -35,7 +35,7 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 108
+   "products": 109
   },
   "Five Elephant": {
    "ok": true,
@@ -63,11 +63,11 @@
   },
   "Hoppenworth & Ploch": {
    "ok": true,
-   "products": 49
+   "products": 48
   },
   "Roast Market": {
    "ok": true,
-   "products": 3586
+   "products": 3592
   },
   "Honest & Rare": {
    "ok": true,
@@ -125,19 +125,19 @@
     "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
-    "title": "INKU",
+    "title": "SHANTAWENE NATURAL",
     "roaster": "",
-    "url": "https://www.thebarn.de/products/inku",
-    "price": 15.22
+    "url": "https://www.thebarn.de/products/shantawene-natural",
+    "price": 17.75
    },
    {
     "store": "The Barn",
     "city": "Berlin",
     "favorite": false,
-    "title": "KAYON MOUNTAIN",
+    "title": "INKU",
     "roaster": "",
-    "url": "https://www.thebarn.de/products/summer-coffee",
-    "price": 14.37
+    "url": "https://www.thebarn.de/products/inku",
+    "price": 15.22
    },
    {
     "store": "Honest & Rare",
@@ -353,6 +353,15 @@
     "price": 24.9
    },
    {
+    "store": "The Barn",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "WINTER LOLLIPOP",
+    "roaster": "",
+    "url": "https://www.thebarn.de/products/winter-lollipop",
+    "price": 25.4
+   },
+   {
     "store": "Five Elephant",
     "city": "Berlin",
     "favorite": false,
@@ -515,7 +524,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.49
+    "price": 15.56
    },
    {
     "store": "Roast Market",
@@ -610,15 +619,6 @@
     "price": 31.31
    },
    {
-    "store": "Five Elephant",
-    "city": "Berlin",
-    "favorite": false,
-    "title": "GUATEMALA Buena Vista – Espresso",
-    "roaster": "",
-    "url": "https://fiveelephant.com/products/guatemala-buena-vista-espresso",
-    "price": 19.53
-   },
-   {
     "store": "Elbgold",
     "city": "Hamburg",
     "favorite": false,
@@ -643,7 +643,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.49
+    "price": 15.56
    },
    {
     "store": "Roast Market",
@@ -870,7 +870,7 @@
     "title": "LOS CASERIOS",
     "roaster": "",
     "url": "https://www.thebarn.de/products/los-pirineos-bourbon-copy",
-    "price": 14.35
+    "price": 14.2
    },
    {
     "store": "The Barn",
