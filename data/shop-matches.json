@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-24T15:54:02.906Z",
+ "updated": "2026-11-25T15:37:15.271Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
-   "products": 33
+   "products": 32
   },
   "Nativo": {
    "ok": true,
@@ -35,11 +35,11 @@
   },
   "The Barn": {
    "ok": true,
-   "products": 109
+   "products": 112
   },
   "Five Elephant": {
    "ok": true,
-   "products": 120
+   "products": 119
   },
   "Public Coffee Roasters": {
    "ok": true,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3592
+   "products": 3607
   },
   "Honest & Rare": {
    "ok": true,
@@ -524,7 +524,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.56
+    "price": 15.51
    },
    {
     "store": "Roast Market",
@@ -643,7 +643,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.56
+    "price": 15.51
    },
    {
     "store": "Roast Market",
