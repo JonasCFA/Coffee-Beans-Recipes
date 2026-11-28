@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-27T15:06:59.195Z",
+ "updated": "2026-11-28T14:13:29.221Z",
  "shops": {
   "DAK Coffee Roasters": {
    "ok": true,
-   "products": 31
+   "products": 32
   },
   "Nativo": {
    "ok": true,
@@ -27,7 +27,7 @@
   },
   "Higher Coffee Roastery": {
    "ok": true,
-   "products": 37
+   "products": 35
   },
   "CULTD Coffee Unlimited": {
    "ok": true,
@@ -67,7 +67,7 @@
   },
   "Roast Market": {
    "ok": true,
-   "products": 3615
+   "products": 3608
   },
   "Honest & Rare": {
    "ok": true,
@@ -102,15 +102,6 @@
     "roaster": "",
     "url": "https://19grams.coffee/products/gatta-anaerobic-washed-athiopien-filter",
     "price": 41
-   },
-   {
-    "store": "Higher Coffee Roastery",
-    "city": "Düsseldorf",
-    "favorite": false,
-    "title": "Äthiopien Kaffa - fruchtig, nussig, omni-roast",
-    "roaster": "",
-    "url": "https://highercoffee.co/products/ethiopia-kaffa-omni-roast",
-    "price": 12
    },
    {
     "store": "The Barn",
@@ -362,6 +353,15 @@
     "price": 25.4
    },
    {
+    "store": "The Barn",
+    "city": "Berlin",
+    "favorite": false,
+    "title": "GUAVA BANANA",
+    "roaster": "",
+    "url": "https://www.thebarn.de/products/guava-banana",
+    "price": 18.62
+   },
+   {
     "store": "Five Elephant",
     "city": "Berlin",
     "favorite": false,
@@ -515,7 +515,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.53
+    "price": 15.5
    },
    {
     "store": "Roast Market",
@@ -634,7 +634,7 @@
     "title": "Winterglow - Guatemala / Brasilien",
     "roaster": "",
     "url": "https://www.hoppenworth-ploch.de/products/winterglow-costa-rica-brasilien",
-    "price": 15.53
+    "price": 15.5
    },
    {
     "store": "Roast Market",
